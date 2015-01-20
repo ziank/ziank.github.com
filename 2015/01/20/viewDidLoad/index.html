@@ -5,33 +5,15 @@
   
   <title>VIEW加载和显示函数调用顺序 | 翟现旗的技术分享</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="大家没有看错，我要说的就是这个老生常谈的问题，也就是iOS中得ViewController加载和显示view时的函数调用顺序。其实大部分人都知道这些函数的调用顺序，但是，我们还是要再说一下，主要是要强调一下这些函数分别应该实现什么样的功能和注意点。
-先说一下顺序吧，免得真有一些人不了解：
-
-
-initWithNibName: bundle:
-viewDidLoad
-viewWillAppear:">
+  <meta name="description" content="大家没有看错，我要说的就是这个老生常谈的问题，也就是iOS中得ViewController加载和显示view时的函数调用顺序。其实大部分人都知道这些函数的调用顺序，但是，我们还是要再说一下，主要是要强调一下这些函数分别应该实现什么样的功能和注意点。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="VIEW加载和显示函数调用顺序">
 <meta property="og:url" content="http://yoursite.com/2015/01/20/viewDidLoad/">
 <meta property="og:site_name" content="翟现旗的技术分享">
-<meta property="og:description" content="大家没有看错，我要说的就是这个老生常谈的问题，也就是iOS中得ViewController加载和显示view时的函数调用顺序。其实大部分人都知道这些函数的调用顺序，但是，我们还是要再说一下，主要是要强调一下这些函数分别应该实现什么样的功能和注意点。
-先说一下顺序吧，免得真有一些人不了解：
-
-
-initWithNibName: bundle:
-viewDidLoad
-viewWillAppear:">
+<meta property="og:description" content="大家没有看错，我要说的就是这个老生常谈的问题，也就是iOS中得ViewController加载和显示view时的函数调用顺序。其实大部分人都知道这些函数的调用顺序，但是，我们还是要再说一下，主要是要强调一下这些函数分别应该实现什么样的功能和注意点。">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="VIEW加载和显示函数调用顺序">
-<meta name="twitter:description" content="大家没有看错，我要说的就是这个老生常谈的问题，也就是iOS中得ViewController加载和显示view时的函数调用顺序。其实大部分人都知道这些函数的调用顺序，但是，我们还是要再说一下，主要是要强调一下这些函数分别应该实现什么样的功能和注意点。
-先说一下顺序吧，免得真有一些人不了解：
-
-
-initWithNibName: bundle:
-viewDidLoad
-viewWillAppear:">
+<meta name="twitter:description" content="大家没有看错，我要说的就是这个老生常谈的问题，也就是iOS中得ViewController加载和显示view时的函数调用顺序。其实大部分人都知道这些函数的调用顺序，但是，我们还是要再说一下，主要是要强调一下这些函数分别应该实现什么样的功能和注意点。">
 
   
     <link rel="alternative" href="/atom.xml" title="翟现旗的技术分享" type="application/atom+xml">
@@ -205,8 +187,7 @@ viewWillAppear:">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>大家没有看错，我要说的就是这个老生常谈的问题，也就是iOS中得ViewController加载和显示view时的函数调用顺序。其实大部分人都知道这些函数的调用顺序，但是，我们还是要再说一下，主要是要强调一下这些函数分别应该实现什么样的功能和注意点。</p>
-<p>先说一下顺序吧，免得真有一些人不了解：</p>
+        <p>大家没有看错，我要说的就是这个老生常谈的问题，也就是iOS中得ViewController加载和显示view时的函数调用顺序。其实大部分人都知道这些函数的调用顺序，但是，我们还是要再说一下，主要是要强调一下这些函数分别应该实现什么样的功能和注意点。<br><a id="more"></a><br>先说一下顺序吧，免得真有一些人不了解：</p>
 <blockquote>
 <ul>
 <li>initWithNibName: bundle:</li>
