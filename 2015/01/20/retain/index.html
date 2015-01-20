@@ -9,9 +9,8 @@
 首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：
 
 
-alloc – 对象分配后引用计数为1
-
-retain – 对象的引用计">
+alloc        – 对象分配后引用计数为1
+retain">
 <meta property="og:type" content="article">
 <meta property="og:title" content="成员对象之RETAIN/ASSIGN/COPY/WEAK/STRONG的区分">
 <meta property="og:url" content="http://yoursite.com/2015/01/20/retain/">
@@ -20,18 +19,16 @@ retain – 对象的引用计">
 首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：
 
 
-alloc – 对象分配后引用计数为1
-
-retain – 对象的引用计">
+alloc        – 对象分配后引用计数为1
+retain">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="成员对象之RETAIN/ASSIGN/COPY/WEAK/STRONG的区分">
 <meta name="twitter:description" content="在Object-C中，定义类成员变量或类属性时经常会加上retain之类的声明，这些声明的不同点主要在于哪里呢，本文主要就是讲述他们之间的共同点和区别。
 首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：
 
 
-alloc – 对象分配后引用计数为1
-
-retain – 对象的引用计">
+alloc        – 对象分配后引用计数为1
+retain">
 
   
     <link rel="alternative" href="/atom.xml" title="翟现旗的技术分享" type="application/atom+xml">
@@ -209,16 +206,11 @@ retain – 对象的引用计">
 <p>首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：</p>
 <blockquote>
 <ul>
-<li><p>alloc – 对象分配后引用计数为1</p>
-</li>
-<li><p>retain – 对象的引用计数 +1</p>
-</li>
-<li><p>release – 对象的引用计数 -1，如果为0着释放对象所占用的内存空间</p>
-</li>
-<li><p>autorelease – 对象引用计数-1 如果为0不马上释放，最近一个pool时释放</p>
-</li>
-<li><p>copy – copy一个对象变成新的对象(新内存地址) 引用计数为1 原来对象计数不变</p>
-</li>
+<li>alloc        – 对象分配后引用计数为1</li>
+<li>retain       – 对象的引用计数 +1</li>
+<li>release      – 对象的引用计数 -1，如果为0着释放对象所占用的内存空间</li>
+<li>autorelease  – 对象引用计数-1 如果为0不马上释放，最近一个pool时释放</li>
+<li>copy         – copy一个对象变成新的对象(新内存地址) 引用计数为1 原来对象计数不变</li>
 </ul>
 </blockquote>
 <p>下面我们说一下这些修饰关键字对于内存计数造成的影响：</p>
