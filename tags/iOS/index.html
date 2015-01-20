@@ -213,8 +213,8 @@
 <p>添加了AutoLayout的约束之后，剩下的就是在viewDidLoad方法中添加下面的代码：</p>
 <figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">tableView.<span class="variable">estimatedRowHeight =</span> <span class="number">68.0</span></div><div class="line">tableView.<span class="variable">rowHeight =</span> UITableViewAutomaticDimension</div></pre></td></tr></table></figure>
 
-<p>第一行代码设置预估的cell高度，第二行代码修改tableview的rowHeight属性为UITableViewAutomaticDimension。换句话说，就是你让tableview根据其他信息计算cell的尺寸。<br><br><br>如果你现在测试应用，会发现还是不正确的，因为name和address两个控件都设置了SingleLine的属性。所以设置LineNumber为0，使文本行数能够自动根据内容增长。<br><br><br>到这里，就全部完成，再次运行app，tableview的cell就会根据内容自动计算高度了。<br><img src="img/self-sizing-cell-demo.png" alt=""></p>
-
+<p>第一行代码设置预估的cell高度，第二行代码修改tableview的rowHeight属性为UITableViewAutomaticDimension。换句话说，就是你让tableview根据其他信息计算cell的尺寸。<br><br><br>如果你现在测试应用，会发现还是不正确的，因为name和address两个控件都设置了SingleLine的属性。所以设置LineNumber为0，使文本行数能够自动根据内容增长。<br><br><br>到这里，就全部完成，再次运行app，tableview的cell就会根据内容自动计算高度了。</p>
+<center><img src="img/self-sizing-cell-demo.png" alt=""></center>
       
     </div>
   </div>
