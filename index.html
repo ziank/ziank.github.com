@@ -42,7 +42,7 @@
 		</hgroup>
 
 		
-		<p class="header-subtitle">一些个人的总结吧</p>
+		<p class="header-subtitle">翟现旗的技术分享</p>
 		
 
 		
@@ -97,8 +97,6 @@
 							
 								<a class="github" target="_blank" href="http://github.com/ziank" title="github">github</a>
 					        
-								<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
-					        
 						</div>
 					</nav>
 				</section>
@@ -138,7 +136,7 @@
 			  <h1 class="header-author"><a href="/">ziank</a></h1>
 			</hgroup>
 			
-			<p class="header-subtitle">一些个人的总结吧</p>
+			<p class="header-subtitle">翟现旗的技术分享</p>
 			
 			<nav class="header-menu">
 				<ul>
@@ -154,8 +152,6 @@
 				<div class="social">
 					
 						<a class="github" target="_blank" href="http://github.com/ziank" title="github">github</a>
-			        
-						<a class="rss" target="_blank" href="/atom.xml" title="rss">rss</a>
 			        
 				</div>
 			</nav>
@@ -215,6 +211,231 @@
 
 <p>第一行代码设置预估的cell高度，第二行代码修改tableview的rowHeight属性为UITableViewAutomaticDimension。换句话说，就是你让tableview根据其他信息计算cell的尺寸。<br><br><br>如果你现在测试应用，会发现还是不正确的，因为name和address两个控件都设置了SingleLine的属性。所以设置LineNumber为0，使文本行数能够自动根据内容增长。<br><br><br>到这里，就全部完成，再次运行app，tableview的cell就会根据内容自动计算高度了。</p>
 <center><img src="img/self-sizing-cell-demo.png" alt=""></center>
+      
+    </div>
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-viewDidLoad" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/01/20/viewDidLoad/" class="article-date">
+  	<time datetime="2015-01-20T10:20:32.000Z" itemprop="datePublished">Jan 20 2015</time>
+</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/01/20/viewDidLoad/">VIEW加载和显示函数调用顺序</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>大家没有看错，我要说的就是这个老生常谈的问题，也就是iOS中得ViewController加载和显示view时的函数调用顺序。其实大部分人都知道这些函数的调用顺序，但是，我们还是要再说一下，主要是要强调一下这些函数分别应该实现什么样的功能和注意点。</p>
+<p>先说一下顺序吧，免得真有一些人不了解：</p>
+<blockquote>
+<ul>
+<li>initWithNibName: bundle:</li>
+<li>viewDidLoad</li>
+<li>viewWillAppear:</li>
+<li>viewWillLayoutSubViews</li>
+<li>viewDidLayoutSubViews</li>
+<li>viewDidAppear:</li>
+<li>viewWillDisappear:</li>
+<li>viewDidDisappear:</li>
+<li>dealloc</li>
+</ul>
+</blockquote>
+<p>这些函数就描述了一个view从加载到释放的整个过程。在对应的函数中需要实现和处理的功能应该有如下的考虑。</p>
+<h4 id="-initWithNibName:_bundle:">-initWithNibName: bundle:</h4>
+<p>该函数是ViewController的初始化函数，必须调用父类的相应初始化方法，而且应该在函数的最开始位置进行调用。调用之前，绝对不可以使用self对象。即使已经调用了父类方法，也不可以在该方法中使用self.view。建议在init方法中直接使用下划线开始的成员对象，不要使用self进行引用。</p>
+<h4 id="-viewDidLoad">-viewDidLoad</h4>
+<p>该方法在view加载完成之后调用。之所以在init中不能够使用self.view就是因为如果使用，会在init完成之前就调用该方法，可能会导致错误。</p>
+<p>viewDidLoad中应该实现的功能是在nib文件中无法实现的界面绘制，以及成员对象的初始化，不应该在该函数中执行耗时的操作（如网络操作）。</p>
+<h4 id="-viewWillAppear:">-viewWillAppear:</h4>
+<p>该方法在界面出现前调用，可能一个界面会多次出现，那么每次出现之前都会调用该方法。特别是iOS 8推出的右划返回功能，每次将要返回到该界面的时候都会调用该方法，即使没有真正的返回。</p>
+<p>该方法中应该实现一些界面显示之前需要做的准备工作，比如需要请求数据，或者某些按钮需要判断是否显示等功能。还有就是一些Notification的监听事件可以在这里添加。</p>
+<h4 id="-viewWillLayoutSubViews">-viewWillLayoutSubViews</h4>
+<p>该方法不建议重写，因为每次显示都可能调用多次。</p>
+<h4 id="-viewDidLayoutSubViews">-viewDidLayoutSubViews</h4>
+<p>和viewWillLayoutSubViews一样，每次显示都可能调用多次该方法，所以在该方法中只允许修改subView的位置和大小，尽量不要添加或删除subView。如果一定要添加的话，请注意限制只添加一次。</p>
+<h4 id="-viewDidAppear:">-viewDidAppear:</h4>
+<p>该方法和viewWillAppear不同，只有当页面完全显示之后才会调用，所以一些界面显示之后需要做的操作建议放在这个方法里，这样可以提高界面切换的效率。放在viewDidLoad和viewWillAppear中都会影响界面的切换效率。</p>
+<h4 id="-viewWillDisappear:">-viewWillDisappear:</h4>
+<p>建议在这里删除当前界面的Notification监听，避免出现收到notification却执行错误的情况。这个函数实在界面消失之前调用的，所以和viewWillAppear相似，iOS8的右划返回功能滑动时，会调用当前界面的该函数，无论是否真正返回。</p>
+<h4 id="-viewDidDisappear:">-viewDidDisappear:</h4>
+<p>该方法和viewDidAppear对应，只有当界面完全消失后才会调用，建议在这个函数里可以执行一些界面消失后的内容清空处理。</p>
+<h4 id="-dealloc">-dealloc</h4>
+<p>针对ARC架构来说，这个函数里不应该执行任何额外的操作。如果使用MRC，需要在该函数里释放对应的成员对象。</p>
+<p>主要就说这么一些吧，另外就是界面切换时显示和消失的顺序为：</p>
+<p>假设界面A切换到界面B</p>
+<blockquote>
+<p>A -&gt; viewWillDisappear</p>
+<p>B -&gt; viewWillAppear</p>
+<p>A -&gt; viewDidDisappear</p>
+<p>B -&gt; viewDidAppear</p>
+</blockquote>
+<p>好了，我了解的也不多，就这么着了。</p>
+
+      
+    </div>
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-tableview-improve" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/01/20/tableview-improve/" class="article-date">
+  	<time datetime="2015-01-20T10:17:24.000Z" itemprop="datePublished">Jan 20 2015</time>
+</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/01/20/tableview-improve/">UITABLEVIEW的性能提升</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：</p>
+<blockquote>
+<ul>
+<li>UITableViewCell的重用机制；</li>
+<li>修改滑动过程中的加载机制。</li>
+</ul>
+</blockquote>
+<h3 id="UITableViewCell的重用机制">UITableViewCell的重用机制</h3>
+<p>使用cell的重用机制，需要在申请cell时进行指定，就是说需要使用  initWithStyle:reuseIdentifier:来替代init函数，否则就无法重用申请到的cell内存。</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">UITableViewCell <span class="keyword">*</span>cell = [[UITableViewCellalloc]initWithStyle:UITableViewCellStyleDefaultreuseIdentifier:<span class="comment">@"test”];</span></div></pre></td></tr></table></figure>
+
+<p>这样就申请到了一个可重用的cell，重用标记为test，之所以有一个重用标记是为了能够将类似的cell进行重用，这样很多view都不需要重新绘制，才能够真正的提高性能。</p>
+<p>申请到了cell以后，记得在cell的子类中实现方法prepareForReuse，这个方法会在cell滚出屏幕的时候调用，一定要注意该方法必须调用 super的prepareForReuse。</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby"> (void)prepareForReuse</span></div><div class="line">{</div><div class="line">[superprepareForReuse];</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>实现了init和perpareForReuse之后，就可以在 UITableViewDataSource的方法 tableView:cellForRowAtIndexPath: 中实现重用cell了。</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GroupMessageCell <span class="keyword">*</span>cell = [tableViewdequeueReusableCellWithIdentifier:<span class="comment">@"test”];</span></div></pre></td></tr></table></figure>
+
+<p>使用这个方法可以获取到能够重用的cell，如果没有能够重用的cell，则返回值为nil，这时可以再去进行Cell的内存申请。</p>
+<h3 id="修改滑动过程中的加载机制">修改滑动过程中的加载机制</h3>
+<p>关于这块，我也没有过多可以详细叙述的，建议大家好好阅读一下Allen的<a href="http://tech.glowing.com/cn/practice-in-uiscrollview/" target="_blank" rel="external">《UIScrollView实践经验》</a>这篇博客，里面详细描述了具体应该怎么利用scrollView的decelerate这个属性来进行性能的提升。</p>
+
+      
+    </div>
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
+    <article id="post-retain" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/01/20/retain/" class="article-date">
+  	<time datetime="2015-01-20T10:12:43.000Z" itemprop="datePublished">Jan 20 2015</time>
+</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/01/20/retain/">成员对象之RETAIN/ASSIGN/COPY/WEAK/STRONG的区分</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在Object-C中，定义类成员变量或类属性时经常会加上retain之类的声明，这些声明的不同点主要在于哪里呢，本文主要就是讲述他们之间的共同点和区别。</p>
+<p>首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：</p>
+<blockquote>
+<ul>
+<li><p>alloc – 对象分配后引用计数为1</p>
+</li>
+<li><p>retain – 对象的引用计数 +1</p>
+</li>
+<li><p>release – 对象的引用计数 -1，如果为0着释放对象所占用的内存空间</p>
+</li>
+<li><p>autorelease – 对象引用计数-1 如果为0不马上释放，最近一个pool时释放</p>
+</li>
+<li><p>copy – copy一个对象变成新的对象(新内存地址) 引用计数为1 原来对象计数不变</p>
+</li>
+</ul>
+</blockquote>
+<p>下面我们说一下这些修饰关键字对于内存计数造成的影响：</p>
+<h4 id="1-_assign、weak">1. assign、weak</h4>
+<p>assign不会对引用计数造成任何影响，它相当于直接获取对象的内容进行使用，不进行任何内存的管理；它的set方法就类似于：</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// assign</span></div><div class="line">-(<span class="keyword">void</span>)setTestObject :(<span class="keyword">id</span>)newValue{</div><div class="line">testObject= newValue;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>weak是在iOS5中增加的关键字，和assign的作用相同，唯一的不同点是当使用的对象被释放之后，weak修饰的对象值会被设置为nil，而assign的对象会变成野指针，可能导致crash。</p>
+<h4 id="2-_retain、strong">2. retain、strong</h4>
+<p>对retain修饰的对象进行赋值时会使对象的引用计数+1，就是说如果不存在代码逻辑错误，retain的对象不会被外部直接释放。它的set方法是：</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// retain</span></div><div class="line">-(<span class="keyword">void</span>)setTestObject :(<span class="keyword">id</span>)newValue{</div><div class="line"><span class="keyword">if</span> (testObject != newValue) {</div><div class="line">[testObject release];</div><div class="line">testObject= [newValue retain];</div><div class="line">}</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>从代码可以看出，retain对象赋值时会释放旧对象（testObject），将输入对象（newValue）的值赋给成员对象（testObject），然后将输入对象（newValue）的引用计数+1.</p>
+<p>strong和weak一样都是iOS5中增加的关键字，作用和retain完全一样。</p>
+<h4 id="3-_copy">3. copy</h4>
+<p>copy和assign、retain不同，它不对旧的对象进行任何处理，但是会新建一个索引计数为1的对象，然后释放旧对象。它的set方法如下：</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// copy</span></div><div class="line">-(<span class="keyword">void</span>)setTestObject :(<span class="keyword">id</span>)newValue{</div><div class="line"><span class="keyword">if</span> (testObject != newValue) {</div><div class="line">[testObject release];</div><div class="line">testObject = [newValue <span class="keyword">copy</span>];</div><div class="line">}</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>Copy其实是建立了一个相同的新对象，它和原对象在内存中得地址是不相同的。而retain的对象只是引用计数+1，实际对象在内存中的地址和原对象还是一样的。<br><br><br>综上所述，assign和weak适用于一些不需要管理内存的成员属性；而retain和strong则适用于一些生命周期有限制的成员属性，使用retain和strong可以避免对象被提前释放；copy则适用于需要完全独自拥有的成员属性，使用copy建立新的对象防止被外部修改。</p>
+
       
     </div>
   </div>

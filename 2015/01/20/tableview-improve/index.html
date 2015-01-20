@@ -3,20 +3,41 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Hello World | 翟现旗的技术分享</title>
+  <title>UITABLEVIEW的性能提升 | 翟现旗的技术分享</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in trobuleshooting or you can ask me on GitHub.
-Quick">
+  <meta name="description" content="所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：
+
+
+UITableViewCell的重用机制；
+修改滑动过程中的加载机制。
+
+
+UITableViewCell的重用机制
+使用cell的重用机制，需要在申请cell时进行指定，就是说需要使用  initWithS">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2015/01/20/hello-world/">
+<meta property="og:title" content="UITABLEVIEW的性能提升">
+<meta property="og:url" content="http://yoursite.com/2015/01/20/tableview-improve/">
 <meta property="og:site_name" content="翟现旗的技术分享">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in trobuleshooting or you can ask me on GitHub.
-Quick">
+<meta property="og:description" content="所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：
+
+
+UITableViewCell的重用机制；
+修改滑动过程中的加载机制。
+
+
+UITableViewCell的重用机制
+使用cell的重用机制，需要在申请cell时进行指定，就是说需要使用  initWithS">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in trobuleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="UITABLEVIEW的性能提升">
+<meta name="twitter:description" content="所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：
+
+
+UITableViewCell的重用机制；
+修改滑动过程中的加载机制。
+
+
+UITableViewCell的重用机制
+使用cell的重用机制，需要在申请cell时进行指定，就是说需要使用  initWithS">
 
   
     <link rel="alternative" href="/atom.xml" title="翟现旗的技术分享" type="application/atom+xml">
@@ -161,14 +182,16 @@ Quick">
 		</header>				
 	</div>
 </nav>
-      <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+      <article id="post-tableview-improve" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2015/01/20/hello-world/" class="article-date">
-  	<time datetime="2015-01-20T05:59:07.000Z" itemprop="datePublished">Jan 20 2015</time>
+      <a href="/2015/01/20/tableview-improve/" class="article-date">
+  	<time datetime="2015-01-20T10:17:24.000Z" itemprop="datePublished">Jan 20 2015</time>
 </a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
     </div>
   
   <div class="article-inner">
@@ -180,7 +203,7 @@ Quick">
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      UITABLEVIEW的性能提升
     </h1>
   
 
@@ -188,24 +211,27 @@ Quick">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2>
-<h3 id="Create_a_new_post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
+        <p>所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：</p>
+<blockquote>
+<ul>
+<li>UITableViewCell的重用机制；</li>
+<li>修改滑动过程中的加载机制。</li>
+</ul>
+</blockquote>
+<h3 id="UITableViewCell的重用机制">UITableViewCell的重用机制</h3>
+<p>使用cell的重用机制，需要在申请cell时进行指定，就是说需要使用  initWithStyle:reuseIdentifier:来替代init函数，否则就无法重用申请到的cell内存。</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">UITableViewCell <span class="keyword">*</span>cell = [[UITableViewCellalloc]initWithStyle:UITableViewCellStyleDefaultreuseIdentifier:<span class="comment">@"test”];</span></div></pre></td></tr></table></figure>
 
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
+<p>这样就申请到了一个可重用的cell，重用标记为test，之所以有一个重用标记是为了能够将类似的cell进行重用，这样很多view都不需要重新绘制，才能够真正的提高性能。</p>
+<p>申请到了cell以后，记得在cell的子类中实现方法prepareForReuse，这个方法会在cell滚出屏幕的时候调用，一定要注意该方法必须调用 super的prepareForReuse。</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby"> (void)prepareForReuse</span></div><div class="line">{</div><div class="line">[superprepareForReuse];</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
+<p>实现了init和perpareForReuse之后，就可以在 UITableViewDataSource的方法 tableView:cellForRowAtIndexPath: 中实现重用cell了。</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GroupMessageCell <span class="keyword">*</span>cell = [tableViewdequeueReusableCellWithIdentifier:<span class="comment">@"test”];</span></div></pre></td></tr></table></figure>
 
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+<p>使用这个方法可以获取到能够重用的cell，如果没有能够重用的cell，则返回值为nil，这时可以再去进行Cell的内存申请。</p>
+<h3 id="修改滑动过程中的加载机制">修改滑动过程中的加载机制</h3>
+<p>关于这块，我也没有过多可以详细叙述的，建议大家好好阅读一下Allen的<a href="http://tech.glowing.com/cn/practice-in-uiscrollview/" target="_blank" rel="external">《UIScrollView实践经验》</a>这篇博客，里面详细描述了具体应该怎么利用scrollView的decelerate这个属性来进行性能的提升。</p>
 
       
     </div>
@@ -214,15 +240,20 @@ Quick">
     
 <nav id="article-nav">
   
-    <a href="/2015/01/20/block/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2015/01/20/viewDidLoad/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">&lt;</strong>
       <div class="article-nav-title">
         
-          正确使用BLOCK避免CYCLE RETAIN和CRASH
+          VIEW加载和显示函数调用顺序
         
       </div>
     </a>
   
+  
+    <a href="/2015/01/20/retain/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">成员对象之RETAIN/ASSIGN/COPY/WEAK/STRONG的区分</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
   
 </nav>
 
@@ -249,7 +280,7 @@ Quick">
 
 <div class="duoshuo">
 	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="hello-world" data-title="Hello World" data-url="http://yoursite.com/2015/01/20/hello-world/"></div>
+	<div class="ds-thread" data-thread-key="tableview-improve" data-title="UITABLEVIEW的性能提升" data-url="http://yoursite.com/2015/01/20/tableview-improve/"></div>
 	<!-- 多说评论框 end -->
 	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 	<script type="text/javascript">
