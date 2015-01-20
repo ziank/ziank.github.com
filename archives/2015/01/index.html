@@ -164,6 +164,69 @@
 </nav>
       
   
+    <article id="post-self-size-cell" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2015/01/20/self-size-cell/" class="article-date">
+  	<time datetime="2015-01-20T10:30:50.000Z" itemprop="datePublished">Jan 20 2015</time>
+</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2015/01/20/self-size-cell/">能够自适应高度的TABLEVIEWCELL(SELF-SIZING CELL)</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在iOS8中，Apple为UITableView引入了一种名为Self-Sizing-Cells的新特性。这是新的SDK中最让我兴奋的一种特性。iOS8以前，如果你想要在tableview中显示可变高度的动态内容，必须单独计算每一个cell的高度。现在到了iOS8，Self-Sizing-Cell 提供了显示动态内容的一种解决方案。简言之，使用自适应cell，你只需要做下面几点：</p>
+<blockquote>
+<ul>
+<li>使用autolayout定义cell的约束条件</li>
+<li>设置tableview的row的估计高度</li>
+<li>设置tableview的rowHeight属性为UITableViewAutomaticDimension</li>
+</ul>
+</blockquote>
+<p>如果用代码来表示后两点的话，看起来大概是这个样子的：</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">tableView.<span class="variable">estimatedRowHeight =</span> <span class="number">44.0</span></div><div class="line"></div><div class="line">tableView.<span class="variable">rowHeight =</span> UITableViewAutomaticDimension</div></pre></td></tr></table></figure>
+
+<p>只需要两行代码，你就可以让tableview根据内容计算cell的尺寸并自动渲染它。使用Self-Sizing-Cell特性能够节约你的时间和代码量，相信你会喜欢它的。</p>
+<h2 id="使用Self-Sizing-cell创建一个简单地示例">使用Self-Sizing-cell创建一个简单地示例</h2>
+<p>学习一个新特性最好的办法就是使用它。让我们用一个demo程序来示范Self-Sizing-cell的使用。 首先又一个模板工程，这是一个显示酒店列表的简单app。每一个cell包括两行文字，分别是酒店的名字和地址。如果你下载并执行该程序的话，效果应该如下：<br><img src="img/table-view-truncated-text.png" alt="示例图片"><br>正如你所看到的，由于每个row的高度都是固定的，一些酒店的地址被截断了。你可能在开发基于tableview的应用时也会遇到同样地问题。在过去，你可能简单地缩小字体或者增加文本行数来修复这个问题。从iOS8以后，你需要做的就是使用Self-Sizing-Cell，这样cell就会根据内容进行合适适配，无论内容的长度如何变化，都能够正常的显示。</p>
+<h2 id="添加AutoLayout的约束">添加AutoLayout的约束</h2>
+<p>你可能讨厌AutoLayout并且在尽量的避免使用它。但是，不使用AutoLayout，Self-Sizing-Cell就不恩能够够正常的工作，因为它是根据autoLayout的约束来确定正确地rowHeight的。实际上，是tableview在每一个cell上调用了systemLayoutSizeFittingSize来返回基于layout约束计算出的cell尺寸。<br><br><br>请对name和address的两个label自行添加相应约束。</p>
+<h2 id="设置预估的cell高度">设置预估的cell高度</h2>
+<p>添加了AutoLayout的约束之后，剩下的就是在viewDidLoad方法中添加下面的代码：</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">tableView.<span class="variable">estimatedRowHeight =</span> <span class="number">68.0</span></div><div class="line">tableView.<span class="variable">rowHeight =</span> UITableViewAutomaticDimension</div></pre></td></tr></table></figure>
+
+<p>第一行代码设置预估的cell高度，第二行代码修改tableview的rowHeight属性为UITableViewAutomaticDimension。换句话说，就是你让tableview根据其他信息计算cell的尺寸。<br><br><br>如果你现在测试应用，会发现还是不正确的，因为name和address两个控件都设置了SingleLine的属性。所以设置LineNumber为0，使文本行数能够自动根据内容增长。<br><br><br>到这里，就全部完成，再次运行app，tableview的cell就会根据内容自动计算高度了。<br><img src="img/self-sizing-cell-demo.png" alt=""></p>
+
+      
+    </div>
+  </div>
+  
+</article>
+
+
+
+
+
+
+  
     <article id="post-block" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
