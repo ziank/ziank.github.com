@@ -8,8 +8,7 @@
   <meta name="description" content="Block的简介
 Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。
 Block的使用语法
-Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：
-123456- (long (^)(int, int)) sumBlock {int">
+Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="正确使用BLOCK避免CYCLE RETAIN和CRASH">
 <meta property="og:url" content="http://yoursite.com/2015/01/20/block/">
@@ -17,15 +16,13 @@ Block可以命名，也可以直接使用未命名的Block对象，如下面示�
 <meta property="og:description" content="Block的简介
 Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。
 Block的使用语法
-Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：
-123456- (long (^)(int, int)) sumBlock {int">
+Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="正确使用BLOCK避免CYCLE RETAIN和CRASH">
 <meta name="twitter:description" content="Block的简介
 Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。
 Block的使用语法
-Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：
-123456- (long (^)(int, int)) sumBlock {int">
+Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：">
 
   
     <link rel="alternative" href="/atom.xml" title="翟现旗的技术分享" type="application/atom+xml">
@@ -202,7 +199,7 @@ Block可以命名，也可以直接使用未命名的Block对象，如下面示�
         <h2 id="Block的简介">Block的简介</h2>
 <p>Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。</p>
 <h2 id="Block的使用语法">Block的使用语法</h2>
-<p>Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：</p>
+<p>Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：<br><a id="more"></a></p>
 <figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">long</span> (^)(<span class="keyword">int</span>, <span class="keyword">int</span>)) sumBlock {</div><div class="line"><span class="keyword">int</span> <span class="keyword">base</span> = <span class="number">100</span>;</div><div class="line"><span class="keyword">return</span> [[ ^ <span class="keyword">long</span> (<span class="keyword">int</span> a, <span class="keyword">int</span> b) {</div><div class="line"><span class="keyword">return</span> <span class="keyword">base</span> + a + b;</div><div class="line">} copy] autorelease];</div><div class="line">}</div></pre></td></tr></table></figure>
 
 <p><br><br>下面一个例子则是先声明了一种Block对象的类型，再定义对应的Block对象：</p>

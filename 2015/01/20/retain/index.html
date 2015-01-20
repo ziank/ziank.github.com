@@ -6,29 +6,17 @@
   <title>成员对象之RETAIN/ASSIGN/COPY/WEAK/STRONG的区分 | 翟现旗的技术分享</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="在Object-C中，定义类成员变量或类属性时经常会加上retain之类的声明，这些声明的不同点主要在于哪里呢，本文主要就是讲述他们之间的共同点和区别。
-首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：
-
-
-alloc        – 对象分配后引用计数为1
-retain">
+首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：">
 <meta property="og:type" content="article">
 <meta property="og:title" content="成员对象之RETAIN/ASSIGN/COPY/WEAK/STRONG的区分">
 <meta property="og:url" content="http://yoursite.com/2015/01/20/retain/">
 <meta property="og:site_name" content="翟现旗的技术分享">
 <meta property="og:description" content="在Object-C中，定义类成员变量或类属性时经常会加上retain之类的声明，这些声明的不同点主要在于哪里呢，本文主要就是讲述他们之间的共同点和区别。
-首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：
-
-
-alloc        – 对象分配后引用计数为1
-retain">
+首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="成员对象之RETAIN/ASSIGN/COPY/WEAK/STRONG的区分">
 <meta name="twitter:description" content="在Object-C中，定义类成员变量或类属性时经常会加上retain之类的声明，这些声明的不同点主要在于哪里呢，本文主要就是讲述他们之间的共同点和区别。
-首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：
-
-
-alloc        – 对象分配后引用计数为1
-retain">
+首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：">
 
   
     <link rel="alternative" href="/atom.xml" title="翟现旗的技术分享" type="application/atom+xml">
@@ -203,7 +191,7 @@ retain">
     <div class="article-entry" itemprop="articleBody">
       
         <p>在Object-C中，定义类成员变量或类属性时经常会加上retain之类的声明，这些声明的不同点主要在于哪里呢，本文主要就是讲述他们之间的共同点和区别。</p>
-<p>首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：</p>
+<p>首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：<br><a id="more"></a></p>
 <blockquote>
 <ul>
 <li>alloc        – 对象分配后引用计数为1</li>
