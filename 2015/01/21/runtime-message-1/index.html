@@ -9,9 +9,7 @@
 1objc_msgSend(receiver, selector)
 
 如果消息含有参数，则为：
-1objc_msgSend(receiver, selector, arg1, arg2, ...)
-
-如果消息的接收者receiver能够找到对应的selec">
+1objc_msgSend(receiver, selector, arg1, arg2, ...)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Object-C runtime之消息（1）">
 <meta property="og:url" content="http://yoursite.com/2015/01/21/runtime-message-1/">
@@ -20,18 +18,14 @@
 1objc_msgSend(receiver, selector)
 
 如果消息含有参数，则为：
-1objc_msgSend(receiver, selector, arg1, arg2, ...)
-
-如果消息的接收者receiver能够找到对应的selec">
+1objc_msgSend(receiver, selector, arg1, arg2, ...)">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Object-C runtime之消息（1）">
 <meta name="twitter:description" content="Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：
 1objc_msgSend(receiver, selector)
 
 如果消息含有参数，则为：
-1objc_msgSend(receiver, selector, arg1, arg2, ...)
-
-如果消息的接收者receiver能够找到对应的selec">
+1objc_msgSend(receiver, selector, arg1, arg2, ...)">
 
   
     <link rel="alternative" href="/atom.xml" title="翟现旗的技术分享" type="application/atom+xml">
@@ -202,7 +196,7 @@
 <p>如果消息含有参数，则为：</p>
 <figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">objc_msgSend(receiver, selector, arg1, arg2, <span class="keyword">...</span>)</div></pre></td></tr></table></figure>
 
-<p>如果消息的接收者receiver能够找到对应的selector，那么就相当于直接执行了接收者这个对象的特定方法；否则，消息要么被转发，或是临时向接收者动态添加这个selector对应的实现内容，要么就干脆玩完崩溃掉。</p>
+<p><a id="more"></a><br>如果消息的接收者receiver能够找到对应的selector，那么就相当于直接执行了接收者这个对象的特定方法；否则，消息要么被转发，或是临时向接收者动态添加这个selector对应的实现内容，要么就干脆玩完崩溃掉。</p>
 <h2 id="什么是消息">什么是消息</h2>
 <p>进入正题之前，我们首先要来说说跟message息息相关的几个概念：</p>
 <blockquote>
