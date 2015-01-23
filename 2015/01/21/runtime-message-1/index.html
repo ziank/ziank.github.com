@@ -3,17 +3,35 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Archives | 翟现旗的技术分享</title>
+  <title>Object-C runtime之消息（1） | 翟现旗的技术分享</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description">
-<meta property="og:type" content="website">
-<meta property="og:title" content="翟现旗的技术分享">
-<meta property="og:url" content="http://yoursite.com/archives/">
+  <meta name="description" content="Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：
+1objc_msgSend(receiver, selector)
+
+如果消息含有参数，则为：
+1objc_msgSend(receiver, selector, arg1, arg2, ...)
+
+如果消息的接收者receiver能够找到对应的selec">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Object-C runtime之消息（1）">
+<meta property="og:url" content="http://yoursite.com/2015/01/21/runtime-message-1/">
 <meta property="og:site_name" content="翟现旗的技术分享">
-<meta property="og:description">
+<meta property="og:description" content="Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：
+1objc_msgSend(receiver, selector)
+
+如果消息含有参数，则为：
+1objc_msgSend(receiver, selector, arg1, arg2, ...)
+
+如果消息的接收者receiver能够找到对应的selec">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="翟现旗的技术分享">
-<meta name="twitter:description">
+<meta name="twitter:title" content="Object-C runtime之消息（1）">
+<meta name="twitter:description" content="Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：
+1objc_msgSend(receiver, selector)
+
+如果消息含有参数，则为：
+1objc_msgSend(receiver, selector, arg1, arg2, ...)
+
+如果消息的接收者receiver能够找到对应的selec">
 
   
     <link rel="alternative" href="/atom.xml" title="翟现旗的技术分享" type="application/atom+xml">
@@ -149,9 +167,7 @@
 		</header>				
 	</div>
 </nav>
-      
-  
-    <article id="post-runtime-message-1" class="article article-type-post" itemscope itemprop="blogPost">
+      <article id="post-runtime-message-1" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
       <a href="/2015/01/21/runtime-message-1/" class="article-date">
@@ -171,8 +187,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/01/21/runtime-message-1/">Object-C runtime之消息（1）</a>
+    <h1 class="article-title" itemprop="name">
+      Object-C runtime之消息（1）
     </h1>
   
 
@@ -233,316 +249,59 @@
     </div>
   </div>
   
-</article>
-
-
-
-
-
-
-  
-    <article id="post-self-size-cell" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/01/20/self-size-cell/" class="article-date">
-  	<time datetime="2015-01-20T10:30:50.000Z" itemprop="datePublished">Jan 20 2015</time>
-</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-    </div>
-  
-  <div class="article-inner">
     
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/01/20/self-size-cell/">能够自适应高度的TABLEVIEWCELL(SELF-SIZING CELL)</a>
-    </h1>
   
+    <a href="/2015/01/20/self-size-cell/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">能够自适应高度的TABLEVIEWCELL(SELF-SIZING CELL)</div>
+      <strong class="article-nav-caption">&gt;</strong>
+    </a>
+  
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在iOS8中，Apple为UITableView引入了一种名为Self-Sizing-Cells的新特性。这是新的SDK中最让我兴奋的一种特性。iOS8以前，如果你想要在tableview中显示可变高度的动态内容，必须单独计算每一个cell的高度。现在到了iOS8，Self-Sizing-Cell 提供了显示动态内容的一种解决方案。简言之，使用自适应cell，你只需要做下面几点：<br>
-        
-          <p class="article-more-link">
-            <a href="/2015/01/20/self-size-cell/#more">more >></a>
-          </p>
-        
-      
-    </div>
-  </div>
   
 </article>
 
 
+<div class="share">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">分享到：</span>
+		<a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+		<a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
 
 
-
-  
-    <article id="post-viewDidLoad" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/01/20/viewDidLoad/" class="article-date">
-  	<time datetime="2015-01-20T10:20:32.000Z" itemprop="datePublished">Jan 20 2015</time>
-</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/01/20/viewDidLoad/">VIEW加载和显示函数调用顺序</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>大家没有看错，我要说的就是这个老生常谈的问题，也就是iOS中得ViewController加载和显示view时的函数调用顺序。其实大部分人都知道这些函数的调用顺序，但是，我们还是要再说一下，主要是要强调一下这些函数分别应该实现什么样的功能和注意点。<br>
-        
-          <p class="article-more-link">
-            <a href="/2015/01/20/viewDidLoad/#more">more >></a>
-          </p>
-        
-      
-    </div>
-  </div>
-  
-</article>
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="runtime-message-1" data-title="Object-C runtime之消息（1）" data-url="http://yoursite.com/2015/01/21/runtime-message-1/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
 
 
 
-
-
-
-  
-    <article id="post-tableview-improve" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/01/20/tableview-improve/" class="article-date">
-  	<time datetime="2015-01-20T10:17:24.000Z" itemprop="datePublished">Jan 20 2015</time>
-</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/01/20/tableview-improve/">UITABLEVIEW的性能提升</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：</p>
-<blockquote>
-<ul>
-<li>UITableViewCell的重用机制；</li>
-<li>修改滑动过程中的加载机制。
-        
-          <p class="article-more-link">
-            <a href="/2015/01/20/tableview-improve/#more">more >></a>
-          </p>
-        
-      
-    </div>
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-retain" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/01/20/retain/" class="article-date">
-  	<time datetime="2015-01-20T10:12:43.000Z" itemprop="datePublished">Jan 20 2015</time>
-</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/01/20/retain/">成员对象之RETAIN/ASSIGN/COPY/WEAK/STRONG的区分</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在Object-C中，定义类成员变量或类属性时经常会加上retain之类的声明，这些声明的不同点主要在于哪里呢，本文主要就是讲述他们之间的共同点和区别。</p>
-<p>首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：<br>
-        
-          <p class="article-more-link">
-            <a href="/2015/01/20/retain/#more">more >></a>
-          </p>
-        
-      
-    </div>
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-block" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/01/20/block/" class="article-date">
-  	<time datetime="2015-01-20T09:30:50.000Z" itemprop="datePublished">Jan 20 2015</time>
-</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
-
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/01/20/block/">正确使用BLOCK避免CYCLE RETAIN和CRASH</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="Block的简介">Block的简介</h2>
-<p>Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。</p>
-<h2 id="Block的使用语法">Block的使用语法</h2>
-<p>Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：<br>
-        
-          <p class="article-more-link">
-            <a href="/2015/01/20/block/#more">more >></a>
-          </p>
-        
-      
-    </div>
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2015/01/20/hello-world/" class="article-date">
-  	<time datetime="2015-01-20T05:59:07.000Z" itemprop="datePublished">Jan 20 2015</time>
-</a>
-      
-      
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2015/01/20/hello-world/">Hello World</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick_Start">Quick Start</h2>
-<h3 id="Create_a_new_post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run_server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate_static_files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-
-<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-      
-    </div>
-  </div>
-  
-</article>
-
-
-
-
-
-
-  
-  
 
       <footer id="footer">
   <div class="outer">
