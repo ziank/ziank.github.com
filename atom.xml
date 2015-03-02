@@ -4,7 +4,7 @@
   <subtitle><![CDATA[翟现旗的技术分享]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.zaink.cn/"/>
-  <updated>2015-03-02T06:27:05.170Z</updated>
+  <updated>2015-03-02T06:29:26.046Z</updated>
   <id>http://blog.zaink.cn/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://blog.zaink.cn/2015/03/02/cocos-basic/"/>
     <id>http://blog.zaink.cn/2015/03/02/cocos-basic/</id>
     <published>2015-03-02T05:53:30.000Z</published>
-    <updated>2015-03-02T06:26:58.000Z</updated>
+    <updated>2015-03-02T06:29:21.000Z</updated>
     <content type="html"><![CDATA[<p>Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，一个Layer又可以拥有任意个可见的Sprit。<br><a id="more"></a><br>在每一个时刻，都会有一个Scene在独立的运行，通过切换Scene来完成一个游戏流程，游戏流程的管理有Director来执行，其基本架构类图如下：<br><img src="/class_relateion.png" alt="基本架构类图"></p>
 <h3 id="Director">Director</h3>
 <p>Director是整个cocos-2dx引擎的核心，是整个游戏的导航仪，一些游戏的常用操作都是由Director来进行控制完成的，比如场景切换，游戏暂停，坐标转换等等。<br>由于在游戏中会使用Director控制整个游戏的流程，所以Director类的设计是单例模式的，也就是说整个游戏项目中取到的Director对象都是同一个，通常使用getInstance() 方法取得Director的实例。</p>
@@ -63,7 +63,7 @@
     
     </summary>
     
-      <category term="Cocos 官方文档" scheme="http://blog.zaink.cn/tags/Cocos-%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/"/>
+      <category term="官方文档" scheme="http://blog.zaink.cn/tags/%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/"/>
     
   </entry>
   
