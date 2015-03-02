@@ -5,19 +5,15 @@
 <head>
   <meta charset="utf-8">
   
-  <title>UITABLEVIEW的性能提升 | 翟现旗的技术分享</title>
+  <title>Cocos之基本概念 | 翟现旗的技术分享</title>
   <meta name="author" content="ziank">
   
-  <meta name="description" content="所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：
-
-
-UITableViewCell的重用机制；
-修改滑动过程中的加载机制。">
+  <meta name="description" content="Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="UITABLEVIEW的性能提升"/>
+  <meta property="og:title" content="Cocos之基本概念"/>
   <meta property="og:site_name" content="翟现旗的技术分享"/>
 
   
@@ -222,39 +218,52 @@ UITableViewCell的重用机制；
     <header>
       
         <div class="icon"></div>
-        <time datetime="2015-01-20T10:17:24.000Z"><a href="/2015/01/20/tableview-improve/">Jan 20 2015</a></time>
+        <time datetime="2015-03-02T05:53:30.000Z"><a href="/2015/03/02/cocos-basic/">Mar 2 2015</a></time>
       
       
   
-    <h1 class="title">UITABLEVIEW的性能提升</h1>
+    <h1 class="title">Cocos之基本概念</h1>
   
 
     </header>
     <div class="entry">
       
-        <p>所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：</p>
-<blockquote>
+        <p>Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，一个Layer又可以拥有任意个可见的Sprit。</p>
+<p>在每一个时刻，都会有一个Scene在独立的运行，通过切换Scene来完成一个游戏流程，游戏流程的管理有Director来执行，其基本架构类图如下：<br><img src="/img/class_relateion.png" alt="基本架构类图"></p>
+<h3 id="Director">Director</h3>
+<p>Director是整个cocos-2dx引擎的核心，是整个游戏的导航仪，一些游戏的常用操作都是由Director来进行控制完成的，比如场景切换，游戏暂停，坐标转换等等。<br>由于在游戏中会使用Director控制整个游戏的流程，所以Director类的设计是单例模式的，也就是说整个游戏项目中取到的Director对象都是同一个，通常使用getInstance() 方法取得Director的实例。</p>
+<h3 id="Scene(场景)">Scene(场景)</h3>
+<p>Scene也是cocos2dx中必不可少的元素，游戏中通常我们需要构建不同的Scene（至少一个），游戏里关卡、版块的切换也就是一个一个Scene的切换，就像在电影中变换舞台和场地一样。Scene的一个重要的作用就是流程控制的作用，我们可以通过Director的一系列方法控制游戏中不同的Scene的自由切换。<br>下面是Director控制场景的常用方法：</p>
 <ul>
-<li>UITableViewCell的重用机制；</li>
-<li>修改滑动过程中的加载机制。<a id="more"></a>
-
-</li>
+<li>runWithScene( Scene *scene )<br>启动游戏，并运行scene场景。本方法在主程序第一次启动主场景的时候调用。如果已有正在运行的场景则不能调用该方法；会调用pushScene—&gt;startAnimation。</li>
+<li>pushScene( Scene *scene )<br>将当前运行中的场景暂停并压入到代码执行场景栈中，再将传入的scene设置为当前运行场景，只有存在正在运行的场景时才调用该方法；</li>
+<li>replaceScene( Scene *scene ) 直接使用传入的scene替换当前场景来切换画面，当前场景被释放。这是切换场景时最常用的方法。</li>
+<li>popScene() 释放当前场景，再从代码执行场景中弹出栈顶的场景，并将其设置为当前运行场景。如果栈为空，直接结束应用。和PushScene结对使用</li>
+<li>end() 释放和终止执行场景，同时退出应用</li>
+<li>pause() 暂停当前运行场景中的所有计时器和动作，场景仍然会显示在屏幕上</li>
+<li>resume () 恢复当前运行场景的所有计时器和动作，场景仍然会显示在屏幕上</li>
 </ul>
-</blockquote>
-<h3 id="UITableViewCell的重用机制">UITableViewCell的重用机制</h3>
-<p>使用cell的重用机制，需要在申请cell时进行指定，就是说需要使用  initWithStyle:reuseIdentifier:来替代init函数，否则就无法重用申请到的cell内存。</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">UITableViewCell <span class="keyword">*</span>cell = [[UITableViewCellalloc]initWithStyle:UITableViewCellStyleDefaultreuseIdentifier:<span class="comment">@"test”];</span></div></pre></td></tr></table></figure>
+<p>同时场景是层的容器，包含了所有需要显示的游戏元素。通常，当我们需要完成一个场景时候，会创建一个Scene的子类，并在子类中实现我们需要的功能。比如，我们可以在子类的初始化中载入游戏资源，为场景添加层，启动音乐播放等等。</p>
+<h3 id="Layer(层)">Layer(层)</h3>
+<p>Layer是处理玩家事件响应的Node子类。与场景不同，层通常包含的是直接在屏幕上呈现的内容，并且可以接受用户的输入事件，包括触摸，加速度计和键盘输入等。我们需要在层中加入精灵，文本标签或者其他游戏元素，并设置游戏元素的属性，比如位置，方向和大小；设置游戏元素的动作等。通常，层中的对象功能类似，耦合较紧，与层中游戏内容相关的逻辑代码也编写在层中，在组织好层后，只需要把层按照顺序添加到场景中就可以显示出来了。要向场景添加层，我们可以使用addChild方法。</p>
+<p>addChild( Node child ) addChild( Node child, int zOrder ) addChild( Node *child, int zOrder, int tag )</p>
+<p>其中，Child参数就是节点。对于场景而言，通常我们添加的节点就是层。先添加的层会被置于后添加的层之下。如果需要为它们指定先后次序，可以使用不同的zOrder值。tag是元素的标识号码，如果为子节点设置了tag值，就可以在它的父节点中利用tag值就可以找到它了。层可以包含任何Node作为子节点，包括Sprites(精灵), Labels(标签)，甚至其他的Layer对象。</p>
+<h3 id="Sprit(精灵)">Sprit(精灵)</h3>
+<p>Cocos2d中的精灵和其他游戏引擎中的精灵相似，它可以移动，旋转，缩放，执行动画，并接受其他转换。Cocos2dx的Sprite由Texure，frame和animation组成，由openes负责渲染。</p>
+<p>简单过程可描述为：<br>使用Texture2D加载图片，可以用Texture2D生成对应的SpriteFrame（精灵帧），将SpriteFrame添加到Animation生成动画数据，用Animation生成Animate（就是最终的动画动作），最后用Sprite执行这个动作。<br>创建精灵的几种方式：</p>
+<p>直接创建:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> sprite = Sprite::create(<span class="string">"HelloWorld.png"</span>);      </div><div class="line"><span class="keyword">this</span>-&gt;addChild(sprite,<span class="number">0</span>);</div></pre></td></tr></table></figure>
 
-<p>这样就申请到了一个可重用的cell，重用标记为test，之所以有一个重用标记是为了能够将类似的cell进行重用，这样很多view都不需要重新绘制，才能够真正的提高性能。</p>
-<p>申请到了cell以后，记得在cell的子类中实现方法prepareForReuse，这个方法会在cell滚出屏幕的时候调用，一定要注意该方法必须调用 super的prepareForReuse。</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby"> (void)prepareForReuse</span></div><div class="line">{</div><div class="line">[superprepareForReuse];</div><div class="line">}</div></pre></td></tr></table></figure>
+<p>使用纹理来创建精灵:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> sprite1 = Sprite::createWithTexture(TextureCache::getInstance()-&gt;addImage(<span class="string">"HelloWorld.png"</span>));</div><div class="line"><span class="keyword">this</span>-&gt;addChild(sprite1, <span class="number">0</span>);</div></pre></td></tr></table></figure>
 
-<p>实现了init和perpareForReuse之后，就可以在 UITableViewDataSource的方法 tableView:cellForRowAtIndexPath: 中实现重用cell了。</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GroupMessageCell <span class="keyword">*</span>cell = [tableViewdequeueReusableCellWithIdentifier:<span class="comment">@"test”];</span></div></pre></td></tr></table></figure>
+<p>使用精灵帧来创建精灵:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> sprite2=Sprite::createWithSpriteFrameName(<span class="string">"HelloWorld.png"</span>);　　</div><div class="line"><span class="keyword">this</span>-&gt;addChild(sprite2, <span class="number">0</span>);</div></pre></td></tr></table></figure>
 
-<p>使用这个方法可以获取到能够重用的cell，如果没有能够重用的cell，则返回值为nil，这时可以再去进行Cell的内存申请。</p>
-<h3 id="修改滑动过程中的加载机制">修改滑动过程中的加载机制</h3>
-<p>关于这块，我也没有过多可以详细叙述的，建议大家好好阅读一下Allen的<a href="http://tech.glowing.com/cn/practice-in-uiscrollview/" target="_blank" rel="external">《UIScrollView实践经验》</a>这篇博客，里面详细描述了具体应该怎么利用scrollView的decelerate这个属性来进行性能的提升。</p>
+<p>在Cocos2dx中实现精灵显示的基本过程如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//创建Scene</span></div><div class="line"><span class="keyword">auto</span> scene = Scene::create();</div><div class="line"><span class="comment">//创建层</span></div><div class="line"><span class="keyword">auto</span> layer = HelloWorld::create();</div><div class="line"><span class="comment">//把层加入场景中</span></div><div class="line">scene-&gt;addChild(layer);</div><div class="line"><span class="comment">//创建一个精灵</span></div><div class="line"><span class="keyword">auto</span> sprite = Sprite::create(<span class="string">"HelloWorld.png"</span>);</div><div class="line"><span class="comment">//把精灵加到层里</span></div><div class="line">layer-&gt;addChild(sprite, <span class="number">0</span>);</div></pre></td></tr></table></figure>
+
+<p><em>以上内容基本来自<a href="http://cn.cocos2d-x.org/article/index?type=cocos2d-x&amp;url=/doc/cocos-docs-master/manual/framework/native/v3/basic-concepts/zh.md" target="_blank" rel="external">官方文档</a></em></p>
 
       
     </div>
@@ -264,7 +273,7 @@ UITableViewCell的重用机制；
         
   
   <div class="tags">
-    <a href="/tags/iOS/">iOS</a>
+    <a href="/tags/Cocos-官方文档/">Cocos 官方文档</a>
   </div>
 
 <!-- Baidu Button BEGIN -->
@@ -292,10 +301,8 @@ document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static
 
  <nav id="pagination" >
     
-    <a href="/2015/01/20/viewDidLoad/" class="alignleft prev" >Prev</a>
     
-    
-    <a href="/2015/01/20/retain/" class="alignright next" >Next</a>
+    <a href="/2015/01/29/UILable-CoreText/" class="alignright next" >Next</a>
     
     <div class="clearfix"></div>
 </nav>

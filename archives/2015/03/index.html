@@ -5,19 +5,13 @@
 <head>
   <meta charset="utf-8">
   
-  <title>UITABLEVIEW的性能提升 | 翟现旗的技术分享</title>
+  <title>Archives: 2015/3 | 翟现旗的技术分享</title>
   <meta name="author" content="ziank">
-  
-  <meta name="description" content="所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：
-
-
-UITableViewCell的重用机制；
-修改滑动过程中的加载机制。">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="UITABLEVIEW的性能提升"/>
+  
   <meta property="og:site_name" content="翟现旗的技术分享"/>
 
   
@@ -204,124 +198,25 @@ UITableViewCell的重用机制；
 </nav>
 <div class="clearfix"></div></header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
+    <div id="main-col" class="alignleft"><div id="wrapper">
+<h2 class="archive-title">2015/3</h2>
+
+
+  <div class="archive">
     
-      <img src="">
+      <article class="post">
+        <div class="post-content">
+          <header>
+            <div class="icon"></div>
+            <time datetime="2015-03-02T05:53:30.000Z"><a href="/2015/03/02/cocos-basic/">Mar 2 2015</a></time>
+            
+              <h1 class="title"><a href="/2015/03/02/cocos-basic/">Cocos之基本概念</a></h1>
+            
+          </header>
+        </div>
+      </article>
     
   </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-01-20T10:17:24.000Z"><a href="/2015/01/20/tableview-improve/">Jan 20 2015</a></time>
-      
-      
-  
-    <h1 class="title">UITABLEVIEW的性能提升</h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：</p>
-<blockquote>
-<ul>
-<li>UITableViewCell的重用机制；</li>
-<li>修改滑动过程中的加载机制。<a id="more"></a>
-
-</li>
-</ul>
-</blockquote>
-<h3 id="UITableViewCell的重用机制">UITableViewCell的重用机制</h3>
-<p>使用cell的重用机制，需要在申请cell时进行指定，就是说需要使用  initWithStyle:reuseIdentifier:来替代init函数，否则就无法重用申请到的cell内存。</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">UITableViewCell <span class="keyword">*</span>cell = [[UITableViewCellalloc]initWithStyle:UITableViewCellStyleDefaultreuseIdentifier:<span class="comment">@"test”];</span></div></pre></td></tr></table></figure>
-
-<p>这样就申请到了一个可重用的cell，重用标记为test，之所以有一个重用标记是为了能够将类似的cell进行重用，这样很多view都不需要重新绘制，才能够真正的提高性能。</p>
-<p>申请到了cell以后，记得在cell的子类中实现方法prepareForReuse，这个方法会在cell滚出屏幕的时候调用，一定要注意该方法必须调用 super的prepareForReuse。</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby"> (void)prepareForReuse</span></div><div class="line">{</div><div class="line">[superprepareForReuse];</div><div class="line">}</div></pre></td></tr></table></figure>
-
-<p>实现了init和perpareForReuse之后，就可以在 UITableViewDataSource的方法 tableView:cellForRowAtIndexPath: 中实现重用cell了。</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GroupMessageCell <span class="keyword">*</span>cell = [tableViewdequeueReusableCellWithIdentifier:<span class="comment">@"test”];</span></div></pre></td></tr></table></figure>
-
-<p>使用这个方法可以获取到能够重用的cell，如果没有能够重用的cell，则返回值为nil，这时可以再去进行Cell的内存申请。</p>
-<h3 id="修改滑动过程中的加载机制">修改滑动过程中的加载机制</h3>
-<p>关于这块，我也没有过多可以详细叙述的，建议大家好好阅读一下Allen的<a href="http://tech.glowing.com/cn/practice-in-uiscrollview/" target="_blank" rel="external">《UIScrollView实践经验》</a>这篇博客，里面详细描述了具体应该怎么利用scrollView的decelerate这个属性来进行性能的提升。</p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-  
-  <div class="tags">
-    <a href="/tags/iOS/">iOS</a>
-  </div>
-
-<!-- Baidu Button BEGIN -->
-<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
-<a class="bds_qzone"></a>
-<a class="bds_tsina"></a>
-<a class="bds_tqq"></a>
-<a class="bds_renren"></a>
-<a class="bds_t163"></a>
-<span class="bds_more"></span>
-<a class="shareCount"></a>
-</div>
-<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=3326447" ></script>
-<script type="text/javascript" id="bdshell_js"></script>
-<script type="text/javascript">
-document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
-</script>
-<!-- Baidu Button END -->      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
- <nav id="pagination" >
-    
-    <a href="/2015/01/20/viewDidLoad/" class="alignleft prev" >Prev</a>
-    
-    
-    <a href="/2015/01/20/retain/" class="alignright next" >Next</a>
-    
-    <div class="clearfix"></div>
-</nav>
-
-
-
-<section id="comment">
-
-<!-- Duoshuo Comment BEGIN -->
-	<div class="ds-thread"></div>
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"ziank"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = 'http://static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		|| document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-<!-- Duoshuo Comment END -->  
-
-  
-</section>
-
 </div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
