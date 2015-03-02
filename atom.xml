@@ -4,7 +4,7 @@
   <subtitle><![CDATA[翟现旗的技术分享]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.zaink.cn/"/>
-  <updated>2015-03-02T09:42:26.528Z</updated>
+  <updated>2015-03-02T09:44:40.586Z</updated>
   <id>http://blog.zaink.cn/</id>
   
   <author>
@@ -160,13 +160,12 @@
   </entry>
   
   <entry>
-    <title><![CDATA[]]></title>
-    <link href="http://blog.zaink.cn/2015/01/23/runtime-message-1/"/>
-    <id>http://blog.zaink.cn/2015/01/23/runtime-message-1/</id>
-    <published>2015-01-23T02:15:00.000Z</published>
-    <updated>2015-03-02T06:39:40.000Z</updated>
-    <content type="html"><![CDATA[<p>title: Object-C runtime之消息（1）<br>date: 2015-01-21 10:20:32<br>tags: iOS<br>categories</p>
-<p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
+    <title><![CDATA[Object-C runtime之消息（1）]]></title>
+    <link href="http://blog.zaink.cn/2015/01/21/runtime-message-1/"/>
+    <id>http://blog.zaink.cn/2015/01/21/runtime-message-1/</id>
+    <published>2015-01-21T02:20:32.000Z</published>
+    <updated>2015-03-02T09:44:02.000Z</updated>
+    <content type="html"><![CDATA[<p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
 <figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">objc_msgSend</span><span class="params">(receiver, selector)</span></span></div></pre></td></tr></table></figure>
 
 <p>如果消息含有参数，则为：</p>
@@ -216,8 +215,7 @@
 <p>下一节我们再继续讲述消息调用的流程。</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>title: Object-C runtime之消息（1）<br>date: 2015-01-21 10:20:32<br>tags: iOS<br>categories</p>
-<p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
+    <![CDATA[<p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
 <figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">objc_msgSend</span><span class="params">(receiver, selector)</span></span></div></pre></td></tr></table></figure>
 
 <p>如果消息含有参数，则为：</p>
@@ -226,6 +224,8 @@
 <p>]]>
     
     </summary>
+    
+      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
     
   </entry>
   

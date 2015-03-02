@@ -5,11 +5,10 @@
 <head>
   <meta charset="utf-8">
   
-  <title>翟现旗的技术分享</title>
+  <title>Object-C runtime之消息（1） | 翟现旗的技术分享</title>
   <meta name="author" content="ziank">
   
-  <meta name="description" content="title: Object-C runtime之消息（1）date: 2015-01-21 10:20:32tags: iOScategories
-Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：
+  <meta name="description" content="Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：
 1objc_msgSend(receiver, selector)
 
 如果消息含有参数，则为：
@@ -18,7 +17,7 @@ Objective-C在编译时不是把[receiver message]当成简单的方法调用，
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="Object-C runtime之消息（1）"/>
   <meta property="og:site_name" content="翟现旗的技术分享"/>
 
   
@@ -223,18 +222,17 @@ Objective-C在编译时不是把[receiver message]当成简单的方法调用，
     <header>
       
         <div class="icon"></div>
-        <time datetime="2015-01-23T02:15:00.000Z"><a href="/2015/01/23/runtime-message-1/">Jan 23 2015</a></time>
+        <time datetime="2015-01-21T02:20:32.000Z"><a href="/2015/01/21/runtime-message-1/">Jan 21 2015</a></time>
       
       
   
-    <h1 class="title"></h1>
+    <h1 class="title">Object-C runtime之消息（1）</h1>
   
 
     </header>
     <div class="entry">
       
-        <p>title: Object-C runtime之消息（1）<br>date: 2015-01-21 10:20:32<br>tags: iOS<br>categories</p>
-<p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
+        <p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
 <figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">objc_msgSend</span><span class="params">(receiver, selector)</span></span></div></pre></td></tr></table></figure>
 
 <p>如果消息含有参数，则为：</p>
@@ -288,6 +286,11 @@ Objective-C在编译时不是把[receiver message]当成简单的方法调用，
     <footer>
       
         
+  
+  <div class="categories">
+    <a href="/categories/iOS/">iOS</a>
+  </div>
+
         
 <!-- Baidu Button BEGIN -->
 <div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
@@ -360,7 +363,7 @@ var duoshuoQuery = {short_name:"ziank"};
   
     <li><a href="/categories/Cocos/">Cocos</a><small>1</small></li>
   
-    <li><a href="/categories/iOS/">iOS</a><small>7</small></li>
+    <li><a href="/categories/iOS/">iOS</a><small>8</small></li>
   
   </ul>
 </div>
