@@ -4,7 +4,7 @@
   <subtitle><![CDATA[翟现旗的技术分享]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.zaink.cn/"/>
-  <updated>2015-03-02T06:30:57.037Z</updated>
+  <updated>2015-03-02T06:40:33.360Z</updated>
   <id>http://blog.zaink.cn/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://blog.zaink.cn/2015/03/02/cocos-basic/"/>
     <id>http://blog.zaink.cn/2015/03/02/cocos-basic/</id>
     <published>2015-03-02T05:53:30.000Z</published>
-    <updated>2015-03-02T06:29:21.000Z</updated>
+    <updated>2015-03-02T06:39:58.000Z</updated>
     <content type="html"><![CDATA[<p>Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，一个Layer又可以拥有任意个可见的Sprit。<br><a id="more"></a><br>在每一个时刻，都会有一个Scene在独立的运行，通过切换Scene来完成一个游戏流程，游戏流程的管理有Director来执行，其基本架构类图如下：<br><img src="/class_relateion.png" alt="基本架构类图"></p>
 <h3 id="Director">Director</h3>
 <p>Director是整个cocos-2dx引擎的核心，是整个游戏的导航仪，一些游戏的常用操作都是由Director来进行控制完成的，比如场景切换，游戏暂停，坐标转换等等。<br>由于在游戏中会使用Director控制整个游戏的流程，所以Director类的设计是单例模式的，也就是说整个游戏项目中取到的Director对象都是同一个，通常使用getInstance() 方法取得Director的实例。</p>
@@ -63,16 +63,16 @@
     
     </summary>
     
-      <category term="官方文档" scheme="http://blog.zaink.cn/tags/%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/"/>
+      <category term="Cocos" scheme="http://blog.zaink.cn/categories/Cocos/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[UILabel的使用]]></title>
-    <link href="http://blog.zaink.cn/2015/01/29/UILable-CoreText/"/>
-    <id>http://blog.zaink.cn/2015/01/29/UILable-CoreText/</id>
+    <link href="http://blog.zaink.cn/2015/01/29/UILable_CoreText/"/>
+    <id>http://blog.zaink.cn/2015/01/29/UILable_CoreText/</id>
     <published>2015-01-29T06:19:18.000Z</published>
-    <updated>2015-01-29T07:21:02.000Z</updated>
+    <updated>2015-03-02T06:39:30.000Z</updated>
     <content type="html"><![CDATA[<p>[TOC]</p>
 <p>我们都知道UILabel是iOS开发中最常用和最简单的一个组件，可以用来显示文本内容。但是一般来说我们都只是用UILabel现实固定字体、颜色设置的文本，其实我们也可以用UILabel同时显示多种字体和颜色的问题，甚至可以在文字中添加图片进行显示。<br><a id="more"></a></p>
 <h2 id="UILabel使用的几种方式">UILabel使用的几种方式</h2>
@@ -101,7 +101,7 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/tags/iOS/"/>
+      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
     
   </entry>
   
@@ -110,7 +110,7 @@
     <link href="http://blog.zaink.cn/2015/01/26/runtime-message-2/"/>
     <id>http://blog.zaink.cn/2015/01/26/runtime-message-2/</id>
     <published>2015-01-26T07:46:58.000Z</published>
-    <updated>2015-01-26T07:47:02.000Z</updated>
+    <updated>2015-03-02T06:39:38.000Z</updated>
     <content type="html"><![CDATA[<h2 id="消息的工作流程">消息的工作流程</h2>
 <p>上一节我们主要讲了消息相关的SEL和IMP的概念，同时也了解到消息最后都会转换成类似objc_msgSend的消息函数来执行，那么 objc_msgSend 到底是怎么工作的呢？<br><a id="more"></a><br>在Objective-C中，消息直到运行时才会绑定到方法的实现上。编译器会把代码中<code>[receiver message]</code>转换成 objc_msgSend消息函数，这个函数完成了动态绑定的所有事情。它的运行流程如下:<br><img src="/img/message_flow.png" alt="消息处理流程"></p>
 <ol>
@@ -155,17 +155,18 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/tags/iOS/"/>
+      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
     
   </entry>
   
   <entry>
-    <title><![CDATA[Object-C runtime之消息（1）]]></title>
-    <link href="http://blog.zaink.cn/2015/01/21/runtime-message-1/"/>
-    <id>http://blog.zaink.cn/2015/01/21/runtime-message-1/</id>
-    <published>2015-01-21T02:20:32.000Z</published>
-    <updated>2015-01-23T02:15:00.000Z</updated>
-    <content type="html"><![CDATA[<p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
+    <title><![CDATA[]]></title>
+    <link href="http://blog.zaink.cn/2015/01/23/runtime-message-1/"/>
+    <id>http://blog.zaink.cn/2015/01/23/runtime-message-1/</id>
+    <published>2015-01-23T02:15:00.000Z</published>
+    <updated>2015-03-02T06:39:40.000Z</updated>
+    <content type="html"><![CDATA[<p>title: Object-C runtime之消息（1）<br>date: 2015-01-21 10:20:32<br>tags: iOS<br>categories</p>
+<p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
 <figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">objc_msgSend</span><span class="params">(receiver, selector)</span></span></div></pre></td></tr></table></figure>
 
 <p>如果消息含有参数，则为：</p>
@@ -215,7 +216,8 @@
 <p>下一节我们再继续讲述消息调用的流程。</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
+    <![CDATA[<p>title: Object-C runtime之消息（1）<br>date: 2015-01-21 10:20:32<br>tags: iOS<br>categories</p>
+<p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
 <figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">objc_msgSend</span><span class="params">(receiver, selector)</span></span></div></pre></td></tr></table></figure>
 
 <p>如果消息含有参数，则为：</p>
@@ -225,8 +227,6 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/tags/iOS/"/>
-    
   </entry>
   
   <entry>
@@ -234,7 +234,7 @@
     <link href="http://blog.zaink.cn/2015/01/20/self-size-cell/"/>
     <id>http://blog.zaink.cn/2015/01/20/self-size-cell/</id>
     <published>2015-01-20T10:30:50.000Z</published>
-    <updated>2015-01-21T07:30:13.000Z</updated>
+    <updated>2015-03-02T06:39:36.000Z</updated>
     <content type="html"><![CDATA[<p>在iOS8中，Apple为UITableView引入了一种名为Self-Sizing-Cells的新特性。这是新的SDK中最让我兴奋的一种特性。iOS8以前，如果你想要在tableview中显示可变高度的动态内容，必须单独计算每一个cell的高度。现在到了iOS8，Self-Sizing-Cell 提供了显示动态内容的一种解决方案。简言之，使用自适应cell，你只需要做下面几点：<br><a id="more"></a></p>
 <blockquote>
 <ul>
@@ -262,7 +262,7 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/tags/iOS/"/>
+      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
     
   </entry>
   
@@ -271,7 +271,7 @@
     <link href="http://blog.zaink.cn/2015/01/20/viewDidLoad/"/>
     <id>http://blog.zaink.cn/2015/01/20/viewDidLoad/</id>
     <published>2015-01-20T10:20:32.000Z</published>
-    <updated>2015-01-20T10:28:47.000Z</updated>
+    <updated>2015-03-02T06:39:28.000Z</updated>
     <content type="html"><![CDATA[<p>大家没有看错，我要说的就是这个老生常谈的问题，也就是iOS中得ViewController加载和显示view时的函数调用顺序。其实大部分人都知道这些函数的调用顺序，但是，我们还是要再说一下，主要是要强调一下这些函数分别应该实现什么样的功能和注意点。<br><a id="more"></a><br>先说一下顺序吧，免得真有一些人不了解：</p>
 <blockquote>
 <ul>
@@ -322,7 +322,7 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/tags/iOS/"/>
+      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
     
   </entry>
   
@@ -331,7 +331,7 @@
     <link href="http://blog.zaink.cn/2015/01/20/tableview-improve/"/>
     <id>http://blog.zaink.cn/2015/01/20/tableview-improve/</id>
     <published>2015-01-20T10:17:24.000Z</published>
-    <updated>2015-01-20T10:28:11.000Z</updated>
+    <updated>2015-03-02T06:39:32.000Z</updated>
     <content type="html"><![CDATA[<p>所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：</p>
 <blockquote>
 <ul>
@@ -365,7 +365,7 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/tags/iOS/"/>
+      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
     
   </entry>
   
@@ -374,7 +374,7 @@
     <link href="http://blog.zaink.cn/2015/01/20/retain/"/>
     <id>http://blog.zaink.cn/2015/01/20/retain/</id>
     <published>2015-01-20T10:12:43.000Z</published>
-    <updated>2015-01-20T10:27:44.000Z</updated>
+    <updated>2015-03-02T06:39:43.000Z</updated>
     <content type="html"><![CDATA[<p>在Object-C中，定义类成员变量或类属性时经常会加上retain之类的声明，这些声明的不同点主要在于哪里呢，本文主要就是讲述他们之间的共同点和区别。</p>
 <p>首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：<br><a id="more"></a></p>
 <blockquote>
@@ -410,7 +410,7 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/tags/iOS/"/>
+      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
     
   </entry>
   
@@ -419,7 +419,7 @@
     <link href="http://blog.zaink.cn/2015/01/20/block/"/>
     <id>http://blog.zaink.cn/2015/01/20/block/</id>
     <published>2015-01-20T09:30:50.000Z</published>
-    <updated>2015-02-25T04:46:37.000Z</updated>
+    <updated>2015-03-02T06:39:53.000Z</updated>
     <content type="html"><![CDATA[<h2 id="Block的简介">Block的简介</h2>
 <p>Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。</p>
 <h2 id="Block的使用语法">Block的使用语法</h2>
