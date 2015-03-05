@@ -4,7 +4,7 @@
   <subtitle><![CDATA[翟现旗的技术分享]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.zaink.cn/"/>
-  <updated>2015-03-05T07:38:18.890Z</updated>
+  <updated>2015-03-05T07:40:26.344Z</updated>
   <id>http://blog.zaink.cn/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://blog.zaink.cn/2015/03/05/cocos-image/"/>
     <id>http://blog.zaink.cn/2015/03/05/cocos-image/</id>
     <published>2015-03-05T07:30:55.000Z</published>
-    <updated>2015-03-05T07:37:02.000Z</updated>
+    <updated>2015-03-05T07:40:10.000Z</updated>
     <content type="html"><![CDATA[<p>本文主要描述坐标系和Action（动作）的一些基本概念。</p>
 <h3 id="坐标系">坐标系</h3>
 <p>Cocos2d的坐标系是和OpenGL坐标系一样，原点为屏幕的左下角，然后X轴向右，Y轴向上。<br><a id="more"></a></p>
@@ -96,7 +96,7 @@
 <ul>
 <li>ActionEase<br>Speed虽然能改变动作的速度，但是只能按比例改变速度，ActionEase可以实现动作的速度又快到慢、速度随时间改变的匀速运动。该类包含5类运动，指数缓冲、Sine缓冲、弹性缓冲、跳跃缓冲和回震缓冲。每类运动都包含3个不同时期的变换：In、Out和InOut。</li>
 </ul>
-<p><em>以上内容基本来自<a href="http://cn.cocos2d-x.org/article/index?type=cocos2d-x&amp;url=/doc/cocos-docs-master/manual/framework/native/v3/basic-concepts/zh.md" target="_blank" rel="external">官方文档</a></em></p>
+<p><em>以上内容基本来自<a href="http://cn.cocos2d-x.org/article/index?type=cocos2d-x" target="_blank" rel="external">官方文档</a></em></p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>本文主要描述坐标系和Action（动作）的一些基本概念。</p>
@@ -118,7 +118,7 @@
     <link href="http://blog.zaink.cn/2015/03/02/cocos-basic/"/>
     <id>http://blog.zaink.cn/2015/03/02/cocos-basic/</id>
     <published>2015-03-02T05:53:30.000Z</published>
-    <updated>2015-03-05T07:33:56.000Z</updated>
+    <updated>2015-03-05T07:40:23.000Z</updated>
     <content type="html"><![CDATA[<p>Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，一个Layer又可以拥有任意个可见的Sprit。<br><a id="more"></a><br>在每一个时刻，都会有一个Scene在独立的运行，通过切换Scene来完成一个游戏流程，游戏流程的管理有Director来执行，其基本架构类图如下：<br><img src="/img/class_relateion.png" alt="基本架构类图"></p>
 <h3 id="Director">Director</h3>
 <p>Director是整个cocos-2dx引擎的核心，是整个游戏的导航仪，一些游戏的常用操作都是由Director来进行控制完成的，比如场景切换，游戏暂停，坐标转换等等。<br>由于在游戏中会使用Director控制整个游戏的流程，所以Director类的设计是单例模式的，也就是说整个游戏项目中取到的Director对象都是同一个，通常使用getInstance() 方法取得Director的实例。</p>
@@ -155,7 +155,7 @@
 <p>在Cocos2dx中实现精灵显示的基本过程如下：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//创建Scene</span></div><div class="line"><span class="keyword">auto</span> scene = Scene::create();</div><div class="line"><span class="comment">//创建层</span></div><div class="line"><span class="keyword">auto</span> layer = HelloWorld::create();</div><div class="line"><span class="comment">//把层加入场景中</span></div><div class="line">scene-&gt;addChild(layer);</div><div class="line"><span class="comment">//创建一个精灵</span></div><div class="line"><span class="keyword">auto</span> sprite = Sprite::create(<span class="string">"HelloWorld.png"</span>);</div><div class="line"><span class="comment">//把精灵加到层里</span></div><div class="line">layer-&gt;addChild(sprite, <span class="number">0</span>);</div></pre></td></tr></table></figure>
 
-<p><em>以上内容基本来自<a href="http://cn.cocos2d-x.org/article/index?type=cocos2d-x&amp;url=/doc/cocos-docs-master/manual/framework/native/v3/basic-concepts/zh.md" target="_blank" rel="external">官方文档</a></em></p>
+<p><em>以上内容基本来自<a href="http://cn.cocos2d-x.org/article/index?type=cocos2d-x" target="_blank" rel="external">官方文档</a></em></p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，一个Layer又可以拥有任意个可见的Sprit。<br>]]>
