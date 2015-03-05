@@ -4,7 +4,7 @@
   <subtitle><![CDATA[翟现旗的技术分享]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.zaink.cn/"/>
-  <updated>2015-03-05T07:36:13.789Z</updated>
+  <updated>2015-03-05T07:38:18.890Z</updated>
   <id>http://blog.zaink.cn/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://blog.zaink.cn/2015/03/05/cocos-image/"/>
     <id>http://blog.zaink.cn/2015/03/05/cocos-image/</id>
     <published>2015-03-05T07:30:55.000Z</published>
-    <updated>2015-03-05T07:35:47.000Z</updated>
+    <updated>2015-03-05T07:37:02.000Z</updated>
     <content type="html"><![CDATA[<p>本文主要描述坐标系和Action（动作）的一些基本概念。</p>
 <h3 id="坐标系">坐标系</h3>
 <p>Cocos2d的坐标系是和OpenGL坐标系一样，原点为屏幕的左下角，然后X轴向右，Y轴向上。<br><a id="more"></a></p>
