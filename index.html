@@ -227,87 +227,17 @@
     </header>
     <div class="entry">
       
-        <h3 id="坐标系">坐标系</h3>
-<p>Cocos2d的坐标系是和OpenGL坐标系一样，原点为屏幕的左下角，然后X轴向右，Y轴向上。</p>
-<p>将一个节点添加到父节点里面时，需要设置其在父节点上的位置，本质上是设置节点的锚点在父节点坐标系上的位置。</p>
-<ul>
-<li>Anchor Point的两个参数都在0~1之间。它们表示的并不是像素点，而是乘数因子。(0.5, 0.5)表示Anchor Point位于节点长度乘0.5和宽度乘0.5的地方，即节点的中心</li>
-<li>在Cocos2d-x中Layer的Anchor Point为默认值(0, 0)，其他Node的默认值为(0.5, 0.5)。<br>锚点（Anchor Point）</li>
-</ul>
-<h3 id="Action(动作)">Action(动作)</h3>
-<p>Action是所有动作的基类，它创建的一个对象代表一个动作。动作作用于Node，因此每个动作都需要由Node对象执行。Action作为基类，实际上是一个接口，动作类的大多数实现类都派生于有限时间动作类(FiniteTimeAction)。</p>
-<p>在实际开发中我们通常用到两类动作-即时动作(ActionInstant)和持续动作(ActionInterval)，它们均继承于有限时间动作类。<br>我们一般用的动作类如下图：<br><img src="/img/cocos_action.png" alt="常用动作类关系"></p>
-<h4 id="ActionInstant(即时动作)">ActionInstant(即时动作)</h4>
-<p>即时动作是指能够立刻完成的动作，这类动作是在下一帧立刻完成的动作，如设定位置、设定缩放等。把它们包装成动作后，可以与其他动作类组合为复杂动作。<br>下面介绍一下常用的即时动作：</p>
-<ul>
-<li>Place<br>该动作用于将节点放置到某个指定位置，起作用与修改节点的position属性相同。例如将节点放到屏幕坐标(10,10)处的代码应该如下：</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> placeAction = Place::create(Point(<span class="number">10</span>, <span class="number">10</span>));</div></pre></td></tr></table></figure>
-
-<ul>
-<li>FlipX和FlipY<br>这两个动作分别用于将节点沿X轴和Y轴反向显示，起作用与设置精灵的FlipX和FlipY属性相同，将其包装成动作是为了便于和其他动作进行组合。<br>下面代码将一个Sprit移动到一端后反向显示再移回原点的动作：</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> flipxAction = FlipX::create(<span class="keyword">true</span>);</div><div class="line"><span class="keyword">auto</span> moveTo = MoveTo::create(<span class="number">0.4f</span>, Point(<span class="number">0</span>, <span class="number">0</span>));</div><div class="line"><span class="keyword">auto</span> action = Sequence::create(moveTo, flipxAction, moveTo-&gt;reverse(), NULL);</div></pre></td></tr></table></figure>
-
-<ul>
-<li>Show和Hide<br>这两个动作分别用于现实和隐藏节点，起作用和设置节点的visible属性作用一致。</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> hideAction = Hide::create();</div><div class="line"><span class="keyword">auto</span> moveTo = MoveTo::create(<span class="number">0.4f</span>, Point(<span class="number">0</span>, <span class="number">0</span>));</div><div class="line"><span class="keyword">auto</span> action = Sequence::create(moveTo, hideAction, NULL);</div></pre></td></tr></table></figure>
-
-<ul>
-<li>CallFunc<br>CallFunc系列动作包括CallFunc、CallFuncN两个动作，用来在动作中进行方法调用。在游戏中为了节约内存资源，我们可以在动作完成后调用相应函数清理内存，如下代码：</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> actionMoveDone = CallFuncN::create([&](http:<span class="comment">//cn.cocos2d-x.org/doc/cocos-docs-master/manual/framework/native/v3/action/Ref* sender){</span></div><div class="line">    <span class="built_in">log</span>(<span class="string">"Clear memory"</span>);</div><div class="line">});</div><div class="line"><span class="keyword">auto</span> moveTo = MoveTo::create(<span class="number">0.4f</span>, Point(<span class="number">0</span>, <span class="number">0</span>));</div><div class="line"><span class="keyword">auto</span> action = Sequence::create(moveTo, actionMoveDone, NULL);</div></pre></td></tr></table></figure>
-
-<ul>
-<li>RemoveSelf<br>RemoveSelf动作用于删除节点，常用于某项动作完成后删除动作节点。</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>-&gt;runAction(Sequence::create(</div><div class="line"><span class="keyword">this</span>-&gt;runAction(Sequence::create(</div><div class="line">CallFunc::create(CC_CALLBACK_0(UI_Config::TestLogic,<span class="keyword">this</span>)),</div><div class="line">DelayTime::create(<span class="number">0.2f</span>),</div><div class="line">RemoveSelf::create(<span class="keyword">true</span>),</div><div class="line"><span class="keyword">nullptr</span>));</div></pre></td></tr></table></figure>
-
-<ul>
-<li><p>ReuseGrid和StopGrid<br>这两个动作分别是重复网格动作和停止网格动作。和持续动作中的GridAction（网格动作）关联使用。</p>
-</li>
-<li><p>ToggleVisibility<br>切换节点的可视属性。该动作相当于visible属性发生变化。</p>
-</li>
-<li><p>CCBSetSpriteFrame<br>用坐标创建一个位置动作，用于设置Sprite的位置</p>
-</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CCSequence::createWithTwoActions(CCDelayTime::create(duration), CCBSetSpriteFrame::create((CCSpriteFrame *)pKeyframe1-&gt;getValue()));</div></pre></td></tr></table></figure>
-
-<ul>
-<li>CCBSoundEffect<br>播放声音效果</li>
-</ul>
-<h4 id="ActionInterval(持续动作)">ActionInterval(持续动作)</h4>
-<ul>
-<li><p>属性变化动作<br>属性变化动作通过属性值的逐渐变化来实现动画效果。需要注意的是XXTo和XXBy的区别在于XXTo是表示最终值，而XXBy则表示向量——改变值。<br>MoveTo和MoveBy          移动<br>JumpTo和JumpBy          跳跃<br>BezierTo和BezierBy      曲线运动<br>ScaleTo和ScaleBy        缩放动作<br>RotateTo和RotateBy      旋转动作</p>
-</li>
-<li><p>视觉特效动作<br>该类用来实现特殊视觉效果。<br>FadeIn, FadeOut和FateTo 淡入、淡出和透明效果<br>TintTo和TintBy          设置色调变化<br>Blink                   闪烁效果<br>Animation               帧动画效果</p>
-</li>
-<li><p>复合动作<br>通常在开发中我们需要将各种动作组合起来再让节点执行，复合动作的作用就是将各种动作组合在一起。而且，复合动作本身也是动作。因此可以作为一个普通动作嵌入到其他动作中。</p>
-<blockquote>
-<p>注意：Sequence动作不能嵌入其他复合动作内使用，DelayTime不属于复合动作，但是只能在复合动作内使用。</p>
-</blockquote>
-</li>
-</ul>
-<p>DelayTime               延时动作<br>Repeat/RepeatForever    重复执行某个动作<br>Spawn                   同时执行两个动作<br>Sequence                顺序执行多个动作</p>
-<ul>
-<li>变速动作<br>变速动作和复合动作类似，也是一种特殊的动作，它可以把任何动作按照改变后的速度执行。</li>
-</ul>
-<ul>
-<li>Speed<br>用于线性的改变某个动作的速度，为了改变一个动作的速度，首先需要将目标动作包装到Speed动作中：</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> repeat = RepeatForever::create(animation);</div><div class="line"><span class="keyword">auto</span> speed = Speed::create(repeat, <span class="number">0.5f</span>);</div><div class="line">sprite-&gt;runAction(speed);</div></pre></td></tr></table></figure>
-
-<p>第二个参数为变速比例，设置为0.5f则速度为原来一半。</p>
-<ul>
-<li>ActionEase<br>Speed虽然能改变动作的速度，但是只能按比例改变速度，ActionEase可以实现动作的速度又快到慢、速度随时间改变的匀速运动。该类包含5类运动，指数缓冲、Sine缓冲、弹性缓冲、跳跃缓冲和回震缓冲。每类运动都包含3个不同时期的变换：In、Out和InOut。</li>
-</ul>
-<p><em>以上内容基本来自<a href="http://cn.cocos2d-x.org/article/index?type=cocos2d-x&amp;url=/doc/cocos-docs-master/manual/framework/native/v3/basic-concepts/zh.md" target="_blank" rel="external">官方文档</a></em></p>
-
+        <p>本文主要描述坐标系和Action（动作）的一些基本概念。</p>
+<h3 id="坐标系">坐标系</h3>
+<p>Cocos2d的坐标系是和OpenGL坐标系一样，原点为屏幕的左下角，然后X轴向右，Y轴向上。<br>
       
     </div>
     <footer>
       
+        
+          <div class="alignleft">
+            <a href="/2015/03/05/cocos-image/#more" class="more-link">阅读全文</a>
+          </div>
         
         
       

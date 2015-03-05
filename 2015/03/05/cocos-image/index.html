@@ -8,11 +8,9 @@
   <title>Cocos之图像渲染与动画 | 翟现旗的技术分享</title>
   <meta name="author" content="ziank">
   
-  <meta name="description" content="坐标系
-Cocos2d的坐标系是和OpenGL坐标系一样，原点为屏幕的左下角，然后X轴向右，Y轴向上。
-将一个节点添加到父节点里面时，需要设置其在父节点上的位置，本质上是设置节点的锚点在父节点坐标系上的位置。
-
-Anchor Point的两个参数都在0~1之间。它们表示的并不是像素点，而是乘数因子。">
+  <meta name="description" content="本文主要描述坐标系和Action（动作）的一些基本概念。
+坐标系
+Cocos2d的坐标系是和OpenGL坐标系一样，原点为屏幕的左下角，然后X轴向右，Y轴向上。">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -232,8 +230,9 @@ Anchor Point的两个参数都在0~1之间。它们表示的并不是像素点�
     </header>
     <div class="entry">
       
-        <h3 id="坐标系">坐标系</h3>
-<p>Cocos2d的坐标系是和OpenGL坐标系一样，原点为屏幕的左下角，然后X轴向右，Y轴向上。</p>
+        <p>本文主要描述坐标系和Action（动作）的一些基本概念。</p>
+<h3 id="坐标系">坐标系</h3>
+<p>Cocos2d的坐标系是和OpenGL坐标系一样，原点为屏幕的左下角，然后X轴向右，Y轴向上。<br><a id="more"></a></p>
 <p>将一个节点添加到父节点里面时，需要设置其在父节点上的位置，本质上是设置节点的锚点在父节点坐标系上的位置。</p>
 <ul>
 <li>Anchor Point的两个参数都在0~1之间。它们表示的并不是像素点，而是乘数因子。(0.5, 0.5)表示Anchor Point位于节点长度乘0.5和宽度乘0.5的地方，即节点的中心</li>
