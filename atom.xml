@@ -4,7 +4,7 @@
   <subtitle><![CDATA[翟现旗的技术分享]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://blog.zaink.cn/"/>
-  <updated>2015-03-05T07:40:26.344Z</updated>
+  <updated>2015-03-06T03:29:48.671Z</updated>
   <id>http://blog.zaink.cn/</id>
   
   <author>
@@ -13,6 +13,42 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[如何把UIButton中的图片和文字上下对齐]]></title>
+    <link href="http://blog.zaink.cn/2015/03/06/edgeInsets/"/>
+    <id>http://blog.zaink.cn/2015/03/06/edgeInsets/</id>
+    <published>2015-03-06T02:27:08.000Z</published>
+    <updated>2015-03-06T03:27:52.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="前言">前言</h2>
+<p>我们都知道在UIButton中可以设置图片和文字，也经常见到同时设置有图片和下方提示文字的按钮，但是当我自己去对图片按钮添加提示文字的时候，却发现这并不是想象中的那么简单。</p>
+<h2 id="设置图片和文字">设置图片和文字</h2>
+<p>如示例代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> initView() -&gt; <span class="type">Void</span> {</div><div class="line">    <span class="keyword">var</span> button:<span class="type">UIButton</span> = <span class="type">UIButton</span>(frame: <span class="type">CGRectMake</span>(<span class="number">100</span>, <span class="number">200</span>, <span class="number">100</span>, <span class="number">100</span>))</div><div class="line">        </div><div class="line">    button.setImage(<span class="type">UIImage</span>(named: <span class="string">"button.png"</span>), forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>)</div><div class="line">    button.setTitle(<span class="string">"按钮"</span>, forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>)</div><div class="line">    button.backgroundColor = <span class="type">UIColor</span>.blueColor()</div><div class="line">    </div><div class="line">    <span class="keyword">self</span>.view.addSubview(button)</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>我们可以通过UIButton的setTitle和setImage方法分别为按钮设置图片和文字信息，但是会发现设置完成以后我们的图片和文字并没有重合排列，也没有上下排列，而是一个左右排列的样子。<br><img src="/img/button_image1.png" alt="设置图片和文字"></p>
+<p>说到这里，肯定会有人想到设置图片和文字的frame来进行处理，而且我们也确实可以通过UIButton的对象获取到对应的imageView和titleLabel，但是如果经过测试的话，你就会发现这是一个trike的方法，而且是不生效的。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> initView() -&gt; <span class="type">Void</span> {</div><div class="line">    <span class="keyword">var</span> button:<span class="type">UIButton</span> = <span class="type">UIButton</span>(frame: <span class="type">CGRectMake</span>(<span class="number">100</span>, <span class="number">200</span>, <span class="number">100</span>, <span class="number">100</span>))</div><div class="line">        </div><div class="line">    button.setImage(<span class="type">UIImage</span>(named: <span class="string">"button.png"</span>), forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>)</div><div class="line">    button.setTitle(<span class="string">"按钮"</span>, forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>)</div><div class="line">    button.backgroundColor = <span class="type">UIColor</span>.blueColor()</div><div class="line">    button.titleLabel?.frame = <span class="type">CGRectMake</span>(<span class="number">20</span>, <span class="number">0</span>, <span class="number">30</span>, <span class="number">30</span>)</div><div class="line">    button.imageView?.frame = <span class="type">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">20</span>, <span class="number">20</span>)</div><div class="line"></div><div class="line">    <span class="keyword">self</span>.view.addSubview(button)</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>修改为这样以后，运行程序，会发现对应的视图没有任何变化。<br><img src="/img/button_image2.png" alt="添加frame设置"></p>
+<h2 id="UIEdgeInsets">UIEdgeInsets</h2>
+<p>查看UIButton的属性，我们会找到titleEdgeInsets和imageEdgeInsets两个属性。修改这两个属性，可以实现我们想要的效果。<br>titleEdgeInsets和imageEdgeInsets都是UIEdgeInsets的对象，我们先说一下UIEdgeInsets的几个属性的具体效果。<br>我们知道，UIEdgeInsets有top，left，bottom，right几个属性，但是通过测试，就会发现设置了top以后自己的y坐标并没有增加响应的距离，而是增加了1/2，那么它们到底应该如何计算呢？<br>当设置了top以后，其实就是相当于view的<strong>上边缘</strong>向下移动了相应的距离。用在title中，如果titleLabel的frame(50, 50, 24, 24);那么Button的上下边缘应该分别是0和124，因为正常情况下titleLabel必然处于Button的中间位置。当设置了titleEdgeInsets的top为10以后，相当于button的上下坐标为10，124，则titleLabel的坐标就变成了(50, 55, 24, 24)，也就是上下边缘变为了55和79， 向下移动了5个点。</p>
+<p>经过计算可以得出，如果要将文字移动到图片的下方，需要设置titleEdgeInsets和imageEdgeInsets，且分别设置为<br>若titleLabel为 w1,h1, imageView为w2,h2, 上下间距为space<br>titleEdgeInsets = (h2 + space, - w2, 0, 0)<br>imageEdgeInsets = (-h1 - space, w1)<br>如上述例子若改为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> initView() -&gt; <span class="type">Void</span> {</div><div class="line">    <span class="keyword">var</span> button:<span class="type">UIButton</span> = <span class="type">UIButton</span>(frame: <span class="type">CGRectMake</span>(<span class="number">100</span>, <span class="number">200</span>, <span class="number">100</span>, <span class="number">100</span>))</div><div class="line">    </div><div class="line">    button.setImage(<span class="type">UIImage</span>(named: <span class="string">"button.png"</span>), forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>)</div><div class="line">    button.setTitle(<span class="string">"按钮"</span>, forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>)</div><div class="line">    button.backgroundColor = <span class="type">UIColor</span>.blueColor()</div><div class="line">    </div><div class="line">    <span class="keyword">var</span> imageSize:<span class="type">CGSize</span> = button.imageView!.frame.size</div><div class="line">    <span class="keyword">var</span> titleSize:<span class="type">CGSize</span> = button.titleLabel!.frame.size</div><div class="line">    button.titleEdgeInsets = <span class="type">UIEdgeInsets</span>(top: <span class="number">0</span>, <span class="keyword">left</span>:-imageSize.width, bottom: -imageSize.height - <span class="number">5</span>, <span class="keyword">right</span>: <span class="number">0</span>)</div><div class="line">    button.imageEdgeInsets = <span class="type">UIEdgeInsets</span>(top: -titleSize.height - <span class="number">5</span>, <span class="keyword">left</span>: <span class="number">0</span>, bottom: <span class="number">0</span>, <span class="keyword">right</span>: -titleSize.width)</div><div class="line">    <span class="keyword">self</span>.view.addSubview(button)</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>则可实现我们要求的效果：<br><img src="/img/button_image3.png" alt="设置insets"></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="前言">前言</h2>
+<p>我们都知道在UIButton中可以设置图片和文字，也经常见到同时设置有图片和下方提示文字的按钮，但是当我自己去对图片按钮添加提示文字的时候，却发现这并不是想象中的那么简单。</p>
+<h2 id="设置图片和文字">设置图片和文字</]]>
+    </summary>
+    
+      <category term="iOS" scheme="http://blog.zaink.cn/tags/iOS/"/>
+    
+      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Cocos之图像渲染与动画]]></title>
