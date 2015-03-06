@@ -3,9 +3,9 @@
   <title><![CDATA[翟现旗的技术分享]]></title>
   <subtitle><![CDATA[翟现旗的技术分享]]></subtitle>
   <link href="/atom.xml" rel="self"/>
-  <link href="http://blog.zaink.cn/"/>
-  <updated>2015-03-06T03:37:53.714Z</updated>
-  <id>http://blog.zaink.cn/</id>
+  <link href="http://www.zaink.cn/"/>
+  <updated>2015-03-06T03:40:01.511Z</updated>
+  <id>http://www.zaink.cn/</id>
   
   <author>
     <name><![CDATA[ziank]]></name>
@@ -16,8 +16,8 @@
   
   <entry>
     <title><![CDATA[如何把UIButton中的图片和文字上下对齐]]></title>
-    <link href="http://blog.zaink.cn/2015/03/06/edgeInsets/"/>
-    <id>http://blog.zaink.cn/2015/03/06/edgeInsets/</id>
+    <link href="http://www.zaink.cn/2015/03/06/edgeInsets/"/>
+    <id>http://www.zaink.cn/2015/03/06/edgeInsets/</id>
     <published>2015-03-06T02:27:08.000Z</published>
     <updated>2015-03-06T03:30:43.000Z</updated>
     <content type="html"><![CDATA[<h2 id="前言">前言</h2>
@@ -46,16 +46,16 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/tags/iOS/"/>
+      <category term="iOS" scheme="http://www.zaink.cn/tags/iOS/"/>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
+      <category term="iOS" scheme="http://www.zaink.cn/categories/iOS/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Cocos之图像渲染与动画]]></title>
-    <link href="http://blog.zaink.cn/2015/03/05/cocos-image/"/>
-    <id>http://blog.zaink.cn/2015/03/05/cocos-image/</id>
+    <link href="http://www.zaink.cn/2015/03/05/cocos-image/"/>
+    <id>http://www.zaink.cn/2015/03/05/cocos-image/</id>
     <published>2015-03-05T07:30:55.000Z</published>
     <updated>2015-03-05T07:40:10.000Z</updated>
     <content type="html"><![CDATA[<p>本文主要描述坐标系和Action（动作）的一些基本概念。</p>
@@ -143,18 +143,18 @@
     
     </summary>
     
-      <category term="Cocos" scheme="http://blog.zaink.cn/tags/Cocos/"/>
+      <category term="Cocos" scheme="http://www.zaink.cn/tags/Cocos/"/>
     
-      <category term="Cocos" scheme="http://blog.zaink.cn/categories/Cocos/"/>
+      <category term="Cocos" scheme="http://www.zaink.cn/categories/Cocos/"/>
     
-      <category term="文档" scheme="http://blog.zaink.cn/categories/Cocos/%E6%96%87%E6%A1%A3/"/>
+      <category term="文档" scheme="http://www.zaink.cn/categories/Cocos/%E6%96%87%E6%A1%A3/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Cocos之基本概念]]></title>
-    <link href="http://blog.zaink.cn/2015/03/02/cocos-basic/"/>
-    <id>http://blog.zaink.cn/2015/03/02/cocos-basic/</id>
+    <link href="http://www.zaink.cn/2015/03/02/cocos-basic/"/>
+    <id>http://www.zaink.cn/2015/03/02/cocos-basic/</id>
     <published>2015-03-02T05:53:30.000Z</published>
     <updated>2015-03-05T07:40:23.000Z</updated>
     <content type="html"><![CDATA[<p>Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，一个Layer又可以拥有任意个可见的Sprit。<br><a id="more"></a><br>在每一个时刻，都会有一个Scene在独立的运行，通过切换Scene来完成一个游戏流程，游戏流程的管理有Director来执行，其基本架构类图如下：<br><img src="/img/class_relateion.png" alt="基本架构类图"></p>
@@ -200,18 +200,18 @@
     
     </summary>
     
-      <category term="Cocos" scheme="http://blog.zaink.cn/tags/Cocos/"/>
+      <category term="Cocos" scheme="http://www.zaink.cn/tags/Cocos/"/>
     
-      <category term="Cocos" scheme="http://blog.zaink.cn/categories/Cocos/"/>
+      <category term="Cocos" scheme="http://www.zaink.cn/categories/Cocos/"/>
     
-      <category term="文档" scheme="http://blog.zaink.cn/categories/Cocos/%E6%96%87%E6%A1%A3/"/>
+      <category term="文档" scheme="http://www.zaink.cn/categories/Cocos/%E6%96%87%E6%A1%A3/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[UILabel的使用]]></title>
-    <link href="http://blog.zaink.cn/2015/01/29/UILable_CoreText/"/>
-    <id>http://blog.zaink.cn/2015/01/29/UILable_CoreText/</id>
+    <link href="http://www.zaink.cn/2015/01/29/UILable_CoreText/"/>
+    <id>http://www.zaink.cn/2015/01/29/UILable_CoreText/</id>
     <published>2015-01-29T06:19:18.000Z</published>
     <updated>2015-03-02T06:39:30.000Z</updated>
     <content type="html"><![CDATA[<p>[TOC]</p>
@@ -242,14 +242,14 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
+      <category term="iOS" scheme="http://www.zaink.cn/categories/iOS/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Object-C runtime之消息（2）]]></title>
-    <link href="http://blog.zaink.cn/2015/01/26/runtime-message-2/"/>
-    <id>http://blog.zaink.cn/2015/01/26/runtime-message-2/</id>
+    <link href="http://www.zaink.cn/2015/01/26/runtime-message-2/"/>
+    <id>http://www.zaink.cn/2015/01/26/runtime-message-2/</id>
     <published>2015-01-26T07:46:58.000Z</published>
     <updated>2015-03-02T06:39:38.000Z</updated>
     <content type="html"><![CDATA[<h2 id="消息的工作流程">消息的工作流程</h2>
@@ -296,14 +296,14 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
+      <category term="iOS" scheme="http://www.zaink.cn/categories/iOS/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Object-C runtime之消息（1）]]></title>
-    <link href="http://blog.zaink.cn/2015/01/21/runtime-message-1/"/>
-    <id>http://blog.zaink.cn/2015/01/21/runtime-message-1/</id>
+    <link href="http://www.zaink.cn/2015/01/21/runtime-message-1/"/>
+    <id>http://www.zaink.cn/2015/01/21/runtime-message-1/</id>
     <published>2015-01-21T02:20:32.000Z</published>
     <updated>2015-03-02T09:44:02.000Z</updated>
     <content type="html"><![CDATA[<p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
@@ -366,14 +366,14 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
+      <category term="iOS" scheme="http://www.zaink.cn/categories/iOS/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[能够自适应高度的TABLEVIEWCELL(SELF-SIZING CELL)]]></title>
-    <link href="http://blog.zaink.cn/2015/01/20/self-size-cell/"/>
-    <id>http://blog.zaink.cn/2015/01/20/self-size-cell/</id>
+    <link href="http://www.zaink.cn/2015/01/20/self-size-cell/"/>
+    <id>http://www.zaink.cn/2015/01/20/self-size-cell/</id>
     <published>2015-01-20T10:30:50.000Z</published>
     <updated>2015-03-02T06:39:36.000Z</updated>
     <content type="html"><![CDATA[<p>在iOS8中，Apple为UITableView引入了一种名为Self-Sizing-Cells的新特性。这是新的SDK中最让我兴奋的一种特性。iOS8以前，如果你想要在tableview中显示可变高度的动态内容，必须单独计算每一个cell的高度。现在到了iOS8，Self-Sizing-Cell 提供了显示动态内容的一种解决方案。简言之，使用自适应cell，你只需要做下面几点：<br><a id="more"></a></p>
@@ -403,14 +403,14 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
+      <category term="iOS" scheme="http://www.zaink.cn/categories/iOS/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[VIEW加载和显示函数调用顺序]]></title>
-    <link href="http://blog.zaink.cn/2015/01/20/viewDidLoad/"/>
-    <id>http://blog.zaink.cn/2015/01/20/viewDidLoad/</id>
+    <link href="http://www.zaink.cn/2015/01/20/viewDidLoad/"/>
+    <id>http://www.zaink.cn/2015/01/20/viewDidLoad/</id>
     <published>2015-01-20T10:20:32.000Z</published>
     <updated>2015-03-02T06:39:28.000Z</updated>
     <content type="html"><![CDATA[<p>大家没有看错，我要说的就是这个老生常谈的问题，也就是iOS中得ViewController加载和显示view时的函数调用顺序。其实大部分人都知道这些函数的调用顺序，但是，我们还是要再说一下，主要是要强调一下这些函数分别应该实现什么样的功能和注意点。<br><a id="more"></a><br>先说一下顺序吧，免得真有一些人不了解：</p>
@@ -463,14 +463,14 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
+      <category term="iOS" scheme="http://www.zaink.cn/categories/iOS/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[UITABLEVIEW的性能提升]]></title>
-    <link href="http://blog.zaink.cn/2015/01/20/tableview-improve/"/>
-    <id>http://blog.zaink.cn/2015/01/20/tableview-improve/</id>
+    <link href="http://www.zaink.cn/2015/01/20/tableview-improve/"/>
+    <id>http://www.zaink.cn/2015/01/20/tableview-improve/</id>
     <published>2015-01-20T10:17:24.000Z</published>
     <updated>2015-03-02T06:39:32.000Z</updated>
     <content type="html"><![CDATA[<p>所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：</p>
@@ -506,14 +506,14 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
+      <category term="iOS" scheme="http://www.zaink.cn/categories/iOS/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[成员对象之RETAIN/ASSIGN/COPY/WEAK/STRONG的区分]]></title>
-    <link href="http://blog.zaink.cn/2015/01/20/retain/"/>
-    <id>http://blog.zaink.cn/2015/01/20/retain/</id>
+    <link href="http://www.zaink.cn/2015/01/20/retain/"/>
+    <id>http://www.zaink.cn/2015/01/20/retain/</id>
     <published>2015-01-20T10:12:43.000Z</published>
     <updated>2015-03-02T06:39:43.000Z</updated>
     <content type="html"><![CDATA[<p>在Object-C中，定义类成员变量或类属性时经常会加上retain之类的声明，这些声明的不同点主要在于哪里呢，本文主要就是讲述他们之间的共同点和区别。</p>
@@ -551,14 +551,14 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
+      <category term="iOS" scheme="http://www.zaink.cn/categories/iOS/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[正确使用BLOCK避免CYCLE RETAIN和CRASH]]></title>
-    <link href="http://blog.zaink.cn/2015/01/20/block/"/>
-    <id>http://blog.zaink.cn/2015/01/20/block/</id>
+    <link href="http://www.zaink.cn/2015/01/20/block/"/>
+    <id>http://www.zaink.cn/2015/01/20/block/</id>
     <published>2015-01-20T09:30:50.000Z</published>
     <updated>2015-03-02T06:39:53.000Z</updated>
     <content type="html"><![CDATA[<h2 id="Block的简介">Block的简介</h2>
@@ -599,16 +599,16 @@
     
     </summary>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/tags/iOS/"/>
+      <category term="iOS" scheme="http://www.zaink.cn/tags/iOS/"/>
     
-      <category term="iOS" scheme="http://blog.zaink.cn/categories/iOS/"/>
+      <category term="iOS" scheme="http://www.zaink.cn/categories/iOS/"/>
     
   </entry>
   
   <entry>
     <title><![CDATA[Hello World]]></title>
-    <link href="http://blog.zaink.cn/2015/01/20/hello-world/"/>
-    <id>http://blog.zaink.cn/2015/01/20/hello-world/</id>
+    <link href="http://www.zaink.cn/2015/01/20/hello-world/"/>
+    <id>http://www.zaink.cn/2015/01/20/hello-world/</id>
     <published>2015-01-20T05:59:07.000Z</published>
     <updated>2015-01-20T05:59:07.000Z</updated>
     <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">trobuleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
