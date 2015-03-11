@@ -4,7 +4,7 @@
   <subtitle><![CDATA[翟现旗的技术分享]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.ziank.cn/"/>
-  <updated>2015-03-11T07:55:40.354Z</updated>
+  <updated>2015-03-11T08:39:33.894Z</updated>
   <id>http://www.ziank.cn/</id>
   
   <author>
@@ -15,13 +15,60 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Cocos之场景转换（Transitions)]]></title>
+    <link href="http://www.ziank.cn/2015/03/11/cocos-scene/"/>
+    <id>http://www.ziank.cn/2015/03/11/cocos-scene/</id>
+    <published>2015-03-11T07:58:12.000Z</published>
+    <updated>2015-03-11T08:20:41.000Z</updated>
+    <content type="html"><![CDATA[<p>我们在基础概念一节讲过修改当前场景的常见方式有三种，pushScene，replaceScene和popScene；但是切换场景使用的效果则会有很多种，例如淡入淡出，放大缩小，跳动等等。<br>Cocos提供了这种在两个场景之间直接进行转换的能力，在技术上讲，一个场景转换就是在展示并控制一个新场景之前执行的一个切换效果。<br><a id="more"></a></p>
+<p>场景之间通过TransitionScene系列类来实现过渡跳转的效果。TransitionScene继承于Scene，该系列类主要是与场景切换特效相关的一些使用类。如TransitionFadeDown、TransitionPageTurn、TransitionJumpZoom等等。</p>
+<h3 id="切换特效">切换特效</h3>
+<p>在Cocos中提供的场景切换特效主要由以下几种：</p>
+<ul>
+<li>TransitionRotoZoom    旋转进入</li>
+<li>TransitionJumpZoom    跳动进入</li>
+<li>TransitionPageTurn    翻页效果进入</li>
+<li>TransitionRadialCCW   钟摆效果</li>
+<li>TransitionMoveInL / TransitionMoveInR / TransitionMoveInT / TransitionMoveInB     左侧/右侧/顶部/底部进入</li>
+<li>TransitionSlideInL / TransitionSlideInR / TransitionSlideInT / TransitionSlideInB  分别从左侧/右侧/顶部/底部滑入</li>
+<li>TransitionShrinkGrow  交替进入</li>
+<li>TransitionFlipX/TransitionFlipY   X轴翻入（左右）/Y轴翻入</li>
+<li>TransitionFlipAngular 左上右下轴翻入</li>
+<li>TransitionFadeTR ／TransitionFadeBL／TransitionFadeUp／TransitionFadeDown    小方格右上角显示进入／ 小方格左下角显示进入／ 横条向上显示进入／ 横条向下显示进入</li>
+<li>TransitionSplitCols ／ TransitionSplitRows 竖条切换进入／ 横条切换进入</li>
+<li>TransitionZoomFlipAngular 左上右下轴翻入放大缩小效果</li>
+<li>TransitionFade 渐隐进入</li>
+<li>TransitionCrossFade 渐变进入</li>
+<li>TransitionTurnOffTiles 小方格消失进入</li>
+<li>TransitionRadialCCW／TransitionRadialCW 扇面展开收起</li>
+</ul>
+<p>场景转换的实现代码一般如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> transitions = TransitionMoveInL::create(<span class="number">0.2f</span>, scene);</div><div class="line">Director::getInstance()-&gt;replaceScene(transitions);</div></pre></td></tr></table></figure>
+
+<p>场景的转换是由Director类来控制的，通过调用Director类的replaceScene(Scene scene）方法可直接使用传入scene替换当前场景来切换画面，当前场景会被释放，它是切换场景时最常用的方法。<br>前面说过，场景转换的一系列类都继承于Scene类，所以可以创建一个转换场景的对象代替scene，从而实现各种转换场景的效果。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>我们在基础概念一节讲过修改当前场景的常见方式有三种，pushScene，replaceScene和popScene；但是切换场景使用的效果则会有很多种，例如淡入淡出，放大缩小，跳动等等。<br>Cocos提供了这种在两个场景之间直接进行转换的能力，在技术上讲，一个场景转换就是在展示并控制一个新场景之前执行的一个切换效果。<br>]]>
+    
+    </summary>
+    
+      <category term="Cocos" scheme="http://www.ziank.cn/tags/Cocos/"/>
+    
+      <category term="Cocos" scheme="http://www.ziank.cn/categories/Cocos/"/>
+    
+      <category term="文档" scheme="http://www.ziank.cn/categories/Cocos/%E6%96%87%E6%A1%A3/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[如何把UIButton中的图片和文字上下对齐]]></title>
     <link href="http://www.ziank.cn/2015/03/06/edgeInsets/"/>
     <id>http://www.ziank.cn/2015/03/06/edgeInsets/</id>
     <published>2015-03-06T02:27:08.000Z</published>
-    <updated>2015-03-11T07:55:17.000Z</updated>
+    <updated>2015-03-11T07:56:26.000Z</updated>
     <content type="html"><![CDATA[<h2 id="前言">前言</h2>
 <p>我们都知道在UIButton中可以设置图片和文字，也经常见到同时设置有图片和下方提示文字的按钮，但是当我自己去对图片按钮添加提示文字的时候，却发现这并不是想象中的那么简单。</p>
+<p><a id="more"></a></p>
 <h2 id="设置图片和文字">设置图片和文字</h2>
 <p>如示例代码：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> initView() -&gt; <span class="type">Void</span> {</div><div class="line"><span class="keyword">var</span> button:<span class="type">UIButton</span> = <span class="type">UIButton</span>(frame: <span class="type">CGRectMake</span>(<span class="number">100</span>, <span class="number">200</span>, <span class="number">100</span>, <span class="number">100</span>))</div><div class="line"></div><div class="line">button.setImage(<span class="type">UIImage</span>(named: <span class="string">"button.png"</span>), forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>)</div><div class="line">button.setTitle(<span class="string">"按钮"</span>, forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>)</div><div class="line">button.backgroundColor = <span class="type">UIColor</span>.blueColor()</div><div class="line"></div><div class="line"><span class="keyword">self</span>.view.addSubview(button)</div><div class="line">}</div></pre></td></tr></table></figure>
@@ -42,7 +89,8 @@
     <summary type="html">
     <![CDATA[<h2 id="前言">前言</h2>
 <p>我们都知道在UIButton中可以设置图片和文字，也经常见到同时设置有图片和下方提示文字的按钮，但是当我自己去对图片按钮添加提示文字的时候，却发现这并不是想象中的那么简单。</p>
-<h2 id="设置图片和文字">设置图片和文字</]]>
+<p>]]>
+    
     </summary>
     
       <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
@@ -155,7 +203,7 @@
     <link href="http://www.ziank.cn/2015/03/02/cocos-basic/"/>
     <id>http://www.ziank.cn/2015/03/02/cocos-basic/</id>
     <published>2015-03-02T05:53:30.000Z</published>
-    <updated>2015-03-05T07:40:23.000Z</updated>
+    <updated>2015-03-11T08:01:40.000Z</updated>
     <content type="html"><![CDATA[<p>Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，一个Layer又可以拥有任意个可见的Sprit。<br><a id="more"></a><br>在每一个时刻，都会有一个Scene在独立的运行，通过切换Scene来完成一个游戏流程，游戏流程的管理有Director来执行，其基本架构类图如下：<br><img src="/img/class_relateion.png" alt="基本架构类图"></p>
 <h3 id="Director">Director</h3>
 <p>Director是整个cocos-2dx引擎的核心，是整个游戏的导航仪，一些游戏的常用操作都是由Director来进行控制完成的，比如场景切换，游戏暂停，坐标转换等等。<br>由于在游戏中会使用Director控制整个游戏的流程，所以Director类的设计是单例模式的，也就是说整个游戏项目中取到的Director对象都是同一个，通常使用getInstance() 方法取得Director的实例。</p>
@@ -164,13 +212,11 @@
 <ul>
 <li>runWithScene( Scene *scene )<br>启动游戏，并运行scene场景。本方法在主程序第一次启动主场景的时候调用。如果已有正在运行的场景则不能调用该方法；会调用pushScene—&gt;startAnimation。</li>
 <li>pushScene( Scene *scene )<br>将当前运行中的场景暂停并压入到代码执行场景栈中，再将传入的scene设置为当前运行场景，只有存在正在运行的场景时才调用该方法；</li>
-<li>replaceScene( Scene *scene ) 直接使用传入的scene替换当前场景来切换画面，当前场景被释放。这是切换场景时最常用的方法。<ul>
+<li>replaceScene( Scene *scene ) 直接使用传入的scene替换当前场景来切换画面，当前场景被释放。这是切换场景时最常用的方法。</li>
 <li>popScene() 释放当前场景，再从代码执行场景中弹出栈顶的场景，并将其设置为当前运行场景。如果栈为空，直接结束应用。和PushScene结对使用</li>
 <li>end() 释放和终止执行场景，同时退出应用</li>
 <li>pause() 暂停当前运行场景中的所有计时器和动作，场景仍然会显示在屏幕上</li>
 <li>resume () 恢复当前运行场景的所有计时器和动作，场景仍然会显示在屏幕上</li>
-</ul>
-</li>
 </ul>
 <p>同时场景是层的容器，包含了所有需要显示的游戏元素。通常，当我们需要完成一个场景时候，会创建一个Scene的子类，并在子类中实现我们需要的功能。比如，我们可以在子类的初始化中载入游戏资源，为场景添加层，启动音乐播放等等。</p>
 <h3 id="Layer(层)">Layer(层)</h3>
