@@ -4,7 +4,7 @@
   <subtitle><![CDATA[一些个人学习的文档]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.ziank.cn/"/>
-  <updated>2015-03-13T06:04:34.509Z</updated>
+  <updated>2015-03-18T09:16:30.625Z</updated>
   <id>http://www.ziank.cn/</id>
   
   <author>
@@ -13,6 +13,55 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[swift函数的一些注意点]]></title>
+    <link href="http://www.ziank.cn/2015/03/18/swift-funciton/"/>
+    <id>http://www.ziank.cn/2015/03/18/swift-funciton/</id>
+    <published>2015-03-18T08:18:21.000Z</published>
+    <updated>2015-03-18T09:16:24.000Z</updated>
+    <content type="html"><![CDATA[<p>学习swift的过程中，简单说一下自己感觉swift和其他语言不太相同的几个注意点。</p>
+<h3 id="1-_swift的函数的入参和返回值都可以是一个函数。">1. swift的函数的入参和返回值都可以是一个函数。</h3>
+<a id="more"></a>
+
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> voidFunc() -&gt; <span class="type">Void</span> {</div><div class="line">}</div><div class="line"></div><div class="line"><span class="func"><span class="keyword">func</span></span> testFunc(<span class="type">Void</span>-&gt;<span class="type">Void</span>) -&gt; <span class="type">Void</span>-&gt;<span class="type">Void</span> {</div><div class="line">    <span class="keyword">return</span> voidFunc</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="2-_swift的函数返回值可以同时返回多个值">2. swift的函数返回值可以同时返回多个值</h3>
+<p>swift的函数返回值可以是一个由多个数值组成的元组(tuple)，这样就可以同时返回多个数值。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> testFunc(<span class="type">Void</span>-&gt;<span class="type">Void</span>) -&gt; (<span class="type">Int</span>, <span class="type">Int</span>) {</div><div class="line">    <span class="keyword">return</span> (<span class="number">3</span>, <span class="number">4</span>)</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="3-_外部参数名">3. 外部参数名</h3>
+<p>在swift的函数中，每一个参数都可以有本地参数名和外部参数名两个名称。<br>本地参数名就是定义函数名时，在参数列表中所写的参数名，它只可以在函数主体内使用；<br>外部参数名在函数定义时需要写在本地参数名之前，并使用空格将其分开。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> testFunc(outParam inParam:<span class="type">Int</span>) -&gt; <span class="type">Int</span> {</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>如上述代码中，外部参数名是outParam，本地参数名是inParam，在调用时需要写上外部参数名</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">testFunc(outParam: <span class="number">123</span>)</div></pre></td></tr></table></figure>
+
+<h3 id="4-_类里面的静态函数">4. 类里面的静态函数</h3>
+<p>在swift类里面的静态函数，不能使用static关键字来修饰，而应该使用Class关键字来进行修饰</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestClass</span> </span>{</div><div class="line">    <span class="keyword">class</span> <span class="func"><span class="keyword">func</span></span> testFunc() {</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="5-_ViewController和xib文件的对应">5. ViewController和xib文件的对应</h3>
+<p>除了和OC一样在xib里面设置对应的Class以外，由于swift不会自动调用xib的初始化，所以需要手动添加对应的初始化函数。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestViewController</span>: <span class="title">UIViewController</span> </span>{</div><div class="line">    convenience <span class="keyword">override</span> <span class="keyword">init</span>() {</div><div class="line">        </div><div class="line">        <span class="keyword">var</span> nibNameOrNil = <span class="type">String</span>?(<span class="string">"TestViewController"</span>)</div><div class="line">        </div><div class="line">        <span class="comment">//考虑到xib文件可能不存在或被删，故加入判断</span></div><div class="line">        <span class="keyword">if</span> <span class="type">NSBundle</span>.mainBundle().pathForResource(nibNameOrNil, ofType: <span class="string">"nib"</span>) == <span class="built_in">nil</span> {</div><div class="line">            nibNameOrNil = <span class="built_in">nil</span></div><div class="line">        }</div><div class="line">        <span class="keyword">self</span>.<span class="keyword">init</span>(nibName: nibNameOrNil, bundle: <span class="built_in">nil</span>)</div><div class="line">    }</div><div class="line">    </div><div class="line">    <span class="keyword">override</span> <span class="keyword">init</span>(nibName nibNameOrNil: <span class="type">String</span>?, bundle nibBundleOrNil: <span class="type">NSBundle</span>?) {</div><div class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(nibName: nibNameOrNil, bundle: nibBundleOrNil)</div><div class="line">    }</div><div class="line">    </div><div class="line">    required <span class="keyword">init</span>(coder aDecoder: <span class="type">NSCoder</span>) {</div><div class="line">        fatalError(<span class="string">"init(coder:) has not been implemented"</span>)</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>学习swift的过程中，简单说一下自己感觉swift和其他语言不太相同的几个注意点。</p>
+<h3 id="1-_swift的函数的入参和返回值都可以是一个函数。">1. swift的函数的入参和返回值都可以是一个函数。</h3>
+]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/tags/swift/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/categories/iOS/swift/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Cocos之场景转换（Transitions)]]></title>
