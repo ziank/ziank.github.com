@@ -247,6 +247,13 @@
 <p>当然，在enum中也可以直接定义函数，用来对内部的一些数据进行处理。</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">enum</span> <span class="title">CalcOrder</span>:<span class="title">Int</span> </span>{</div><div class="line">    <span class="keyword">case</span> <span class="type">Number</span> = <span class="number">5</span></div><div class="line">    <span class="keyword">case</span> <span class="type">Add</span>    = <span class="number">1</span></div><div class="line">    <span class="keyword">case</span> <span class="type">Multi</span>  = <span class="number">2</span></div><div class="line">    <span class="keyword">case</span> <span class="type">Logic</span>  = <span class="number">3</span></div><div class="line">    <span class="keyword">case</span> <span class="type">Shift</span>  = <span class="number">4</span></div><div class="line">    <span class="func"><span class="keyword">func</span></span> isLargerThan(val:<span class="type">CalcOrder</span>) -&gt; <span class="type">Bool</span> {</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>.rawValue &gt; val.rawValue</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
 
+<h3 id="9-_函数外部参数名的使用规则">9. 函数外部参数名的使用规则</h3>
+<p>我们前面说过函数外部参数名的概念，其实也就是参数的一个外部调用标签。那么在调用时这些标签是否能够省略是有着以下规则的：</p>
+<ol>
+<li>在类型的init方法调用时是必须要加入参数标签的</li>
+<li>在类的实例方法和类方法中，对其调用时Swift将忽略第一个参数的标签，而强制要求之后的参数名称</li>
+<li>在全局方法中，所有的参数标签默认都是忽略掉得</li>
+</ol>
 <p>暂时就先说这么多了，后续有新的内容，会再添加补充。</p>
 
       
