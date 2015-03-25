@@ -5,15 +5,15 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Cocos之基本概念 | Ziank的技术分享</title>
+  <title>swift的一些注意点(2) | Ziank的技术分享</title>
   <meta name="author" content="ziank">
   
-  <meta name="description" content="Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，一个Layer又可以拥有任意个可见的Sprit。">
+  <meta name="description" content="之前说了在学习swift过程中发现的一些和其他语言不同的点，最近在使用swift语言进行一个简单计算器的开发工作，在使用中又发现了一些需要注意的地方，这里就简单的说一下。">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="Cocos之基本概念"/>
+  <meta property="og:title" content="swift的一些注意点(2)"/>
   <meta property="og:site_name" content="Ziank的技术分享"/>
 
   
@@ -220,51 +220,34 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2015-03-02T05:53:30.000Z"><a href="/2015/03/02/cocos-basic/">Mar 2 2015</a></time>
+        <time datetime="2015-03-25T02:23:38.000Z"><a href="/2015/03/25/swift-2/">Mar 25 2015</a></time>
       
       
   
-    <h1 class="title">Cocos之基本概念</h1>
+    <h1 class="title">swift的一些注意点(2)</h1>
   
 
     </header>
     <div class="entry">
       
-        <p>Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，一个Layer又可以拥有任意个可见的Sprit。<br><a id="more"></a><br>在每一个时刻，都会有一个Scene在独立的运行，通过切换Scene来完成一个游戏流程，游戏流程的管理有Director来执行，其基本架构类图如下：<br><img src="/img/class_relateion.png" alt="基本架构类图"></p>
-<h3 id="Director">Director</h3>
-<p>Director是整个cocos-2dx引擎的核心，是整个游戏的导航仪，一些游戏的常用操作都是由Director来进行控制完成的，比如场景切换，游戏暂停，坐标转换等等。<br>由于在游戏中会使用Director控制整个游戏的流程，所以Director类的设计是单例模式的，也就是说整个游戏项目中取到的Director对象都是同一个，通常使用getInstance() 方法取得Director的实例。</p>
-<h3 id="Scene(场景)">Scene(场景)</h3>
-<p>Scene也是cocos2dx中必不可少的元素，游戏中通常我们需要构建不同的Scene（至少一个），游戏里关卡、版块的切换也就是一个一个Scene的切换，就像在电影中变换舞台和场地一样。Scene的一个重要的作用就是流程控制的作用，我们可以通过Director的一系列方法控制游戏中不同的Scene的自由切换。<br>下面是Director控制场景的常用方法：</p>
-<ul>
-<li>runWithScene( Scene *scene )<br>启动游戏，并运行scene场景。本方法在主程序第一次启动主场景的时候调用。如果已有正在运行的场景则不能调用该方法；会调用pushScene—&gt;startAnimation。</li>
-<li>pushScene( Scene *scene )<br>将当前运行中的场景暂停并压入到代码执行场景栈中，再将传入的scene设置为当前运行场景，只有存在正在运行的场景时才调用该方法；</li>
-<li>replaceScene( Scene *scene ) 直接使用传入的scene替换当前场景来切换画面，当前场景被释放。这是切换场景时最常用的方法。</li>
-<li>popScene() 释放当前场景，再从代码执行场景中弹出栈顶的场景，并将其设置为当前运行场景。如果栈为空，直接结束应用。和PushScene结对使用</li>
-<li>end() 释放和终止执行场景，同时退出应用</li>
-<li>pause() 暂停当前运行场景中的所有计时器和动作，场景仍然会显示在屏幕上</li>
-<li>resume () 恢复当前运行场景的所有计时器和动作，场景仍然会显示在屏幕上</li>
-</ul>
-<p>同时场景是层的容器，包含了所有需要显示的游戏元素。通常，当我们需要完成一个场景时候，会创建一个Scene的子类，并在子类中实现我们需要的功能。比如，我们可以在子类的初始化中载入游戏资源，为场景添加层，启动音乐播放等等。</p>
-<h3 id="Layer(层)">Layer(层)</h3>
-<p>Layer是处理玩家事件响应的Node子类。与场景不同，层通常包含的是直接在屏幕上呈现的内容，并且可以接受用户的输入事件，包括触摸，加速度计和键盘输入等。我们需要在层中加入精灵，文本标签或者其他游戏元素，并设置游戏元素的属性，比如位置，方向和大小；设置游戏元素的动作等。通常，层中的对象功能类似，耦合较紧，与层中游戏内容相关的逻辑代码也编写在层中，在组织好层后，只需要把层按照顺序添加到场景中就可以显示出来了。要向场景添加层，我们可以使用addChild方法。</p>
-<p>addChild( Node child ) addChild( Node child, int zOrder ) addChild( Node *child, int zOrder, int tag )</p>
-<p>其中，Child参数就是节点。对于场景而言，通常我们添加的节点就是层。先添加的层会被置于后添加的层之下。如果需要为它们指定先后次序，可以使用不同的zOrder值。tag是元素的标识号码，如果为子节点设置了tag值，就可以在它的父节点中利用tag值就可以找到它了。层可以包含任何Node作为子节点，包括Sprites(精灵), Labels(标签)，甚至其他的Layer对象。</p>
-<h3 id="Sprit(精灵)">Sprit(精灵)</h3>
-<p>Cocos2d中的精灵和其他游戏引擎中的精灵相似，它可以移动，旋转，缩放，执行动画，并接受其他转换。Cocos2dx的Sprite由Texure，frame和animation组成，由openes负责渲染。</p>
-<p>简单过程可描述为：<br>使用Texture2D加载图片，可以用Texture2D生成对应的SpriteFrame（精灵帧），将SpriteFrame添加到Animation生成动画数据，用Animation生成Animate（就是最终的动画动作），最后用Sprite执行这个动作。<br>创建精灵的几种方式：</p>
-<p>直接创建:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> sprite = Sprite::create(<span class="string">"HelloWorld.png"</span>);      </div><div class="line"><span class="keyword">this</span>-&gt;addChild(sprite,<span class="number">0</span>);</div></pre></td></tr></table></figure>
+        <p>之前说了在学习swift过程中发现的一些和其他语言不同的点，最近在使用swift语言进行一个简单计算器的开发工作，在使用中又发现了一些需要注意的地方，这里就简单的说一下。<br><a id="more"></a></p>
+<h3 id="6-_switch/case的使用">6. switch/case的使用</h3>
+<p>和其他语言一样，swift也支持switch的使用。但是和其他语言不同的是，swift里面的每一个case分支不需要显示break，而是在执行结束后会自动break。<br>而且如果对不同case执行相同操作的话，和其他语言的写法也不相同。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">init</span>(calc: <span class="type">CalcType</span>) {</div><div class="line">    calcElement = <span class="type">NodeType</span>.<span class="type">Action</span>(calc)</div><div class="line">    <span class="keyword">switch</span> calc {</div><div class="line">    <span class="keyword">case</span> .<span class="type">Add</span>, .<span class="type">Minus</span>, .<span class="type">Mod</span>:</div><div class="line">        calcOrder = <span class="type">CalcOrder</span>.<span class="type">Add</span></div><div class="line">    <span class="keyword">case</span> .<span class="type">Multi</span>, .<span class="type">Divide</span>:</div><div class="line">        calcOrder = <span class="type">CalcOrder</span>.<span class="type">Multi</span></div><div class="line">    <span class="keyword">case</span> .<span class="type">And</span>, .<span class="type">Or</span>, .<span class="type">Xor</span>:</div><div class="line">        calcOrder = <span class="type">CalcOrder</span>.<span class="type">Logic</span></div><div class="line">    <span class="keyword">case</span> .<span class="type">ShiftLeft</span>, .<span class="type">ShiftRight</span>:</div><div class="line">        calcOrder = <span class="type">CalcOrder</span>.<span class="type">Shift</span></div><div class="line">    }</div><div class="line">    </div><div class="line">    <span class="keyword">super</span>.<span class="keyword">init</span>()</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p>使用纹理来创建精灵:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> sprite1 = Sprite::createWithTexture(TextureCache::getInstance()-&gt;addImage(<span class="string">"HelloWorld.png"</span>));</div><div class="line"><span class="keyword">this</span>-&gt;addChild(sprite1, <span class="number">0</span>);</div></pre></td></tr></table></figure>
+<h3 id="7-_成员变量getter/setter方法的定义">7. 成员变量getter/setter方法的定义</h3>
+<p>OC中get/set方法的定义一般是通过getter/setter来声明，或者直接修改系统默认的getter/setter方法。而在swift中对属性的getter/setter方法实在定义该属性时直接通过get/set进行设置。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> value:<span class="type">UInt</span> {</div><div class="line">    <span class="keyword">get</span> {</div><div class="line">        <span class="keyword">switch</span> <span class="keyword">self</span>.calcElement {</div><div class="line">        <span class="keyword">case</span> <span class="keyword">let</span> .<span class="type">Number</span>(number):</div><div class="line">            <span class="keyword">return</span> number</div><div class="line">        <span class="keyword">case</span> <span class="keyword">let</span> .<span class="type">Action</span>(str):</div><div class="line">            <span class="keyword">return</span> <span class="keyword">self</span>.calcValue(str)</div><div class="line">        }</div><div class="line">    }</div><div class="line">    </div><div class="line">    <span class="keyword">set</span> (newValue) {</div><div class="line">        <span class="keyword">self</span>.value = newValue</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p>使用精灵帧来创建精灵:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> sprite2=Sprite::createWithSpriteFrameName(<span class="string">"HelloWorld.png"</span>);　　</div><div class="line"><span class="keyword">this</span>-&gt;addChild(sprite2, <span class="number">0</span>);</div></pre></td></tr></table></figure>
+<h3 id="8-_enum的使用">8. enum的使用</h3>
+<p>在OC等语言中，enum就是一个枚举类型，只能够定义一组枚举常量。但是在swift中，enum除了类似功能以外，还可以把不同的数据类型存储在同一个变量中，有点类似于C中union的用法。<br>如可以这样定义enum：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">enum</span> <span class="title">NodeType</span> </span>{</div><div class="line">    <span class="keyword">case</span> <span class="type">Number</span>(<span class="type">UInt</span>)</div><div class="line">    <span class="keyword">case</span> <span class="type">Action</span>(<span class="type">CalcType</span>)</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p>在Cocos2dx中实现精灵显示的基本过程如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//创建Scene</span></div><div class="line"><span class="keyword">auto</span> scene = Scene::create();</div><div class="line"><span class="comment">//创建层</span></div><div class="line"><span class="keyword">auto</span> layer = HelloWorld::create();</div><div class="line"><span class="comment">//把层加入场景中</span></div><div class="line">scene-&gt;addChild(layer);</div><div class="line"><span class="comment">//创建一个精灵</span></div><div class="line"><span class="keyword">auto</span> sprite = Sprite::create(<span class="string">"HelloWorld.png"</span>);</div><div class="line"><span class="comment">//把精灵加到层里</span></div><div class="line">layer-&gt;addChild(sprite, <span class="number">0</span>);</div></pre></td></tr></table></figure>
+<p>那么在NodeType类型的变量中就会有一个UInt或者是CalcType类型的变量，可以在适当的时候获取对应的数据。由7的示例代码中可以看到，当需要获取对应数据时，使用case let可以把数据从enum的变量中获取出来。</p>
+<p>当然，在enum中也可以直接定义函数，用来对内部的一些数据进行处理。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">enum</span> <span class="title">CalcOrder</span>:<span class="title">Int</span> </span>{</div><div class="line">    <span class="keyword">case</span> <span class="type">Number</span> = <span class="number">5</span></div><div class="line">    <span class="keyword">case</span> <span class="type">Add</span>    = <span class="number">1</span></div><div class="line">    <span class="keyword">case</span> <span class="type">Multi</span>  = <span class="number">2</span></div><div class="line">    <span class="keyword">case</span> <span class="type">Logic</span>  = <span class="number">3</span></div><div class="line">    <span class="keyword">case</span> <span class="type">Shift</span>  = <span class="number">4</span></div><div class="line">    <span class="func"><span class="keyword">func</span></span> isLargerThan(val:<span class="type">CalcOrder</span>) -&gt; <span class="type">Bool</span> {</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>.rawValue &gt; val.rawValue</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p><em>以上内容基本来自<a href="http://cn.cocos2d-x.org/article/index?type=cocos2d-x" target="_blank" rel="external">官方文档</a></em></p>
+<p>暂时就先说这么多了，后续有新的内容，会再添加补充。</p>
 
       
     </div>
@@ -273,13 +256,13 @@
         
   
   <div class="categories">
-    <a href="/categories/Cocos/">Cocos</a>, <a href="/categories/Cocos/文档/">文档</a>
+    <a href="/categories/iOS/">iOS</a>, <a href="/categories/iOS/swift/">swift</a>
   </div>
 
         
   
   <div class="tags">
-    <a href="/tags/Cocos/">Cocos</a>
+    <a href="/tags/iOS/">iOS</a>, <a href="/tags/swift/">swift</a>
   </div>
 
 <!-- Baidu Button BEGIN -->
@@ -307,10 +290,8 @@ document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static
 
  <nav id="pagination" >
     
-    <a href="/2015/03/05/cocos-image/" class="alignleft prev" >Prev</a>
     
-    
-    <a href="/2015/01/29/UILable_CoreText/" class="alignright next" >Next</a>
+    <a href="/2015/03/18/swift-funciton/" class="alignright next" >Next</a>
     
     <div class="clearfix"></div>
 </nav>
