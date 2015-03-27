@@ -9,7 +9,7 @@
   <meta name="author" content="ziank">
   
   <meta name="description" content="今天简单说一下操作符重载的相关知识吧，希望对自己和别人能够有所帮助。相信懂得C++的同学对于运算符重载并不陌生，在swift中也是支持重载运算符这种特性的。
-操作符重载的好处无需多说，相信大家都明白。那么我们在swift应该如何重载操作符呢？其实很简单，和C++基本一样，只需要添加对应的函数实现就可">
+操作符重载的好处无需多说，相信大家都明白。那么我们在swift应该如何重载操作符呢？其实很简单，和C++基本一样，只需要添加对应的函数实现就可以了。">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -233,6 +233,8 @@
       
         <p>今天简单说一下操作符重载的相关知识吧，希望对自己和别人能够有所帮助。相信懂得C++的同学对于运算符重载并不陌生，在swift中也是支持重载运算符这种特性的。</p>
 <p>操作符重载的好处无需多说，相信大家都明白。那么我们在swift应该如何重载操作符呢？其实很简单，和C++基本一样，只需要添加对应的函数实现就可以了。</p>
+<a id="more"></a>
+
 <p>例如我们重载加号操作符的话：</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> +(<span class="keyword">left</span>:<span class="type">CalcNode</span>, <span class="keyword">right</span>: <span class="type">CalcNode</span>) -&gt; <span class="type">CalcNode</span> {</div><div class="line">    <span class="keyword">return</span> <span class="type">CalcNode</span>(number:<span class="keyword">left</span>.value + <span class="keyword">right</span>.value)</div><div class="line">}</div></pre></td></tr></table></figure>
 
