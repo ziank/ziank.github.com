@@ -229,19 +229,15 @@
     </header>
     <div class="entry">
       
-        <p>最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。<br><img src="/img/todayViewExtensionHeight_1.png" alt="位置不正确的图片"></p>
-<p>为此我们查了不少资料，最后发现只是一个很简单地设置问题，是由于系统默认的todayView的偏移量为</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">defaultMarginInsets =</span> (<span class="variable">top =</span> <span class="number">0</span>, <span class="variable">left =</span> <span class="number">47</span>, <span class="variable">bottom =</span> <span class="number">39</span>, <span class="variable">right =</span> <span class="number">0</span>);</div></pre></td></tr></table></figure>
-
-<p>所以只需要简单地修改这个偏移量，就能够解决该问题。对偏移量的修改应该在方法<code>widgetMarginInsetsForProposedMarginInsets</code>中进行修改:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIEdgeInsets</span>)widgetMarginInsetsForProposedMarginInsets:(<span class="built_in">UIEdgeInsets</span>)defaultMarginInsets</div><div class="line">{</div><div class="line">    defaultMarginInsets<span class="variable">.bottom</span> = <span class="number">0</span>;</div><div class="line">    <span class="keyword">return</span> defaultMarginInsets;</div><div class="line">}</div></pre></td></tr></table></figure>
-
-<p>修改之后，todayView的界面就正常了。<br><img src="/img/todayViewExtensionHeight_2.png" alt="修改后的todayViewExtension截图"></p>
-
+        <p>最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。<br>
       
     </div>
     <footer>
       
+        
+          <div class="alignleft">
+            <a href="/2015/05/11/todayViewExtensionHeight/#more" class="more-link">阅读全文</a>
+          </div>
         
         
       

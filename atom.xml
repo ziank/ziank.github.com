@@ -4,7 +4,7 @@
   <subtitle><![CDATA[一些个人学习的文档]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.ziank.cn/"/>
-  <updated>2015-05-11T08:48:36.631Z</updated>
+  <updated>2015-05-11T08:51:40.257Z</updated>
   <id>http://www.ziank.cn/</id>
   
   <author>
@@ -19,8 +19,8 @@
     <link href="http://www.ziank.cn/2015/05/11/todayViewExtensionHeight/"/>
     <id>http://www.ziank.cn/2015/05/11/todayViewExtensionHeight/</id>
     <published>2015-05-11T07:17:59.000Z</published>
-    <updated>2015-05-11T07:38:23.000Z</updated>
-    <content type="html"><![CDATA[<p>最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。<br><img src="/img/todayViewExtensionHeight_1.png" alt="位置不正确的图片"></p>
+    <updated>2015-05-11T08:51:29.000Z</updated>
+    <content type="html"><![CDATA[<p>最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。<br><a id="more"></a><br><img src="/img/todayViewExtensionHeight_1.png" alt="位置不正确的图片"></p>
 <p>为此我们查了不少资料，最后发现只是一个很简单地设置问题，是由于系统默认的todayView的偏移量为</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">defaultMarginInsets =</span> (<span class="variable">top =</span> <span class="number">0</span>, <span class="variable">left =</span> <span class="number">47</span>, <span class="variable">bottom =</span> <span class="number">39</span>, <span class="variable">right =</span> <span class="number">0</span>);</div></pre></td></tr></table></figure>
 
@@ -30,7 +30,8 @@
 <p>修改之后，todayView的界面就正常了。<br><img src="/img/todayViewExtensionHeight_2.png" alt="修改后的todayViewExtension截图"></p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。<br><img src="/img/toda]]>
+    <![CDATA[<p>最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。<br>]]>
+    
     </summary>
     
       <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
