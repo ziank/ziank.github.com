@@ -219,6 +219,102 @@
     <header>
       
         <div class="icon"></div>
+        <time datetime="2015-05-11T07:17:59.000Z"><a href="/2015/05/11/todayViewExtensionHeight/">May 11 2015</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/05/11/todayViewExtensionHeight/">todayView组件的高度处理问题</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。<br><img src="/img/todayViewExtensionHeight_1.png" alt="位置不正确的图片"></p>
+<p>为此我们查了不少资料，最后发现只是一个很简单地设置问题，是由于系统默认的todayView的偏移量为</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">defaultMarginInsets =</span> (<span class="variable">top =</span> <span class="number">0</span>, <span class="variable">left =</span> <span class="number">47</span>, <span class="variable">bottom =</span> <span class="number">39</span>, <span class="variable">right =</span> <span class="number">0</span>);</div></pre></td></tr></table></figure>
+
+<p>所以只需要简单地修改这个偏移量，就能够解决该问题。对偏移量的修改应该在方法<code>widgetMarginInsetsForProposedMarginInsets</code>中进行修改:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIEdgeInsets</span>)widgetMarginInsetsForProposedMarginInsets:(<span class="built_in">UIEdgeInsets</span>)defaultMarginInsets</div><div class="line">{</div><div class="line">    defaultMarginInsets<span class="variable">.bottom</span> = <span class="number">0</span>;</div><div class="line">    <span class="keyword">return</span> defaultMarginInsets;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>修改之后，todayView的界面就正常了。<br><img src="/img/todayViewExtensionHeight_2.png" alt="修改后的todayViewExtension截图"></p>
+
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-04-03T03:31:33.000Z"><a href="/2015/04/03/touchid-resignactive/">Apr 3 2015</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/04/03/touchid-resignactive/">touchid_resignactive</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        
+      
+    </div>
+    <footer>
+      
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
         <time datetime="2015-03-27T02:23:38.000Z"><a href="/2015/03/27/swift-operator/">Mar 27 2015</a></time>
       
       
@@ -349,104 +445,6 @@
 
 
 
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-03-11T07:58:12.000Z"><a href="/2015/03/11/cocos-scene/">Mar 11 2015</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/03/11/cocos-scene/">Cocos之场景转换（Transitions)</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>我们在基础概念一节讲过修改当前场景的常见方式有三种，pushScene，replaceScene和popScene；但是切换场景使用的效果则会有很多种，例如淡入淡出，放大缩小，跳动等等。<br>Cocos提供了这种在两个场景之间直接进行转换的能力，在技术上讲，一个场景转换就是在展示并控制一个新场景之前执行的一个切换效果。<br>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/03/11/cocos-scene/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-03-06T02:27:08.000Z"><a href="/2015/03/06/edgeInsets/">Mar 6 2015</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/03/06/edgeInsets/">如何把UIButton中的图片和文字上下对齐</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h2 id="前言">前言</h2>
-<p>我们都知道在UIButton中可以设置图片和文字，也经常见到同时设置有图片和下方提示文字的按钮，但是当我自己去对图片按钮添加提示文字的时候，却发现这并不是想象中的那么简单。</p>
-<p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/03/06/edgeInsets/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
 
 <nav id="pagination">
   
@@ -470,7 +468,7 @@
   
     <li><a href="/categories/Cocos/">Cocos</a><small>3</small></li>
   
-    <li><a href="/categories/iOS/">iOS</a><small>12</small></li>
+    <li><a href="/categories/iOS/">iOS</a><small>13</small></li>
   
     <li><a href="/categories/iOS/swift/">swift</a><small>3</small></li>
   
