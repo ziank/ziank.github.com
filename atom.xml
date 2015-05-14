@@ -4,7 +4,7 @@
   <subtitle><![CDATA[一些个人学习的文档]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.ziank.cn/"/>
-  <updated>2015-05-14T08:31:59.443Z</updated>
+  <updated>2015-05-14T08:33:32.268Z</updated>
   <id>http://www.ziank.cn/</id>
   
   <author>
@@ -19,8 +19,8 @@
     <link href="http://www.ziank.cn/2015/05/14/char-const/"/>
     <id>http://www.ziank.cn/2015/05/14/char-const/</id>
     <published>2015-05-14T08:14:31.000Z</published>
-    <updated>2015-05-14T08:31:56.000Z</updated>
-    <content type="html"><![CDATA[<p>不知道别人是什么样，反正我每次看到const char <em> 和char </em> const 就想把写这个代码的人给拉出来枪毙十分钟，教科书上说过它们的区别，但是每次都会忘记，所以只能够每次都去网上查找。<br><a id="more"></a><br>这次我也只是相当于做一个记录，让自己和看到这篇博客的人知道可以在这里找到答案。</p>
+    <updated>2015-05-14T08:33:02.000Z</updated>
+    <content type="html"><![CDATA[<p>不知道别人是什么样，反正我每次看到<code>const char *</code> 和<code>char * const</code> 就想把写这个代码的人给拉出来枪毙十分钟，教科书上说过它们的区别，但是每次都会忘记，所以只能够每次都去网上查找。<br><a id="more"></a><br>这次我也只是相当于做一个记录，让自己和看到这篇博客的人知道可以在这里找到答案。</p>
 <ul>
 <li><code>const char *p</code> 是一个指向常量的指针，就是说不能能够修改<code>*p</code>的值，但是可以修改<code>p</code>的值</li>
 <li><code>char *const p</code> 是一个常量指针，指向的内容是变量，所以<code>p</code>可以修改<code>*p</code>的值，但是不可以修改<code>p</code>的值</li>
@@ -31,7 +31,7 @@
 <p>或者简单地说，1，2的情况就是<code>const</code>修饰更近的参数，与<code>char</code>相近时修饰<code>char</code>，也就是指针值不可修改；与<code>*</code>相近时修饰地址，也就是指针不可修改。</p>
 ]]></content>
     <summary type="html">
-    <![CDATA[<p>不知道别人是什么样，反正我每次看到const char <em> 和char </em> const 就想把写这个代码的人给拉出来枪毙十分钟，教科书上说过它们的区别，但是每次都会忘记，所以只能够每次都去网上查找。<br>]]>
+    <![CDATA[<p>不知道别人是什么样，反正我每次看到<code>const char *</code> 和<code>char * const</code> 就想把写这个代码的人给拉出来枪毙十分钟，教科书上说过它们的区别，但是每次都会忘记，所以只能够每次都去网上查找。<br>]]>
     
     </summary>
     
