@@ -8,9 +8,7 @@
   <title>浅析const char *, char * const, char const *, const char * const 的区别 | Ziank的技术分享</title>
   <meta name="author" content="ziank">
   
-  <meta name="description" content="不知道别人是什么样，反正我每次看到const char * 和char * const 就想把写这个代码的人给拉出来枪毙十分钟，教科书上说过它们的区别，但是每次都会忘记，所以只能够每次都去网上查找。
-&amp;lt;!-- more --&amp;gt;
-这次我也只是相当于做一个记录，让自己和看到这篇博客的人知道可">
+  <meta name="description" content="不知道别人是什么样，反正我每次看到const char  和char  const 就想把写这个代码的人给拉出来枪毙十分钟，教科书上说过它们的区别，但是每次都会忘记，所以只能够每次都去网上查找。">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
@@ -232,10 +230,8 @@
     </header>
     <div class="entry">
       
-        <pre><code>不知道别人是什么样，反正我每次看到const char * 和char * const 就想把写这个代码的人给拉出来枪毙十分钟，教科书上说过它们的区别，但是每次都会忘记，所以只能够每次都去网上查找。
-<span class="comment">&lt;!-- more --&gt;</span>
-这次我也只是相当于做一个记录，让自己和看到这篇博客的人知道可以在这里找到答案。
-</code></pre><ul>
+        <p>不知道别人是什么样，反正我每次看到const char <em> 和char </em> const 就想把写这个代码的人给拉出来枪毙十分钟，教科书上说过它们的区别，但是每次都会忘记，所以只能够每次都去网上查找。<br><a id="more"></a><br>这次我也只是相当于做一个记录，让自己和看到这篇博客的人知道可以在这里找到答案。</p>
+<ul>
 <li>const char <em>p 是一个指向常量的指针，就是说不能能够修改</em>p的值，但是可以修改p的值</li>
 <li>char <em>const p 是一个常量指针，指向的内容是变量，所以p可以修改</em>p的值，但是不可以修改p的值</li>
 <li>char const <em>p 和const char</em> p是一样的</li>
