@@ -232,13 +232,13 @@
       
         <p>不知道别人是什么样，反正我每次看到const char <em> 和char </em> const 就想把写这个代码的人给拉出来枪毙十分钟，教科书上说过它们的区别，但是每次都会忘记，所以只能够每次都去网上查找。<br><a id="more"></a><br>这次我也只是相当于做一个记录，让自己和看到这篇博客的人知道可以在这里找到答案。</p>
 <ul>
-<li>const char <em>p 是一个指向常量的指针，就是说不能能够修改</em>p的值，但是可以修改p的值</li>
-<li>char <em>const p 是一个常量指针，指向的内容是变量，所以p可以修改</em>p的值，但是不可以修改p的值</li>
-<li>char const <em>p 和const char</em> p是一样的</li>
-<li>const *char p 会引起编译错误，是一种错误的写法</li>
-<li>const char <em> const p 是一个指向常量的常量指针，就是说p和</em>p都不可以修改</li>
+<li><code>const char *p</code> 是一个指向常量的指针，就是说不能能够修改<code>*p</code>的值，但是可以修改<code>p</code>的值</li>
+<li><code>char *const p</code> 是一个常量指针，指向的内容是变量，所以<code>p</code>可以修改<code>*p</code>的值，但是不可以修改<code>p</code>的值</li>
+<li><code>char const *p</code> 和<code>const char* p</code>是一样的</li>
+<li><code>const *char p</code> 会引起编译错误，是一种错误的写法</li>
+<li><code>const char * const p</code> 是一个指向常量的常量指针，就是说p和*p都不可以修改</li>
 </ul>
-<p>或者简单地说，1，2的情况就是const修饰更近的参数，与char相近时修饰char，也就是指针值不可修改；与*相近时修饰地址，也就是指针不可修改。</p>
+<p>或者简单地说，1，2的情况就是<code>const</code>修饰更近的参数，与<code>char</code>相近时修饰<code>char</code>，也就是指针值不可修改；与<code>*</code>相近时修饰地址，也就是指针不可修改。</p>
 
       
     </div>
