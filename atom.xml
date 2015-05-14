@@ -4,7 +4,7 @@
   <subtitle><![CDATA[一些个人学习的文档]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.ziank.cn/"/>
-  <updated>2015-05-14T08:27:04.041Z</updated>
+  <updated>2015-05-14T08:28:02.590Z</updated>
   <id>http://www.ziank.cn/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.ziank.cn/2015/05/14/char-const/"/>
     <id>http://www.ziank.cn/2015/05/14/char-const/</id>
     <published>2015-05-14T08:14:31.000Z</published>
-    <updated>2015-05-14T08:27:00.000Z</updated>
+    <updated>2015-05-14T08:28:00.000Z</updated>
     <content type="html"><![CDATA[<pre><code>不知道别人是什么样，反正我每次看到const char * 和char * const 就想把写这个代码的人给拉出来枪毙十分钟，教科书上说过它们的区别，但是每次都会忘记，所以只能够每次都去网上查找。
 <span class="comment">&lt;!-- more --&gt;</span>
 这次我也只是相当于做一个记录，让自己和看到这篇博客的人知道可以在这里找到答案。
