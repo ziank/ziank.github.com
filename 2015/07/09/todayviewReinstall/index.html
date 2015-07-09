@@ -5,13 +5,16 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Ziank的技术分享</title>
+  <title>TodayExtension的覆盖安装 | Ziank的技术分享</title>
   <meta name="author" content="ziank">
+  
+  <meta name="description" content="这里有两个问题需要注意一下，一个是覆盖安装或者升级后TodayExtension的内容不会更新；另一个是在覆盖安装后TodayExtension的界面整个冻结，无法点击。
+我们先说第一个问题，这个问题主要出现在使用XCode重复安转应用之后，会发现自己对TodayExtension的修改没有生效，其">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="TodayExtension的覆盖安装"/>
   <meta property="og:site_name" content="Ziank的技术分享"/>
 
   
@@ -218,23 +221,36 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2015-07-09T07:16:59.000Z"><a href="/2015/07/09/todayviewReinstall/">Jul 9 2015</a></time>
+        <time datetime="2015-07-09T07:16:37.000Z"><a href="/2015/07/09/todayviewReinstall/">Jul 9 2015</a></time>
       
       
   
-    <h1 class="title"></h1>
+    <h1 class="title">TodayExtension的覆盖安装</h1>
   
 
     </header>
     <div class="entry">
       
-        
+        <p>这里有两个问题需要注意一下，一个是覆盖安装或者升级后TodayExtension的内容不会更新；另一个是在覆盖安装后TodayExtension的界面整个冻结，无法点击。</p>
+<p>我们先说第一个问题，这个问题主要出现在使用XCode重复安转应用之后，会发现自己对TodayExtension的修改没有生效，其主要原因是设置的问题，XCode中对于TodayExtension有一项设置是只在安装和更新时copy插件，需要取消选中才能够在使用XCode时对TodayExtension的修改直接生效。<br><img src="/img/copyOnly.png" alt="XCode设置项位置"></p>
+<p>再说第二个问题，我在使用fir安装应用的时候遇到了第二个问题，搜索了stackOverFlow，查看了苹果的官方文档，都没有发现解决方案，最后才发现这个问题可以说是庸人自扰。这个问题是由于使用了企业发布的安装方式才导致的。由于使用企业发布，重新安装时不会在原来的应用程序上直接覆盖，而是新安装应用，然后删除原来的应用。这样就导致了原来应用的TodayExtension没有重新刷新，所以会导致界面冻结的情况。实际上只要使用苹果提供的testFlight进行测试就会发现，这个问题在上传到AppStore时并不会存在，不需要进行过多的关心。</p>
+
       
     </div>
     <footer>
       
         
+  
+  <div class="categories">
+    <a href="/categories/iOS/">iOS</a>
+  </div>
+
         
+  
+  <div class="tags">
+    <a href="/tags/iOS/">iOS</a>, <a href="/tags/today/">today</a>, <a href="/tags/extension/">extension</a>
+  </div>
+
 <!-- Baidu Button BEGIN -->
 <div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
 <a class="bds_qzone"></a>
@@ -306,7 +322,7 @@ var duoshuoQuery = {short_name:"ziank"};
   
     <li><a href="/categories/Cocos/">Cocos</a><small>3</small></li>
   
-    <li><a href="/categories/iOS/">iOS</a><small>13</small></li>
+    <li><a href="/categories/iOS/">iOS</a><small>14</small></li>
   
     <li><a href="/categories/iOS/swift/">swift</a><small>3</small></li>
   

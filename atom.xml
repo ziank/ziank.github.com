@@ -4,7 +4,7 @@
   <subtitle><![CDATA[一些个人学习的文档]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.ziank.cn/"/>
-  <updated>2015-07-09T07:32:39.897Z</updated>
+  <updated>2015-07-09T07:34:04.756Z</updated>
   <id>http://www.ziank.cn/</id>
   
   <author>
@@ -15,15 +15,27 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
-    <title><![CDATA[]]></title>
+    <title><![CDATA[TodayExtension的覆盖安装]]></title>
     <link href="http://www.ziank.cn/2015/07/09/todayviewReinstall/"/>
     <id>http://www.ziank.cn/2015/07/09/todayviewReinstall/</id>
-    <published>2015-07-09T07:16:59.000Z</published>
-    <updated>2015-07-09T07:16:59.000Z</updated>
-    <content type="html"><![CDATA[]]></content>
+    <published>2015-07-09T07:16:37.000Z</published>
+    <updated>2015-07-09T07:33:55.000Z</updated>
+    <content type="html"><![CDATA[<p>这里有两个问题需要注意一下，一个是覆盖安装或者升级后TodayExtension的内容不会更新；另一个是在覆盖安装后TodayExtension的界面整个冻结，无法点击。</p>
+<p>我们先说第一个问题，这个问题主要出现在使用XCode重复安转应用之后，会发现自己对TodayExtension的修改没有生效，其主要原因是设置的问题，XCode中对于TodayExtension有一项设置是只在安装和更新时copy插件，需要取消选中才能够在使用XCode时对TodayExtension的修改直接生效。<br><img src="/img/copyOnly.png" alt="XCode设置项位置"></p>
+<p>再说第二个问题，我在使用fir安装应用的时候遇到了第二个问题，搜索了stackOverFlow，查看了苹果的官方文档，都没有发现解决方案，最后才发现这个问题可以说是庸人自扰。这个问题是由于使用了企业发布的安装方式才导致的。由于使用企业发布，重新安装时不会在原来的应用程序上直接覆盖，而是新安装应用，然后删除原来的应用。这样就导致了原来应用的TodayExtension没有重新刷新，所以会导致界面冻结的情况。实际上只要使用苹果提供的testFlight进行测试就会发现，这个问题在上传到AppStore时并不会存在，不需要进行过多的关心。</p>
+]]></content>
     <summary type="html">
-    <![CDATA[]]>
+    <![CDATA[<p>这里有两个问题需要注意一下，一个是覆盖安装或者升级后TodayExtension的内容不会更新；另一个是在覆盖安装后TodayExtension的界面整个冻结，无法点击。</p>
+<p>我们先说第一个问题，这个问题主要出现在使用XCode重复安转应用之后，会发现自己对Tod]]>
     </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="today" scheme="http://www.ziank.cn/tags/today/"/>
+    
+      <category term="extension" scheme="http://www.ziank.cn/tags/extension/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
     
   </entry>
   
