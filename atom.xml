@@ -4,7 +4,7 @@
   <subtitle><![CDATA[一些个人学习的文档]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.ziank.cn/"/>
-  <updated>2015-07-09T07:35:26.249Z</updated>
+  <updated>2015-08-14T07:13:40.584Z</updated>
   <id>http://www.ziank.cn/</id>
   
   <author>
@@ -13,6 +13,39 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[iOS应用Push证书的申请]]></title>
+    <link href="http://www.ziank.cn/2015/08/14/notification/"/>
+    <id>http://www.ziank.cn/2015/08/14/notification/</id>
+    <published>2015-08-14T06:29:02.000Z</published>
+    <updated>2015-08-14T07:13:30.000Z</updated>
+    <content type="html"><![CDATA[<p>我们都知道苹果的iOS应用只支持自己的APNS推送，所有的开发者如果要开发推送功能都必须申请APNS推送证书，才能够实现推送功能。<br>基本上对iOS有点了解的开发者都明白APNS推送的基本原理，那就是客户端向APNS请求deviceToken，传递给Server，然后Server根据这个deviceToken和APNS推送证书，把要推送的消息发送给APNS服务器，APNS服务器就会把对应的消息发送给客户端设备，进而分发给应用。<br><a id="more"></a><br><img src="/img/apns_1.jpg" alt="APNS推送原理"></p>
+<h2 id="申请Push证书流程">申请Push证书流程</h2>
+<p>那么我们使用服务器向APNS服务发送消息的时候，可以通过客户端获取到DeviceToken，那么推送证书，也就是上图中的payload从哪里获取呢？这个就要去苹果的开发者网站上生成对应的APNS推送证书并下载了。<br>生成APNS推送证书的主要步骤和生成开发者证书类似，都要先生成一个certSigningRequest文件，也就是在【钥匙串】【证书助理】中生成的请求文件，不会的童鞋可以百度一下开发者证书的生成过程。<br>之后在开发者网站上打开要推送应用的AppID，点击Edit，进入下图中的界面。<br><img src="/img/apns_2.png" alt="生成推送证书"><br>勾选Push Notifications，然后选择Create Certificate，分别对应开发环境的push证书，和上线AppStore后的push证书。创建证书的过程和创建开发者证书一样。</p>
+<p>下载push证书以后，可以在钥匙串中导出对应的p12证书文件，然后就可以使用该证书连接APNS服务器，发送PUSH消息了。需要注意的是发送的消息必须是指定格式的内容，否则会发送失败哦。<br><img src="/img/apns_3.png" alt="生成p12证书文件"></p>
+<h2 id="客户端获取DeviceToken的方法">客户端获取DeviceToken的方法</h2>
+<p>客户端需要在didFinishLaunching方法中添加注册push通知的方法，以获取对应的deviceToken。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">BOOL</span>)application:(<span class="built_in">UIApplication</span> *)application didFinishLaunchingWithOptions:(<span class="built_in">NSDictionary</span> *)launchOptions</div><div class="line">{</div><div class="line">[<span class="keyword">self</span><span class="variable">.window</span> makeKeyAndVisible];</div><div class="line">[[<span class="built_in">UIApplication</span> sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];</div><div class="line"><span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>然后添加接收注册结果的方法，就可以获取到对应的deviceToken。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="pp">- <span class="params">(void)</span>application:<span class="params">(<span class="variable">UIApplication</span> *)</span>application didRegisterForRemoteNotificationsWithDeviceToken:<span class="params">(<span class="variable">NSData</span> *)</span>pToken {</span></div><div class="line">NSLog<span class="params">(@<span class="string">"regisger success:%@"</span>, p<span class="variable">Token</span>)</span>;</div><div class="line">//注册成功，返回deviceToken</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>同一个应用在同一台设备上的deviceToken基本上都是不会变化的，一般只有对设备恢复出厂设置才会导致deviceToken的变化。</p>
+<h3 id="但是要注意的是，一个应用的develop和distribution版本获取到的deviceToken是不同的。">但是要注意的是，一个应用的develop和distribution版本获取到的deviceToken是不同的。</h3>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>我们都知道苹果的iOS应用只支持自己的APNS推送，所有的开发者如果要开发推送功能都必须申请APNS推送证书，才能够实现推送功能。<br>基本上对iOS有点了解的开发者都明白APNS推送的基本原理，那就是客户端向APNS请求deviceToken，传递给Server，然后Server根据这个deviceToken和APNS推送证书，把要推送的消息发送给APNS服务器，APNS服务器就会把对应的消息发送给客户端设备，进而分发给应用。<br>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="Push" scheme="http://www.ziank.cn/tags/Push/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[TodayExtension的覆盖安装]]></title>
