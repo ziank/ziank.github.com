@@ -4,7 +4,7 @@
   <subtitle><![CDATA[一些个人学习的文档]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.ziank.cn/"/>
-  <updated>2015-11-19T06:47:03.140Z</updated>
+  <updated>2015-11-19T07:09:37.899Z</updated>
   <id>http://www.ziank.cn/</id>
   
   <author>
@@ -19,37 +19,35 @@
     <link href="http://www.ziank.cn/2015/11/19/weixin/"/>
     <id>http://www.ziank.cn/2015/11/19/weixin/</id>
     <published>2015-11-19T05:50:47.000Z</published>
-    <updated>2015-11-19T06:39:37.000Z</updated>
+    <updated>2015-11-19T07:09:23.000Z</updated>
     <content type="html"><![CDATA[<p>最近由于某些原因吧，想要找一些关于微信发送消息的协议，最后也没有真正的找到，又懒得自己去抓包进行解析，就查找了一些通过http进行微信通信的文章，这里也对自己了解的做一个简单总结。<br><a id="more"></a><br>web微信的通信过程主要就那么几步，登陆，同步，发送消息等等。因为我只看了发送消息的部分，这里也就只简单说一下发送的方法，不多描述接收消息的想法。如果有人想要了解接收的话，可以查看<a href="http://www.myhack58.com/Article/54/93/2015/66422.htm" target="_blank" rel="external">挖掘微信Web网页版通信的全过程</a>，配合自己进行http抓包可以简单的通过分析进行实现。</p>
 <ol>
 <li>获取二维码。<br> 大家都知道web微信登录主要是通过手机扫描二维码实现，所以第一步就是获取对应的二维码。<ul>
-<li>请求uuid，URL地址可以使用<code>https://login.weixin.qq.com/jslogin?appid=wx782c26e4c19acffb&amp;redirect_uri=https%%3A%%2F%%2Fwx.qq.com%%2Fcgi-bin%%2Fmmwebwx-bin%%2Fwebwxnewloginpage&amp;fun=new&amp;lang=zh_CN&amp;_=</code>，<code>`为当前时间。返回的结果格式应为</code>window.QRLogin.code = 200; window.QRLogin.uuid = “QaH7gdt7Jg==”<code>;其中uuid就是</code>QaH7gdt7Jg==`</li>
-<li>根据uuid请求登录二维码，URL地址为<code>https://login.weixin.qq.com/qrcode/?t=webwx</code>，返回的结果就是二维码图片的二进制流。</li>
+<li>请求uuid，URL地址可以使用<code>https://login.weixin.qq.com/jslogin?appid=wx782c26e4c19acffb&amp;redirect_uri=https%%3A%%2F%%2Fwx.qq.com%%2Fcgi-bin%%2Fmmwebwx-bin%%2Fwebwxnewloginpage&amp;fun=new&amp;lang=zh_CN&amp;_={now_time}</code>，<code>{now_time}</code>为当前时间。返回的结果格式应为<code>window.QRLogin.code = 200; window.QRLogin.uuid = &quot;QaH7gdt7Jg==&quot;</code>;其中uuid就是<code>QaH7gdt7Jg==</code></li>
+<li>根据uuid请求登录二维码，URL地址为<code>https://login.weixin.qq.com/qrcode/{uuid}?t=webwx</code>，返回的结果就是二维码图片的二进制流。</li>
 </ul>
 </li>
-<li>扫描二维码。<br> 这里的扫描二维码不是说手机的扫描，而是获取手机的扫描结果过程。这个过程只需要轮询一个URL地址，微信服务器会根据当前扫描状态的不同返回不同的响应结果。这个URL地址为<code>https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?uuid=&amp;tip=1&amp;_=</code><ul>
+<li>扫描二维码。<br> 这里的扫描二维码不是说手机的扫描，而是获取手机的扫描结果过程。这个过程只需要轮询一个URL地址，微信服务器会根据当前扫描状态的不同返回不同的响应结果。这个URL地址为<code>https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?uuid={uuid}&amp;tip=1&amp;_={now_time}</code><ul>
 <li>如果响应结果返回<code>window.code=201;</code>说明用户已经扫描完成，但是还没有登录；</li>
-<li>如果响应结果返回<code>window.redirect_uri=</code>格式，则说明用户已近登录。</li>
+<li>如果响应结果返回<code>window.redirect_uri={redirect_url}</code>格式，则说明用户已近登录。</li>
 </ul>
 </li>
 <li>获取uin，sid和ticket<ul>
 <li>如果只是简单的发送文字消息，ticket是不需要使用的。</li>
-<li>这一步主要是访问上一步返回的<code>`，我在实际访问时添加了</code>&amp;fun=new`，实际中可根据需要自行判断使用old还是new。在服务器返回的cookie中会包含wxuin，wxsid，webwx_data_ticket等字段，根据需要把这些内容记录下来。</li>
+<li>这一步主要是访问上一步返回的<code>{redirect_url}</code>，我在实际访问时添加了<code>&amp;fun=new</code>，实际中可根据需要自行判断使用old还是new。在服务器返回的cookie中会包含wxuin，wxsid，webwx_data_ticket等字段，根据需要把这些内容记录下来。</li>
 </ul>
 </li>
-<li>初始化微信信息<br> 所谓的初始化微信信息就是获取一些当前用户的信息，访问的URL地址为<code>https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r=</code>。需要注意的是：</li>
-</ol>
-<ul>
+<li>初始化微信信息<br> 所谓的初始化微信信息就是获取一些当前用户的信息，访问的URL地址为<code>https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r={now_time}</code>。需要注意的是：<ul>
 <li>访问该链接需要使用POST，并且在Body中带上以下的JSON信息：<code>{&quot;BaseRequest&quot;:{&quot;Uin&quot;:&quot;2545437902&quot;,&quot;Sid&quot;:&quot;QfLp+Z+FePzvOFoG&quot;,&quot;Skey&quot;:&quot;&quot;,&quot;DeviceID&quot;:&quot;e1615250492&quot;}}</code>。这个JSON串中Uin和Sid分别是上面步骤中获得的那两个Cookie值，DeviceID是一个本地生成的随机字符串（分析了官方的总是e+一串数字，所以我们也保持这样的格式）。</li>
 <li>服务器会返回一个很长的JSON串，其中主要包括有BaseResponse（相应返回码等信息），ContactList（常用联系人），SyncKey（用于和服务器同步消息），User（当前用户的信息），SKey（用于后面发送消息认证使用）等内容。</li>
 </ul>
-<ol>
-<li>获取通讯录列表<br> 在初始化微信信息时返回的联系人列表并不全，需要用这一步的接口才可以获取全部的联系人列表。接口URL地址为<code>https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxgetcontact?r=</code>。这一步也需要使用POST，但是POST内容只需要设置为空JSON（<code>{}</code>）即可。在返回的JSON串中，MemberList中就包含了所有的好友信息。</li>
-<li>发送文字信息<br>发送消息主要通过URL地址<code>https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?sid=&amp;r=</code>。访问该URL采用POST方式，在Body中的JSON串形如以下的格式：</li>
+</li>
+<li>获取通讯录列表<br> 在初始化微信信息时返回的联系人列表并不全，需要用这一步的接口才可以获取全部的联系人列表。接口URL地址为<code>https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxgetcontact?r={now_time}</code>。这一步也需要使用POST，但是POST内容只需要设置为空JSON（<code>{}</code>）即可。在返回的JSON串中，MemberList中就包含了所有的好友信息。</li>
+<li>发送文字信息<br>发送消息主要通过URL地址<code>https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?sid={sid}&amp;r={now_time}</code>。访问该URL采用POST方式，在Body中的JSON串形如以下的格式：</li>
 </ol>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line"><span class="string">"BaseRequest"</span>:{</div><div class="line"><span class="string">"DeviceID"</span> : <span class="string">""</span>,</div><div class="line"><span class="string">"Sid"</span> : <span class="string">""</span>,</div><div class="line"><span class="string">"Skey"</span> : <span class="string">""</span>,</div><div class="line"><span class="string">"Uin"</span> : <span class="string">""</span></div><div class="line">},</div><div class="line"><span class="string">"Msg"</span> : {</div><div class="line"><span class="string">"ClientMsgId"</span> : ,</div><div class="line"><span class="string">"Content"</span> : <span class="string">""</span>,</div><div class="line"><span class="string">"FromUserName"</span> : <span class="string">""</span>,</div><div class="line"><span class="string">"LocalID"</span> : ,</div><div class="line"><span class="string">"ToUserName"</span> : <span class="string">""</span>,</div><div class="line"><span class="string">"Type"</span> : <span class="number">1</span></div><div class="line">},</div><div class="line"><span class="string">"rr"</span> = </div><div class="line">}</div></pre></td></tr></table></figure>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">    <span class="string">"BaseRequest"</span>   : {</div><div class="line">        <span class="string">"DeviceID"</span>  : <span class="string">"{DeviceID}"</span>,</div><div class="line">        <span class="string">"Sid"</span>       : <span class="string">"{sid}"</span>,</div><div class="line">        <span class="string">"Skey"</span>      : <span class="string">"{skey}"</span>,</div><div class="line">        <span class="string">"Uin"</span>       : <span class="string">"{uin}"</span></div><div class="line">    },</div><div class="line">    <span class="string">"Msg"</span>           : {</div><div class="line">        <span class="string">"ClientMsgId"</span>   : {clientMsgId},</div><div class="line">        <span class="string">"Content"</span>       : <span class="string">"{{messageContent}"</span>,</div><div class="line">        <span class="string">"FromUserName"</span>  : <span class="string">"{currentUserName}"</span>,</div><div class="line">        <span class="string">"LocalID"</span>       : {localId},</div><div class="line">        <span class="string">"ToUserName"</span>    : <span class="string">"{toUserName}"</span>,</div><div class="line">        <span class="string">"Type"</span> : <span class="number">1</span></div><div class="line">    },</div><div class="line">    <span class="string">"rr"</span> = {now_time}</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p>其中BaseRequest都是授权相关的值，与上面的步骤中的值对应，Msg是对消息的描述，包括了发送人与接收人，消息内容，消息的类型(1为文本)，ClientMsgId和LocalID由本地生成。rr可用当前的时间。<br>在返回JSON结果中BaseResponse描述了发送情况，Ret为0表示发送成功。</p>
+<p>其中BaseRequest都是授权相关的值，与上面的步骤中的值对应，Msg是对消息的描述，包括了发送人与接收人，消息内容，消息的类型(1为文本)，ClientMsgId和LocalID由本地生成。rr可用当前的时间。<br>    在返回JSON结果中BaseResponse描述了发送情况，Ret为0表示发送成功。</p>
 <p>我了解的基本也只有这些了，如果以后有兴趣做新的了解的再继续描述吧。</p>
 <p>参考资料：<br><a href="http://www.myhack58.com/Article/54/93/2015/66422.htm" target="_blank" rel="external">《挖掘微信Web网页版通信的全过程》</a><br><a href="http://bbs.125.la/thread-13711355-1-1.html" target="_blank" rel="external">微信Post/Get的封包，论坛还没有发布</a><br><a href="https://github.com/xiangzhai/qwx/blob/master/doc/protocol.md" target="_blank" rel="external">网页微信客户端封包大全</a></p>
 ]]></content>
