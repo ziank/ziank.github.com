@@ -4,7 +4,7 @@
   <subtitle><![CDATA[一些个人学习的文档]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.ziank.cn/"/>
-  <updated>2015-11-19T07:09:37.899Z</updated>
+  <updated>2015-12-18T03:20:08.003Z</updated>
   <id>http://www.ziank.cn/</id>
   
   <author>
@@ -15,11 +15,43 @@
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[Swift中guard语句的作用]]></title>
+    <link href="http://www.ziank.cn/2015/12/18/guard/"/>
+    <id>http://www.ziank.cn/2015/12/18/guard/</id>
+    <published>2015-12-18T02:55:44.000Z</published>
+    <updated>2015-12-18T03:13:49.000Z</updated>
+    <content type="html"><![CDATA[<p>在2.0版本中，swift引入了新的关键字guard，用于进行条件判断。但是大家知道if完全可以完成guard所拥有的功能，那么为什么还要有guard语句呢？<br><a id="more"></a><br>我们先看看guard语句的用法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> fooBinding(x: <span class="type">Int</span>?) {</div><div class="line">guard <span class="keyword">let</span> x = x <span class="keyword">where</span> x &gt; <span class="number">0</span> <span class="keyword">else</span> { <span class="keyword">return</span>; }</div><div class="line"><span class="comment">// do something else</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>可以看到guard语句的作用就是判断一个表达式是否为True，然后进行处理。<br>如果不使用swift的话，这句话的表达应该是</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> fooBinding(x: <span class="type">Int</span>?) {</div><div class="line"><span class="keyword">if</span> (x == <span class="built_in">nil</span> || x &lt; <span class="number">0</span>) { <span class="keyword">return</span>; }</div><div class="line"><span class="comment">// do something else</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>可以看到我们需要判断和想要的结果刚好相反的情况，然后才可以正确执行。使用了swift的语法后，会变成</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> fooBinding(x: <span class="type">Int</span>?) {</div><div class="line"><span class="keyword">if</span> (<span class="keyword">let</span> x = x <span class="keyword">where</span> x &gt; <span class="number">0</span>) {</div><div class="line"><span class="comment">// do something else </span></div><div class="line">}</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>我们可以直接判断想要的结果，但是我们需要把执行的语句都放在代码块内，多了一层嵌套关系。<br>而使用guard以后，就不存在这些问题了，既可以直接判断想要的结果，也不会多出一层嵌套关系。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在2.0版本中，swift引入了新的关键字guard，用于进行条件判断。但是大家知道if完全可以完成guard所拥有的功能，那么为什么还要有guard语句呢？<br>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/tags/swift/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/categories/iOS/swift/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[有关web微信的一些处理]]></title>
     <link href="http://www.ziank.cn/2015/11/19/weixin/"/>
     <id>http://www.ziank.cn/2015/11/19/weixin/</id>
     <published>2015-11-19T05:50:47.000Z</published>
-    <updated>2015-11-19T07:09:23.000Z</updated>
+    <updated>2015-11-19T07:12:46.000Z</updated>
     <content type="html"><![CDATA[<p>最近由于某些原因吧，想要找一些关于微信发送消息的协议，最后也没有真正的找到，又懒得自己去抓包进行解析，就查找了一些通过http进行微信通信的文章，这里也对自己了解的做一个简单总结。<br><a id="more"></a><br>web微信的通信过程主要就那么几步，登陆，同步，发送消息等等。因为我只看了发送消息的部分，这里也就只简单说一下发送的方法，不多描述接收消息的想法。如果有人想要了解接收的话，可以查看<a href="http://www.myhack58.com/Article/54/93/2015/66422.htm" target="_blank" rel="external">挖掘微信Web网页版通信的全过程</a>，配合自己进行http抓包可以简单的通过分析进行实现。</p>
 <ol>
 <li>获取二维码。<br> 大家都知道web微信登录主要是通过手机扫描二维码实现，所以第一步就是获取对应的二维码。<ul>
@@ -903,56 +935,6 @@
 <p>首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：<br>]]>
     
     </summary>
-    
-      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[正确使用BLOCK避免CYCLE RETAIN和CRASH]]></title>
-    <link href="http://www.ziank.cn/2015/01/20/block/"/>
-    <id>http://www.ziank.cn/2015/01/20/block/</id>
-    <published>2015-01-20T09:30:50.000Z</published>
-    <updated>2015-03-02T06:39:53.000Z</updated>
-    <content type="html"><![CDATA[<h2 id="Block的简介">Block的简介</h2>
-<p>Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。</p>
-<h2 id="Block的使用语法">Block的使用语法</h2>
-<p>Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：<br><a id="more"></a></p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">long</span> (^)(<span class="keyword">int</span>, <span class="keyword">int</span>)) sumBlock {</div><div class="line"><span class="keyword">int</span> <span class="keyword">base</span> = <span class="number">100</span>;</div><div class="line"><span class="keyword">return</span> [[ ^ <span class="keyword">long</span> (<span class="keyword">int</span> a, <span class="keyword">int</span> b) {</div><div class="line"><span class="keyword">return</span> <span class="keyword">base</span> + a + b;</div><div class="line">} copy] autorelease];</div><div class="line">}</div></pre></td></tr></table></figure>
-
-<p><br><br>下面一个例子则是先声明了一种Block对象的类型，再定义对应的Block对象：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">typedef <span class="keyword">long</span> (^BlkSum)(<span class="keyword">int</span>, <span class="keyword">int</span>);</div><div class="line"></div><div class="line">- (BlkSum) sumBlock {</div><div class="line"><span class="keyword">int</span> <span class="keyword">base</span> = <span class="number">100</span>;</div><div class="line">BlkSum blk = ^ <span class="keyword">long</span> (<span class="keyword">int</span> a, <span class="keyword">int</span> b) {</div><div class="line"><span class="keyword">return</span> <span class="keyword">base</span> + a + b;</div><div class="line">}</div><div class="line"><span class="keyword">return</span> [[blk copy] autorelease];</div><div class="line">}</div></pre></td></tr></table></figure>
-
-<h2 id="Block中得变量使用">Block中得变量使用</h2>
-<p>Block中的变量主要是指上下文中得assign/retain/weak等类型的局部变量或成员变量的使用：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> <span class="keyword">base</span> = <span class="number">100</span>;</div><div class="line"><span class="keyword">base</span> += <span class="number">100</span>;</div><div class="line">BlkSum sum = ^ <span class="keyword">long</span> (<span class="keyword">int</span> a, <span class="keyword">int</span> b) {</div><div class="line"><span class="keyword">return</span> <span class="keyword">base</span> + a + b;</div><div class="line">};</div><div class="line"><span class="keyword">base</span>++;</div><div class="line">printf(<span class="string">"%ld"</span>,sum(<span class="number">1</span>,<span class="number">2</span>));</div></pre></td></tr></table></figure>
-
-<p>如上面示例中的使用，就是使用了默认assign类型的局部变量base，结果就等于203。因为Block对象在定义时对上下文中的变量进行了备份，所以base在执行Block时的值为200，输出就是203。因此，在Block的内部不能够对assign类型的变量进行修改，因为修改的时备份的值，对实际变量的值是修改无效的。<br><br><br>下面在定义base的时候加上__block，则返回的值为204。</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">__block <span class="keyword">int</span> <span class="keyword">base</span> = <span class="number">100</span>;</div><div class="line"><span class="keyword">base</span> += <span class="number">100</span>;</div><div class="line">BlkSum sum = ^ <span class="keyword">long</span> (<span class="keyword">int</span> a, <span class="keyword">int</span> b) {</div><div class="line"><span class="keyword">return</span> <span class="keyword">base</span> + a + b;</div><div class="line">};</div><div class="line"><span class="keyword">base</span>++;</div><div class="line">printf(<span class="string">"%ld"</span>,sum(<span class="number">1</span>,<span class="number">2</span>));</div></pre></td></tr></table></figure>
-
-<p><br><br>原因就是使用<strong>block/</strong>weak定义的变量，Block在定义的时候并没有进行数值的备份，而是记录了类似于指针的地址，所以在后面执行Block的时候，用的值并不是定义时候获取的备份，而是该变量的实际数值。也因此，可以在Block内部对<strong>block/</strong>weak修饰的变量进行修改。</p>
-<h2 id="retain_cycle（引用嵌套）">retain cycle（引用嵌套）</h2>
-<p>retain cycle问题的根源在于Block和obj可能会互相强引用，互相retain对方，这样就导致了retain cycle，最后这个Block和obj就变成了孤岛，谁也释放不了谁。<br><br><br>举个简单地例子：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ASIHTTPRequest *<span class="built_in">request</span> = [ASIHTTPRequest requestWithURL:url];</div><div class="line">[<span class="built_in">request</span> setCompletionBlock:^{</div><div class="line">NSString* <span class="built_in">string</span> = [<span class="built_in">request</span> responseString];</div><div class="line">}];</div></pre></td></tr></table></figure>
-
-<p>由于request和Block对象相互之间有强引用的关系，导致最后两者都无法释放。也就是Block对象释放必须先释放request，而request释放又必须先释放Block对象，最后都无法释放。<br><br><br>解决的办法就是在Block对象中对request进行弱引用，这样Block的释放就不依赖于request的释放，最后能够全部释放。</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">__block ASIHTTPRequest *<span class="built_in">request</span> = [ASIHTTPRequest requestWithURL:url];</div><div class="line">[<span class="built_in">request</span> setCompletionBlock:^{</div><div class="line">NSString* <span class="built_in">string</span> = [<span class="built_in">request</span> responseString];</div><div class="line">}];</div></pre></td></tr></table></figure>
-
-<h2 id="Block使用对象被提前释放">Block使用对象被提前释放</h2>
-<p>Block使用对象被提前释放主要是由于开发者担心retain cycle错误的使用__block导致。</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// MyClass.m</span></div><div class="line">- (<span class="keyword">void</span>) test {</div><div class="line">__block MyClass* weakSelf = <span class="keyword">self</span>;</div><div class="line"><span class="keyword">double</span> delayInSeconds = <span class="number">10.0</span>;</div><div class="line">dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));</div><div class="line">dispatch_after(popTime, dispatch_get_main_queue(), ^(<span class="keyword">void</span>){</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, weakSelf);</div><div class="line">});</div><div class="line"></div><div class="line"><span class="comment">// other.m</span></div><div class="line">MyClass* obj = [[[MyClass alloc] init] autorelease];</div><div class="line">[obj test];</div></pre></td></tr></table></figure>
-
-<p>这里用dispatch_after模拟了一个异步任务，10秒后执行Block。但执行Block的时候MyClass* obj已经被释放了，导致crash。解决办法是不要使用__block。</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<h2 id="Block的简介">Block的简介</h2>
-<p>Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。</p>
-<h2 id="Block的使用语法">Block的使用语法</h2>
-<p>Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：<br>]]>
-    
-    </summary>
-    
-      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
     
       <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
     
