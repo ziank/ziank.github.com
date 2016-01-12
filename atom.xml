@@ -4,7 +4,7 @@
   <subtitle><![CDATA[一些个人学习的文档]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.ziank.cn/"/>
-  <updated>2015-12-21T08:17:38.805Z</updated>
+  <updated>2016-01-12T03:14:06.641Z</updated>
   <id>http://www.ziank.cn/</id>
   
   <author>
@@ -13,6 +13,36 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[从storyboard中加载ViewController]]></title>
+    <link href="http://www.ziank.cn/2016/01/12/storyboard/"/>
+    <id>http://www.ziank.cn/2016/01/12/storyboard/</id>
+    <published>2016-01-12T02:27:05.000Z</published>
+    <updated>2016-01-12T03:13:46.000Z</updated>
+    <content type="html"><![CDATA[<p>以前我也使用storyboard，但是都只是使用第一个ViewController，而后面的ViewController都是使用Xib或者代码重新绘制，而不会在storyboard中进行画图。最近的一个项目也许因为自己懒吧，不想创建很多的Xib，就查了一下storyboard的用法，发现还是挺不错的。<br><a id="more"></a><br>Xib可以直接拖拽控件，进行画图，storyboard也拥有相同的功能；除此之外，storyboard可以添加多个ViewController，并添加其对应的关系。例如可以在按钮上可以直接添加点击后push/present显示另一个ViewController，可以省略对应的代码编写。对应的操作就是按住ctrl键，然后选择空间，拉到对应VC上，可以选择是push还是modal形式弹出对应VC。<br><img src="/img/pushViewController.png" alt="push或弹出页面"><br>除了可以直接实现push和present以外，storyboard还可以更方便的管理页面之间的关系，比如navigationController，tabViewController的设置等，而不需要在代码中设置。<br>但是使用storyboard也有不方便的地方，那就是在协作编程时，如果创建相同的页面，就需要创建多次，而使用Xib的话就可以直接相互copy。当然如果同一个人的两个界面，是可以在storyboard中直接进行copy的。<br>下面说一下如果使用了storyboard，要注意的一些东西。我觉得主要有三点：</p>
+<ul>
+<li><strong>在storyboard中要对ViewController进行storyIdentifier的设置；这个设置保证了你可以在代码中获取到对应的ViewController，所以一定要设置</strong>；</li>
+<li><strong>在创建ViewController的时候，不能使用<code>[[UIViewController alloc] init]</code>，而要从storyboard中获取对应的ViewController。</strong></li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="constant">UIStoryboard *storyBoard</span> = [UIStoryboard storyboardWithName:@<span class="string">"Main"</span> bundle:nil];</div><div class="line"><span class="constant">  UIViewController *viewControlelr</span> = [storyBoard instantiateViewControllerWithIdentifier:@<span class="string">"ViewController"</span>];</div></pre></td></tr></table></figure>
+
+<p>这样两句代码就可以获取到Main.stroyboard中storyIdentifier为“ViewController”的UIViewController了。</p>
+<ul>
+<li>其实只有上面两点啦，第三就是个提醒，<strong>storyboard可以创建多个</strong>，千万不要因为系统默认创建了一个，就傻乎乎的只使用一个，那样在协作工作时真的会变傻眼的。</li>
+</ul>
+<p>关于storyboard其实我也只是简单的有一些了解，就说这么多吧，希望以后能够有更多的了解吧。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>以前我也使用storyboard，但是都只是使用第一个ViewController，而后面的ViewController都是使用Xib或者代码重新绘制，而不会在storyboard中进行画图。最近的一个项目也许因为自己懒吧，不想创建很多的Xib，就查了一下storyboard的用法，发现还是挺不错的。<br>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[Swift中guard语句的作用]]></title>
@@ -888,51 +918,6 @@
 <ul>
 <li>UITableViewCell的重用机制；</li>
 <li>修改滑动过程中的加载机制。]]>
-    
-    </summary>
-    
-      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[成员对象之RETAIN/ASSIGN/COPY/WEAK/STRONG的区分]]></title>
-    <link href="http://www.ziank.cn/2015/01/20/retain/"/>
-    <id>http://www.ziank.cn/2015/01/20/retain/</id>
-    <published>2015-01-20T10:12:43.000Z</published>
-    <updated>2015-03-02T06:39:43.000Z</updated>
-    <content type="html"><![CDATA[<p>在Object-C中，定义类成员变量或类属性时经常会加上retain之类的声明，这些声明的不同点主要在于哪里呢，本文主要就是讲述他们之间的共同点和区别。</p>
-<p>首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：<br><a id="more"></a></p>
-<blockquote>
-<ul>
-<li>alloc        – 对象分配后引用计数为1</li>
-<li>retain       – 对象的引用计数 +1</li>
-<li>release      – 对象的引用计数 -1，如果为0着释放对象所占用的内存空间</li>
-<li>autorelease  – 对象引用计数-1 如果为0不马上释放，最近一个pool时释放</li>
-<li>copy         – copy一个对象变成新的对象(新内存地址) 引用计数为1 原来对象计数不变</li>
-</ul>
-</blockquote>
-<p>下面我们说一下这些修饰关键字对于内存计数造成的影响：</p>
-<h4 id="1-_assign、weak">1. assign、weak</h4>
-<p>assign不会对引用计数造成任何影响，它相当于直接获取对象的内容进行使用，不进行任何内存的管理；它的set方法就类似于：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// assign</span></div><div class="line">-(<span class="keyword">void</span>)setTestObject :(<span class="keyword">id</span>)newValue{</div><div class="line">testObject= newValue;</div><div class="line">}</div></pre></td></tr></table></figure>
-
-<p>weak是在iOS5中增加的关键字，和assign的作用相同，唯一的不同点是当使用的对象被释放之后，weak修饰的对象值会被设置为nil，而assign的对象会变成野指针，可能导致crash。</p>
-<h4 id="2-_retain、strong">2. retain、strong</h4>
-<p>对retain修饰的对象进行赋值时会使对象的引用计数+1，就是说如果不存在代码逻辑错误，retain的对象不会被外部直接释放。它的set方法是：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// retain</span></div><div class="line">-(<span class="keyword">void</span>)setTestObject :(<span class="keyword">id</span>)newValue{</div><div class="line"><span class="keyword">if</span> (testObject != newValue) {</div><div class="line">[testObject release];</div><div class="line">testObject= [newValue retain];</div><div class="line">}</div><div class="line">}</div></pre></td></tr></table></figure>
-
-<p>从代码可以看出，retain对象赋值时会释放旧对象（testObject），将输入对象（newValue）的值赋给成员对象（testObject），然后将输入对象（newValue）的引用计数+1.</p>
-<p>strong和weak一样都是iOS5中增加的关键字，作用和retain完全一样。</p>
-<h4 id="3-_copy">3. copy</h4>
-<p>copy和assign、retain不同，它不对旧的对象进行任何处理，但是会新建一个索引计数为1的对象，然后释放旧对象。它的set方法如下：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// copy</span></div><div class="line">-(<span class="keyword">void</span>)setTestObject :(<span class="keyword">id</span>)newValue{</div><div class="line"><span class="keyword">if</span> (testObject != newValue) {</div><div class="line">[testObject release];</div><div class="line">testObject = [newValue <span class="keyword">copy</span>];</div><div class="line">}</div><div class="line">}</div></pre></td></tr></table></figure>
-
-<p>Copy其实是建立了一个相同的新对象，它和原对象在内存中得地址是不相同的。而retain的对象只是引用计数+1，实际对象在内存中的地址和原对象还是一样的。<br><br><br>综上所述，assign和weak适用于一些不需要管理内存的成员属性；而retain和strong则适用于一些生命周期有限制的成员属性，使用retain和strong可以避免对象被提前释放；copy则适用于需要完全独自拥有的成员属性，使用copy建立新的对象防止被外部修改。</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>在Object-C中，定义类成员变量或类属性时经常会加上retain之类的声明，这些声明的不同点主要在于哪里呢，本文主要就是讲述他们之间的共同点和区别。</p>
-<p>首先，我们知道iOS的对象都是继承于NSObject的，该对象是使用内存应用计数（retainCount）来进行内存管理的。一般情况下，引用计数会在下面的情况发生改变：<br>]]>
     
     </summary>
     
