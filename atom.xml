@@ -4,7 +4,7 @@
   <subtitle><![CDATA[一些个人学习的文档]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.ziank.cn/"/>
-  <updated>2016-01-12T03:14:06.641Z</updated>
+  <updated>2016-01-12T03:31:09.374Z</updated>
   <id>http://www.ziank.cn/</id>
   
   <author>
@@ -19,7 +19,7 @@
     <link href="http://www.ziank.cn/2016/01/12/storyboard/"/>
     <id>http://www.ziank.cn/2016/01/12/storyboard/</id>
     <published>2016-01-12T02:27:05.000Z</published>
-    <updated>2016-01-12T03:13:46.000Z</updated>
+    <updated>2016-01-12T03:31:04.000Z</updated>
     <content type="html"><![CDATA[<p>以前我也使用storyboard，但是都只是使用第一个ViewController，而后面的ViewController都是使用Xib或者代码重新绘制，而不会在storyboard中进行画图。最近的一个项目也许因为自己懒吧，不想创建很多的Xib，就查了一下storyboard的用法，发现还是挺不错的。<br><a id="more"></a><br>Xib可以直接拖拽控件，进行画图，storyboard也拥有相同的功能；除此之外，storyboard可以添加多个ViewController，并添加其对应的关系。例如可以在按钮上可以直接添加点击后push/present显示另一个ViewController，可以省略对应的代码编写。对应的操作就是按住ctrl键，然后选择空间，拉到对应VC上，可以选择是push还是modal形式弹出对应VC。<br><img src="/img/pushViewController.png" alt="push或弹出页面"><br>除了可以直接实现push和present以外，storyboard还可以更方便的管理页面之间的关系，比如navigationController，tabViewController的设置等，而不需要在代码中设置。<br>但是使用storyboard也有不方便的地方，那就是在协作编程时，如果创建相同的页面，就需要创建多次，而使用Xib的话就可以直接相互copy。当然如果同一个人的两个界面，是可以在storyboard中直接进行copy的。<br>下面说一下如果使用了storyboard，要注意的一些东西。我觉得主要有三点：</p>
 <ul>
 <li><strong>在storyboard中要对ViewController进行storyIdentifier的设置；这个设置保证了你可以在代码中获取到对应的ViewController，所以一定要设置</strong>；</li>
@@ -29,9 +29,9 @@
 
 <p>这样两句代码就可以获取到Main.stroyboard中storyIdentifier为“ViewController”的UIViewController了。</p>
 <ul>
-<li>其实只有上面两点啦，第三就是个提醒，<strong>storyboard可以创建多个</strong>，千万不要因为系统默认创建了一个，就傻乎乎的只使用一个，那样在协作工作时真的会变傻眼的。</li>
+<li><strong>使用storyboard创建ViewController不会调用init方法，而是会调用initWithCoder方法。 </strong></li>
 </ul>
-<p>关于storyboard其实我也只是简单的有一些了解，就说这么多吧，希望以后能够有更多的了解吧。</p>
+<p>最后就越是一个提醒<strong>storyboard可以创建多个</strong>，千万不要因为系统默认创建了一个，就傻乎乎的只使用一个，那样在协作工作时真的会变傻眼的。<br>关于storyboard其实我也只是简单的有一些了解，就说这么多吧，希望以后能够有更多的了解吧。</p>
 ]]></content>
     <summary type="html">
     <![CDATA[<p>以前我也使用storyboard，但是都只是使用第一个ViewController，而后面的ViewController都是使用Xib或者代码重新绘制，而不会在storyboard中进行画图。最近的一个项目也许因为自己懒吧，不想创建很多的Xib，就查了一下storyboard的用法，发现还是挺不错的。<br>]]>
