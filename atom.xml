@@ -4,7 +4,7 @@
   <subtitle><![CDATA[一些个人学习的文档]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.ziank.cn/"/>
-  <updated>2016-01-12T03:31:09.374Z</updated>
+  <updated>2016-01-15T01:49:01.644Z</updated>
   <id>http://www.ziank.cn/</id>
   
   <author>
@@ -340,7 +340,7 @@
     <link href="http://www.ziank.cn/2015/03/18/swift-funciton/"/>
     <id>http://www.ziank.cn/2015/03/18/swift-funciton/</id>
     <published>2015-03-18T08:18:21.000Z</published>
-    <updated>2015-03-18T09:16:24.000Z</updated>
+    <updated>2016-01-15T01:43:06.000Z</updated>
     <content type="html"><![CDATA[<p>学习swift的过程中，简单说一下自己感觉swift和其他语言不太相同的几个注意点。</p>
 <h3 id="1-_swift的函数的入参和返回值都可以是一个函数。">1. swift的函数的入参和返回值都可以是一个函数。</h3>
 <a id="more"></a>
@@ -359,7 +359,7 @@
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">testFunc(outParam: <span class="number">123</span>)</div></pre></td></tr></table></figure>
 
 <h3 id="4-_类里面的静态函数">4. 类里面的静态函数</h3>
-<p>在swift类里面的静态函数，不能使用static关键字来修饰，而应该使用Class关键字来进行修饰</p>
+<p>在swift1.0中类里面的静态函数，不能使用static关键字来修饰，而应该使用Class关键字来进行修饰<br>在swift2.0中，同时支持static和class关键字。</p>
 <figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestClass</span> </span>{</div><div class="line">    <span class="keyword">class</span> <span class="func"><span class="keyword">func</span></span> testFunc() {</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
 
 <h3 id="5-_ViewController和xib文件的对应">5. ViewController和xib文件的对应</h3>
