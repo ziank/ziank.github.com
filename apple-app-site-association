@@ -2,10 +2,14 @@
 	"applinks": {
 		"apps": [],
 		"details": [
-	  		{
-				"appID": "VHJLLQ36QB.com.youdao.note.iphone",
-				"paths": [ "*" ]
-			}
+			{
+                "appID": "9JA89QQLNQ.com.apple.wwdc",
+                "paths": [ "/wwdc/news/", "/videos/wwdc/2015/*"]
+            },
+            {
+                "appID": "ABCD1234.com.apple.wwdc",
+                "paths": [ "*" ]
+            }
 		]
 	}
 }
