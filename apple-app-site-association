@@ -3,7 +3,7 @@
 		"apps": [],
 		"details": [
 			{
-				"appID": "QXXGB327LH.com.ziank.DrawBoard",
+				"appID": "com.ziank.DrawBoard",
 				"paths": [ "*" ]
 			}
 		]
