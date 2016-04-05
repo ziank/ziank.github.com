@@ -3,11 +3,7 @@
 		"apps": [],
 		"details": [
 			{
-                "appID": "9JA89QQLNQ.com.apple.wwdc",
-                "paths": [ "/wwdc/news/", "/videos/wwdc/2015/*"]
-            },
-			{
-				"appID": "VHJLLQ36QB.com.youdao.note.iphone",
+				"appID": "QXXGB327LH.com.ziank.DrawBoard",
 				"paths": [ "*" ]
 			}
 		]
