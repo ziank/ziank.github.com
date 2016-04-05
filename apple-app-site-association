@@ -4,7 +4,7 @@
 		"details": [
 			{
 				"appID": "QXXGB327LH.com.ziank.DrawBoard",
-				"paths": [ "/tt" ]
+				"paths": [ "*" ]
 			}
 		]
 	}
