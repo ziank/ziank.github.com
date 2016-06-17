@@ -234,7 +234,8 @@
 <h2 id="键盘焦点方法">键盘焦点方法</h2>
 <p>键盘事件主要有两个，一个是获得焦点，一个是失去焦点。或者说一个是呼出键盘，另一个是消失键盘。</p>
 <h4 id="获得焦点">获得焦点</h4>
-<p>获取焦点的方法为<code>becomeFirstResponder</code>，我们可以通过调用这个方法来呼出键盘。<strong>需要注意的是，只有支持编辑的控件才可以呼出键盘，如<code>UITextView</code>,<code>UITextField</code>；而普通的控件或<code>UIView</code>即使获取焦点也不会呼出键盘，如<code>UITableView</code>，<code>UIButton</code></strong></p>
+<p>获取焦点的方法为<code>becomeFirstResponder</code>，我们可以通过调用这个方法来呼出键盘。**需要注意的是，只有支持编辑的控件才可以呼出键盘，如<code>UITextView</code>,<code>UITextField</code>；而普通的控件或<code>UIView</code>即使获取焦点也不会呼出键盘，如<code>UITableView</code>，<code>UIButton</code></p>
+<p><strong>如果想使用<code>webView</code>自动获取焦点，那么一定不要忘记设置<code>keyboardDisplayRequiresUserAction</code>为<code>false</code>，否则键盘不会弹出。</strong><br></p>
 <h4 id="失去焦点">失去焦点</h4>
 <p>常用的失去焦点的方法为<code>resignFirstResponder</code>，调用这个方法可以让当前控件失去焦点，从而使键盘落下；<strong>需要注意的是调用方法的对象必须是弹出键盘的控件本身，而不能是其父<code>View</code></strong></p>
 <p>如果没有办法获取到获取焦点的控件本身，而必须利用其父<code>View</code>失去焦点的话，可以使用另一个方法<code>endEdit</code>，这个方法带有一个参数，为是否强制终止编辑，一般选择为YES，从而使键盘消失。</p>
