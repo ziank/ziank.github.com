@@ -5,13 +5,15 @@
 <head>
   <meta charset="utf-8">
   
-  <title>Page 2 | Ziank的技术分享</title>
+  <title>post | Ziank的技术分享</title>
   <meta name="author" content="ziank">
+  
+  <meta name="description" content="本文主要讲述iOS中键盘的常用方法和注意事项。">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="post"/>
   <meta property="og:site_name" content="Ziank的技术分享"/>
 
   
@@ -200,8 +202,7 @@
 </nav>
 <div class="clearfix"></div></header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper">
-  <article class="post">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
   
     <div class="gallery">
   <div class="photoset">
@@ -219,76 +220,71 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2015-07-09T07:16:37.000Z"><a href="/2015/07/09/todayviewReinstall/">Jul 9 2015</a></time>
+        <time datetime="2016-06-17T08:35:46.000Z"><a href="/2016/06/17/keyboard/">Jun 17 2016</a></time>
       
       
   
-    <h1 class="title"><a href="/2015/07/09/todayviewReinstall/">TodayExtension的覆盖安装</a></h1>
+    <h1 class="title">post</h1>
   
 
     </header>
     <div class="entry">
       
-        <p>这里有两个问题需要注意一下，一个是覆盖安装或者升级后TodayExtension的内容不会更新；另一个是在覆盖安装后TodayExtension的界面整个冻结，无法点击。<br>
+        <p>本文主要讲述iOS中键盘的常用方法和注意事项。<br><a id="more"></a></p>
+<p>## 键盘焦点方法<br>键盘事件主要有两个，一个是获得焦点，一个是失去焦点。或者说一个是呼出键盘，另一个是消失键盘。</p>
+<h4 id="获得焦点">获得焦点</h4>
+<p>获取焦点的方法为<code>becomeFirstResponder</code>，我们可以通过调用这个方法来呼出键盘。<strong>需要注意的是，只有支持编辑的控件才可以呼出键盘，如<code>UITextView</code>,<code>UITextField</code>；而普通的控件或<code>UIView</code>即使获取焦点也不会呼出键盘，如<code>UITableView</code>，<code>UIButton</code></strong></p>
+<h4 id="失去焦点">失去焦点</h4>
+<p>常用的失去焦点的方法为<code>resignFirstResponder</code>，调用这个方法可以让当前控件失去焦点，从而使键盘落下；<strong>需要注意的是调用方法的对象必须是弹出键盘的控件本身，而不能是其父<code>View</code></strong></p>
+<p>如果没有办法获取到获取焦点的控件本身，而必须利用其父<code>View</code>失去焦点的话，可以使用另一个方法<code>endEdit</code>，这个方法带有一个参数，为是否强制终止编辑，一般选择为YES，从而使键盘消失。</p>
+<p>如果不是必须的话，更建议大家使用<code>resignFirstResponder</code>方法</p>
+<h2 id="键盘事件通知">键盘事件通知</h2>
+<p>iOS系统支持的常用键盘事件通知有六个，分别是</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">UIKeyboardWillShowNotification      <span class="comment">// 键盘将要出现</span></div><div class="line">UIKeyboardDidShowNotification       <span class="comment">// 键盘已经出现</span></div><div class="line">UIKeyboardWillHideNotification      <span class="comment">// 键盘将要消失</span></div><div class="line">UIKeyboardDidHideNotification       <span class="comment">// 键盘已经消失</span></div><div class="line">UIKeyboardWillChangeFrameNotification   <span class="comment">// 键盘将要修改frame</span></div><div class="line">UIKeyboardDidChangeFrameNotification    <span class="comment">// 键盘已经修改frame</span></div></pre></td></tr></table></figure>
+
+<p>在这些事件的userInfo中会有以下几个属性，可以用于进行界面的处理。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">UIKeyboardFrameBeginUserInfoKey         <span class="comment">// 开始时的键盘位置</span></div><div class="line">UIKeyboardFrameEndUserInfoKey           <span class="comment">// 结束时的键盘位置</span></div><div class="line">UIKeyboardAnimationCurveUserInfoKey     <span class="comment">// 动画类型</span></div><div class="line">UIKeyboardAnimationDurationUserInfoKey  <span class="comment">// 动画持续事件</span></div><div class="line">UIKeyboardIsLocalUserInfoKey            <span class="comment">// 是否为本地用户键盘</span></div><div class="line"></div><div class="line">UIKeyboardCenterBeginUserInfoKey        <span class="comment">// 开始时的键盘中心</span></div><div class="line">UIKeyboardCenterEndUserInfoKey          <span class="comment">// 结束时的键盘中心</span></div><div class="line">UIKeyboardBoundsUserInfoKey             <span class="comment">// 键盘边界</span></div></pre></td></tr></table></figure>
+
+<p>后面三个属性用户可以根据前两个进行计算。<strong>需要注意的是在iPad上由于键盘支持浮动，需要支持<code>UIKeyboardWillChangeFrameNotification</code>和<code>UIKeyboardDidChangeFrameNotification</code>两个键盘通知。</strong></p>
+<h2 id="自定义键盘">自定义键盘</h2>
+<h4 id="UITextView和UITextField"><code>UITextView</code>和<code>UITextField</code></h4>
+<p>由于<code>UITextView</code>和<code>UITextField</code>支持属性<code>inputView</code>和<code>inputAccessoryView</code>，所以只需要把要替换键盘和工具栏的界面画好，直接进行设置尽可以了。</p>
+<h4 id="UIWebView"><code>UIWebView</code></h4>
+<p>对于<code>UIWebView</code>的键盘处理比较麻烦，需要手动去掉accessoryView，具体的去除方法可以参考网上一些实现。<br>如iOS8下可以参考<a href="http://stackoverflow.com/questions/25022089/remove-next-previous-buttons-inputaccessoryview-for-custom-keyboard-in-ios8" target="_blank" rel="external">Remove Next / Previous buttons (inputAccessoryView) for Custom Keyboard in iOS8 WebView</a></p>
+<p>就写这些吧，更多的还要在实践中具体分析使用。</p>
+
       
     </div>
     <footer>
       
         
-          <div class="alignleft">
-            <a href="/2015/07/09/todayviewReinstall/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
   
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
+  <div class="categories">
+    <a href="/categories/iOS/">iOS</a>
   </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
+
+        
+  
+  <div class="tags">
+    <a href="/tags/iOS/">iOS</a>
   </div>
+
+<!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_qzone"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_t163"></a>
+<span class="bds_more"></span>
+<a class="shareCount"></a>
 </div>
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-05-14T08:14:31.000Z"><a href="/2015/05/14/char-const/">May 14 2015</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/05/14/char-const/">浅析const char *, char * const, char const *, const char * const 的区别</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>不知道别人是什么样，反正我每次看到<code>const char *</code> 和<code>char * const</code> 就想把写这个代码的人给拉出来枪毙十分钟，教科书上说过它们的区别，但是每次都会忘记，所以只能够每次都去网上查找。<br>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/05/14/char-const/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=3326447" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<!-- Baidu Button END -->      
       <div class="clearfix"></div>
     </footer>
   </div>
@@ -296,163 +292,37 @@
 
 
 
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
+ <nav id="pagination" >
     
-      <img src="">
     
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-05-11T07:17:59.000Z"><a href="/2015/05/11/todayViewExtensionHeight/">May 11 2015</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/05/11/todayViewExtensionHeight/">todayView组件的高度处理问题</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。<br>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/05/11/todayViewExtensionHeight/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
+    <a href="/2016/01/12/storyboard/" class="alignright next" >Next</a>
     
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
+    <div class="clearfix"></div>
+</nav>
+
+
+
+<section id="comment">
+
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"ziank"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+
   
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-03-27T02:23:38.000Z"><a href="/2015/03/27/swift-operator/">Mar 27 2015</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/03/27/swift-operator/">swift的操作符重载</a></h1>
-  
+</section>
 
-    </header>
-    <div class="entry">
-      
-        <p>今天简单说一下操作符重载的相关知识吧，希望对自己和别人能够有所帮助。相信懂得C++的同学对于运算符重载并不陌生，在swift中也是支持重载运算符这种特性的。</p>
-<p>操作符重载的好处无需多说，相信大家都明白。那么我们在swift应该如何重载操作符呢？其实很简单，和C++基本一样，只需要添加对应的函数实现就可以了。</p>
-
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/03/27/swift-operator/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-03-25T02:23:38.000Z"><a href="/2015/03/25/swift-2/">Mar 25 2015</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/03/25/swift-2/">swift的一些注意点(2)</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>之前说了在学习swift过程中发现的一些和其他语言不同的点，最近在使用swift语言进行一个简单计算器的开发工作，在使用中又发现了一些需要注意的地方，这里就简单的说一下。<br>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/03/25/swift-2/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-<nav id="pagination">
-  
-    <a href="/" class="alignleft prev">Prev</a>
-  
-  
-    <a href="/page/3/" class="alignright next">Next</a>
-  
-  <div class="clearfix"></div>
-</nav></div></div>
+</div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
