@@ -219,56 +219,6 @@
     <header>
       
         <div class="icon"></div>
-        <time datetime="2015-03-06T02:27:08.000Z"><a href="/2015/03/06/edgeInsets/">Mar 6 2015</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/03/06/edgeInsets/">如何把UIButton中的图片和文字上下对齐</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h2 id="前言">前言</h2>
-<p>我们都知道在UIButton中可以设置图片和文字，也经常见到同时设置有图片和下方提示文字的按钮，但是当我自己去对图片按钮添加提示文字的时候，却发现这并不是想象中的那么简单。</p>
-<p>
-      
-    </div>
-    <footer>
-      
-        
-          <div class="alignleft">
-            <a href="/2015/03/06/edgeInsets/#more" class="more-link">阅读全文</a>
-          </div>
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
         <time datetime="2015-03-05T07:30:55.000Z"><a href="/2015/03/05/cocos-image/">Mar 5 2015</a></time>
       
       
@@ -435,6 +385,60 @@
         
           <div class="alignleft">
             <a href="/2015/01/26/runtime-message-2/#more" class="more-link">阅读全文</a>
+          </div>
+        
+        
+      
+      <div class="clearfix"></div>
+    </footer>
+  </div>
+</article>
+
+
+
+
+  <article class="post">
+  
+    <div class="gallery">
+  <div class="photoset">
+    
+      <img src="">
+    
+  </div>
+  <div class="control">
+    <div class="prev"></div>
+    <div class="next"></div>
+  </div>
+</div>
+  
+  <div class="post-content">
+    <header>
+      
+        <div class="icon"></div>
+        <time datetime="2015-01-21T02:20:32.000Z"><a href="/2015/01/21/runtime-message-1/">Jan 21 2015</a></time>
+      
+      
+  
+    <h1 class="title"><a href="/2015/01/21/runtime-message-1/">Object-C runtime之消息（1）</a></h1>
+  
+
+    </header>
+    <div class="entry">
+      
+        <p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">objc_msgSend</span><span class="params">(receiver, selector)</span></span></div></pre></td></tr></table></figure>
+
+<p>如果消息含有参数，则为：</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">objc_msgSend(receiver, selector, arg1, arg2, <span class="keyword">...</span>)</div></pre></td></tr></table></figure>
+
+<p>
+      
+    </div>
+    <footer>
+      
+        
+          <div class="alignleft">
+            <a href="/2015/01/21/runtime-message-1/#more" class="more-link">阅读全文</a>
           </div>
         
         
