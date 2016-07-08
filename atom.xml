@@ -4,7 +4,7 @@
   <subtitle><![CDATA[一些个人学习的文档]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.ziank.cn/"/>
-  <updated>2016-07-08T06:24:46.799Z</updated>
+  <updated>2016-07-08T06:29:50.165Z</updated>
   <id>http://www.ziank.cn/</id>
   
   <author>
@@ -19,9 +19,9 @@
     <link href="http://www.ziank.cn/2016/07/08/oc-swift-define/"/>
     <id>http://www.ziank.cn/2016/07/08/oc-swift-define/</id>
     <published>2016-07-08T06:22:51.000Z</published>
-    <updated>2016-07-08T06:24:19.000Z</updated>
+    <updated>2016-07-08T06:29:30.000Z</updated>
     <content type="html"><![CDATA[<p>在使用OC和swift进行混编时，我们经常会需要在swift中使用OC中的宏定义，但是这些宏定义经常会提示无法找到或者类型错误，那么我们到底应该怎么做才正确呢？</p>
-<p><a id="more"></a><br>![OC宏定义][/img/OC_define.png]</p>
+<p><a id="more"></a><br><img src="/img/OC_define.png" alt="OC宏定义"></p>
 <p>OC中的宏定义和C一样，主要有以下几种情况：</p>
 <ol>
 <li>定义一个常量值，后面可以方便使用；如 <code>#define TOOLBAR_HEIGHT           44</code>；</li>
@@ -30,7 +30,7 @@
 <li>定义一个带参数的宏，类似于一个函数；如<code>#define RGB_COLOR(r,g,b) [UIColor colorWithRed:r/255.f green:g/255.f blue:b/255.f alpha:1.0]</code></li>
 </ol>
 <p>对于这四种情况，在swift中只能处理第一种情况，而且是直接转换为了<code>let TOOLBAR_HEIGHT = 44;</code>那么由于使用<code>TOOLBAR_HEIGTH</code>的地方基本上都是使用<code>CGFloat</code>，而<code>TOOLBAR_HEIGTH</code>的类型却是Int，就会导致类型不匹配。</p>
-<p>![swift宏定义替换][/img/swift_define.png]</p>
+<p><img src="/img/swift_define.png" alt="swift宏定义替换"></p>
 <p>所以我们在混编时对于这些宏定义都需要单独处理：</p>
 <ul>
 <li>第一种的话就比较简单，可以直接使用<code>let TOOLBAR_HEIGTH:CGFloat = 44</code>来替换就可以了；</li>
