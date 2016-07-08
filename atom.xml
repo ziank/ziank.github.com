@@ -4,7 +4,7 @@
   <subtitle><![CDATA[一些个人学习的文档]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.ziank.cn/"/>
-  <updated>2016-07-06T06:40:51.710Z</updated>
+  <updated>2016-07-08T06:24:46.799Z</updated>
   <id>http://www.ziank.cn/</id>
   
   <author>
@@ -13,6 +13,60 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[OC&swift中的宏定义]]></title>
+    <link href="http://www.ziank.cn/2016/07/08/oc-swift-define/"/>
+    <id>http://www.ziank.cn/2016/07/08/oc-swift-define/</id>
+    <published>2016-07-08T06:22:51.000Z</published>
+    <updated>2016-07-08T06:24:19.000Z</updated>
+    <content type="html"><![CDATA[<p>在使用OC和swift进行混编时，我们经常会需要在swift中使用OC中的宏定义，但是这些宏定义经常会提示无法找到或者类型错误，那么我们到底应该怎么做才正确呢？</p>
+<p><a id="more"></a><br>![OC宏定义][/img/OC_define.png]</p>
+<p>OC中的宏定义和C一样，主要有以下几种情况：</p>
+<ol>
+<li>定义一个常量值，后面可以方便使用；如 <code>#define TOOLBAR_HEIGHT           44</code>；</li>
+<li>定义一个不会变化的常用变量值，或者一个较长的对象属性；如<code>#define SCREEN_WIDTH             ([[UIScreen mainScreen] bounds].size.width)</code>；</li>
+<li>定义一个会变化的常用变量值，或者一个较长的对象属性；如：<code>#define STATUS_BAR_HEIGHT        ([UIApplication sharedApplication].statusBarFrame.size.height)</code>；</li>
+<li>定义一个带参数的宏，类似于一个函数；如<code>#define RGB_COLOR(r,g,b) [UIColor colorWithRed:r/255.f green:g/255.f blue:b/255.f alpha:1.0]</code></li>
+</ol>
+<p>对于这四种情况，在swift中只能处理第一种情况，而且是直接转换为了<code>let TOOLBAR_HEIGHT = 44;</code>那么由于使用<code>TOOLBAR_HEIGTH</code>的地方基本上都是使用<code>CGFloat</code>，而<code>TOOLBAR_HEIGTH</code>的类型却是Int，就会导致类型不匹配。</p>
+<p>![swift宏定义替换][/img/swift_define.png]</p>
+<p>所以我们在混编时对于这些宏定义都需要单独处理：</p>
+<ul>
+<li>第一种的话就比较简单，可以直接使用<code>let TOOLBAR_HEIGTH:CGFloat = 44</code>来替换就可以了；</li>
+<li>第二种因为后面的值永远不会改变，也可以使用<code>let</code>来替换；可以用<code>let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width</code>；</li>
+<li>第三种情况，也就是后面的值会发生改变，如状态栏高度，就不能够使用<code>let</code>来替换了，因为<code>let</code>是定义的常量，如果使用<code>let</code>，如果将会导致不能够获取正确的值；这里可以使用函数来获取：<code>func STATUSBAR_HEIGHT() -&gt; CGFloat { return UIApplication.sharedApplication().statusBarFrame.size.height }</code>；使用时通过函数<code>STATUSBAR_HEIGTH()</code>获取状态栏高度；</li>
+<li>第四种，因为有输入参数，所以也只能使用函数来替换；如：<code>func RGB_COLOR(r:CGFloat, g:CGFloat, b:CGFloat) -&gt; UIColor {return UIColor(red: r, green: g, blue: b, alpha: 1.0)}</code>;</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在使用OC和swift进行混编时，我们经常会需要在swift中使用OC中的宏定义，但是这些宏定义经常会提示无法找到或者类型错误，那么我们到底应该怎么做才正确呢？</p>
+<p>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/tags/swift/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/categories/iOS/swift/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[oc]]></title>
+    <link href="http://www.ziank.cn/2016/07/08/oc/"/>
+    <id>http://www.ziank.cn/2016/07/08/oc/</id>
+    <published>2016-07-08T06:22:42.000Z</published>
+    <updated>2016-07-08T06:22:42.000Z</updated>
+    <content type="html"><![CDATA[]]></content>
+    <summary type="html">
+    <![CDATA[]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[UIWebView键盘的accessoryBar隐藏]]></title>
@@ -782,113 +836,6 @@
     <summary type="html">
     <![CDATA[<h2 id="消息的工作流程">消息的工作流程</h2>
 <p>上一节我们主要讲了消息相关的SEL和IMP的概念，同时也了解到消息最后都会转换成类似objc_msgSend的消息函数来执行，那么 objc_msgSend 到底是怎么工作的呢？<br>]]>
-    
-    </summary>
-    
-      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Object-C runtime之消息（1）]]></title>
-    <link href="http://www.ziank.cn/2015/01/21/runtime-message-1/"/>
-    <id>http://www.ziank.cn/2015/01/21/runtime-message-1/</id>
-    <published>2015-01-21T02:20:32.000Z</published>
-    <updated>2015-03-02T09:44:02.000Z</updated>
-    <content type="html"><![CDATA[<p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">objc_msgSend</span><span class="params">(receiver, selector)</span></span></div></pre></td></tr></table></figure>
-
-<p>如果消息含有参数，则为：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">objc_msgSend(receiver, selector, arg1, arg2, <span class="keyword">...</span>)</div></pre></td></tr></table></figure>
-
-<p><a id="more"></a><br>如果消息的接收者receiver能够找到对应的selector，那么就相当于直接执行了接收者这个对象的特定方法；否则，消息要么被转发，或是临时向接收者动态添加这个selector对应的实现内容，要么就干脆玩完崩溃掉。</p>
-<h2 id="什么是消息">什么是消息</h2>
-<p>进入正题之前，我们首先要来说说跟message息息相关的几个概念：</p>
-<blockquote>
-<ol>
-<li>message（消息）<br>message的具体定义很难说，因为并没有真正的代码描述，简单的讲message 是一种抽象，包括了函数名+参数列表，他并没有实际的实体存在。</li>
-<li>method（方法）<br>method是真正的存在的代码。如：- (int)meaning { return 42; }</li>
-<li>selector（方法选择器）<br>selector 通过SEL类型存在，描述一个特定的method 或者说 message。在实际编程中，可以通过selector进行检索方法等操作。</li>
-</ol>
-</blockquote>
-<h2 id="两个跟消息相关的概念">两个跟消息相关的概念</h2>
-<h3 id="1-_SEL">1. SEL</h3>
-<p>SEL又叫做方法选择器，是objc_msgSend函数第二个参数类型，那它的定义到底是什么呢？<br>打开objc.h文件，看下SEL的定义如下:</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">objc_selector</span> *SEL;</span></div></pre></td></tr></table></figure>
-
-<p>SEL是一个指向objc_selector结构体的指针。而 objc_selector 的定义并没有在runtime.h中给出定义。我们可以尝试运行如下代码:</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">SEL sel = <span class="keyword">@selector</span>(foo);</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"%s"</span>, (<span class="keyword">char</span> *)sel);</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"%p"</span>, sel);</div><div class="line"></div><div class="line"><span class="keyword">const</span> <span class="keyword">char</span> *selName = [<span class="string">@"foo"</span> UTF8String];</div><div class="line">SEL sel2 = sel_registerName(selName);</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"%s"</span>, (<span class="keyword">char</span> *)sel2);</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"%p"</span>, sel2);</div></pre></td></tr></table></figure>
-
-<p>输出如下:</p>
-<figure class="highlight Console"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">2014<span class="tag">-11-06</span> 13<span class="pseudo">:46</span><span class="pseudo">:08</span><span class="class">.058</span> <span class="tag">Test</span><span class="attr_selector">[15053:1132268]</span> <span class="tag">foo</span></div><div class="line">2014<span class="tag">-11-06</span> 13<span class="pseudo">:46</span><span class="pseudo">:08</span><span class="class">.058</span> <span class="tag">Test</span><span class="attr_selector">[15053:1132268]</span> 0<span class="tag">x7fff8fde5114</span></div><div class="line">2014<span class="tag">-11-06</span> 13<span class="pseudo">:46</span><span class="pseudo">:08</span><span class="class">.058</span> <span class="tag">Test</span><span class="attr_selector">[15053:1132268]</span> <span class="tag">foo</span></div><div class="line">2014<span class="tag">-11-06</span> 13<span class="pseudo">:46</span><span class="pseudo">:08</span><span class="class">.058</span> <span class="tag">Test</span><span class="attr_selector">[15053:1132268]</span> 0<span class="tag">x7fff8fde5114</span></div></pre></td></tr></table></figure>
-
-<p>Objective-C在编译时，会根据方法的名字生成一个用来区分这个方法的唯一的一个ID。<br><strong>只要方法名称相同，那么它们的ID就是相同的。</strong></p>
-<p>两个类之间，不管它们是父类与子类的关系，还是之间没有这种关系，只要方法名相同，那么它的SEL就是一样的。每一个方法都对应着一个SEL。编译器会根据每个方法的方法名为那个方法生成唯一的SEL。</p>
-<p>这些SEL组成了一个Set集合，这个Set简单的说就是一个经过了优化过的hash表。而Set的特点就是唯一，也就是SEL是唯一的，因此，如果我们想到这个方法集合中查找某个方法时，只需要去找到这个方法对应的SEL就行了，SEL实际上就是根据方法名hash化了的一个字符串，而对于字符串的比较仅仅需要比较他们的地址就可以了。</p>
-<p>但是，有一个问题，就是数量增多会增大hash冲突而导致的性能下降（或是没有冲突，因为也可能用的是perfect hash）。但是不管使用什么样的方法加速，如果能够将总量减少（多个方法可能对应同一个SEL），那将是最犀利的方法。那么，我们就不难理解，为什么SEL仅仅是函数名了。</p>
-<h3 id="2-_IMP">2. IMP</h3>
-<p>不同的类可以拥有相同的selector。不同类的实例对象执行相同的selector时，会在各自的方法列表中去根据selector去寻找自己对应的IMP。<br>IMP在objc.h中是如此定义的：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">typedef id (*IMP)(id, SEL, <span class="keyword">...</span>);</div></pre></td></tr></table></figure>
-
-<p>IMP的本质就是一个函数指针，它是由编译器生成的。当发起一个 ObjC 消息之后，最终它会执行的那段代码，就是由这个函数指针指定的。而 IMP 这个函数指针就指向了这个方法的实现。<br>前面介绍过的SEL，其实就是为IMP服务的。由于每个方法都对应唯一的SEL，因此我们可以通过SEL方便、快速、准确的获得它所对应的IMP（也就是函数指针），而在取得了函数指针之后，也就意味着我们取得了执行的时候的这段方法的代码的入口，这样我们就可以像普通的C语言函数调用一样使用这个函数指针。</p>
-<h2 id="传递消息所用的几个runtime方法">传递消息所用的几个runtime方法</h2>
-<p>上篇文章中我们说过，下面的方法：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[receiver message]</div></pre></td></tr></table></figure>
-
-<p>在编译后会变成：</p>
-<figure class="highlight C++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">objc_msgSend(receiver, selector)</div></pre></td></tr></table></figure>
-
-<p>实际上，同objc_msgSend方法类似的还有几个：</p>
-<figure class="highlight Cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">objc_msgSend_stret      <span class="comment">//返回值是结构体</span></div><div class="line">objc_msgSend_fpret      <span class="comment">//返回值是浮点型 </span></div><div class="line">objc_msgSendSuper       <span class="comment">//调用父类方法 </span></div><div class="line">objc_msgSendSuper_stret <span class="comment">//调用父类方法，返回值是结构</span></div></pre></td></tr></table></figure>
-
-<p>它们的作用都是类似的，为了简单起见，后续介绍消息和消息传递机制都以objc_msgSend方法为例。</p>
-<p>下一节我们再继续讲述消息调用的流程。</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">objc_msgSend</span><span class="params">(receiver, selector)</span></span></div></pre></td></tr></table></figure>
-
-<p>如果消息含有参数，则为：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">objc_msgSend(receiver, selector, arg1, arg2, <span class="keyword">...</span>)</div></pre></td></tr></table></figure>
-
-<p>]]>
-    
-    </summary>
-    
-      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[能够自适应高度的TABLEVIEWCELL(SELF-SIZING CELL)]]></title>
-    <link href="http://www.ziank.cn/2015/01/20/self-size-cell/"/>
-    <id>http://www.ziank.cn/2015/01/20/self-size-cell/</id>
-    <published>2015-01-20T10:30:50.000Z</published>
-    <updated>2015-03-02T06:39:36.000Z</updated>
-    <content type="html"><![CDATA[<p>在iOS8中，Apple为UITableView引入了一种名为Self-Sizing-Cells的新特性。这是新的SDK中最让我兴奋的一种特性。iOS8以前，如果你想要在tableview中显示可变高度的动态内容，必须单独计算每一个cell的高度。现在到了iOS8，Self-Sizing-Cell 提供了显示动态内容的一种解决方案。简言之，使用自适应cell，你只需要做下面几点：<br><a id="more"></a></p>
-<blockquote>
-<ul>
-<li>使用autolayout定义cell的约束条件</li>
-<li>设置tableview的row的估计高度</li>
-<li>设置tableview的rowHeight属性为UITableViewAutomaticDimension</li>
-</ul>
-</blockquote>
-<p>如果用代码来表示后两点的话，看起来大概是这个样子的：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">tableView.<span class="variable">estimatedRowHeight =</span> <span class="number">44.0</span></div><div class="line"></div><div class="line">tableView.<span class="variable">rowHeight =</span> UITableViewAutomaticDimension</div></pre></td></tr></table></figure>
-
-<p>只需要两行代码，你就可以让tableview根据内容计算cell的尺寸并自动渲染它。使用Self-Sizing-Cell特性能够节约你的时间和代码量，相信你会喜欢它的。</p>
-<h2 id="使用Self-Sizing-cell创建一个简单地示例">使用Self-Sizing-cell创建一个简单地示例</h2>
-<p>学习一个新特性最好的办法就是使用它。让我们用一个demo程序来示范Self-Sizing-cell的使用。 首先又一个模板工程，这是一个显示酒店列表的简单app。每一个cell包括两行文字，分别是酒店的名字和地址。如果你下载并执行该程序的话，效果应该如下：<br><img src="/img/table-view-truncated-text.png" alt="示例图片"><br>正如你所看到的，由于每个row的高度都是固定的，一些酒店的地址被截断了。你可能在开发基于tableview的应用时也会遇到同样地问题。在过去，你可能简单地缩小字体或者增加文本行数来修复这个问题。从iOS8以后，你需要做的就是使用Self-Sizing-Cell，这样cell就会根据内容进行合适适配，无论内容的长度如何变化，都能够正常的显示。</p>
-<h2 id="添加AutoLayout的约束">添加AutoLayout的约束</h2>
-<p>你可能讨厌AutoLayout并且在尽量的避免使用它。但是，不使用AutoLayout，Self-Sizing-Cell就不恩能够够正常的工作，因为它是根据autoLayout的约束来确定正确地rowHeight的。实际上，是tableview在每一个cell上调用了systemLayoutSizeFittingSize来返回基于layout约束计算出的cell尺寸。<br><br><br>请对name和address的两个label自行添加相应约束。</p>
-<h2 id="设置预估的cell高度">设置预估的cell高度</h2>
-<p>添加了AutoLayout的约束之后，剩下的就是在viewDidLoad方法中添加下面的代码：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">tableView.<span class="variable">estimatedRowHeight =</span> <span class="number">68.0</span></div><div class="line">tableView.<span class="variable">rowHeight =</span> UITableViewAutomaticDimension</div></pre></td></tr></table></figure>
-
-<p>第一行代码设置预估的cell高度，第二行代码修改tableview的rowHeight属性为UITableViewAutomaticDimension。换句话说，就是你让tableview根据其他信息计算cell的尺寸。<br><br><br>如果你现在测试应用，会发现还是不正确的，因为name和address两个控件都设置了SingleLine的属性。所以设置LineNumber为0，使文本行数能够自动根据内容增长。<br><br><br>到这里，就全部完成，再次运行app，tableview的cell就会根据内容自动计算高度了。</p>
-<center><img src="/img/self-sizing-cell-demo.png" alt=""></center>]]></content>
-    <summary type="html">
-    <![CDATA[<p>在iOS8中，Apple为UITableView引入了一种名为Self-Sizing-Cells的新特性。这是新的SDK中最让我兴奋的一种特性。iOS8以前，如果你想要在tableview中显示可变高度的动态内容，必须单独计算每一个cell的高度。现在到了iOS8，Self-Sizing-Cell 提供了显示动态内容的一种解决方案。简言之，使用自适应cell，你只需要做下面几点：<br>]]>
     
     </summary>
     
