@@ -4,7 +4,7 @@
   <subtitle><![CDATA[一些个人学习的文档]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://www.ziank.cn/"/>
-  <updated>2016-07-08T11:03:14.537Z</updated>
+  <updated>2016-07-25T09:20:04.976Z</updated>
   <id>http://www.ziank.cn/</id>
   
   <author>
@@ -13,6 +13,46 @@
   </author>
   
   <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[swift利用系统库汉字转换为拼音]]></title>
+    <link href="http://www.ziank.cn/2016/07/25/chinese-string/"/>
+    <id>http://www.ziank.cn/2016/07/25/chinese-string/</id>
+    <published>2016-07-25T09:18:57.000Z</published>
+    <updated>2016-07-25T09:19:52.000Z</updated>
+    <content type="html"><![CDATA[<p>在iOS中我们做搜索时一般会遇到通过拼音搜索关键字的情况，这时候我们的判断就需要把中文汉字转换为拼音，有些时候还需要获取汉语拼音的首字母大写缩写，那么我们应该这么做呢？</p>
+<p>有些第三方库可以完成汉字到拼音的转换，但是系统库也可以支持拼音转换的所以这里就简单介绍一下使用系统库进行转换的方法。<br><a id="more"></a><br>增加判断的函数，最好的办法是对<code>String</code>类添加一个<code>extension</code>，代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">extension</span> <span class="title">String</span> </span>{}</div></pre></td></tr></table></figure>
+
+<p>然后第一步，是判断字符串中有没有中文字符：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">extension</span> <span class="title">String</span> </span>{</div><div class="line">    <span class="func"><span class="keyword">func</span></span> isIncludeChinese() -&gt; <span class="type">Bool</span> {</div><div class="line">        <span class="keyword">for</span> ch <span class="keyword">in</span> <span class="keyword">self</span>.unicodeScalars {</div><div class="line">        	<span class="comment">// 中文字符范围：0x4e00 ~ 0x9fff</span></div><div class="line">            <span class="keyword">if</span> (<span class="number">0x4e00</span> &lt; ch.value  && ch.value &lt; <span class="number">0x9fff</span>) {</div><div class="line">                <span class="keyword">return</span> <span class="built_in">true</span></div><div class="line">            }</div><div class="line">        }</div><div class="line">        <span class="keyword">return</span> <span class="built_in">false</span></div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>第二步，是转换为拼音：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> transformToPinyin() -&gt; <span class="type">String</span> {</div><div class="line">    <span class="keyword">let</span> stringRef = <span class="type">NSMutableString</span>(string: <span class="keyword">self</span>) <span class="keyword">as</span> <span class="type">CFMutableString</span></div><div class="line">    <span class="comment">// 转换为带音标的拼音</span></div><div class="line">    <span class="type">CFStringTransform</span>(stringRef,<span class="built_in">nil</span>, kCFStringTransformToLatin, <span class="built_in">false</span>);</div><div class="line">    <span class="comment">// 去掉音标</span></div><div class="line">    <span class="type">CFStringTransform</span>(stringRef, <span class="built_in">nil</span>, kCFStringTransformStripCombiningMarks, <span class="built_in">false</span>);</div><div class="line">    <span class="keyword">let</span> pinyin = stringRef <span class="keyword">as</span> <span class="type">String</span>;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> pinyin</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>这样转换出来的拼音字符串，每个汉字的拼音中间都会用空格隔开，增加去掉空格的函数：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> transformToPinyinWithoutBlank() -&gt; <span class="type">String</span> {</div><div class="line">    <span class="keyword">var</span> pinyin = <span class="keyword">self</span>.transformToPinyin()</div><div class="line">    <span class="comment">// 去掉空格</span></div><div class="line">    pinyin = pinyin.stringByReplacingOccurrencesOfString(<span class="string">" "</span>, withString: <span class="string">""</span>)</div><div class="line">    <span class="keyword">return</span> pinyin</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>最后一个方法，是获取大写的首字母的方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> getPinyinHead() -&gt; <span class="type">String</span> {</div><div class="line">    <span class="comment">// 字符串转换为首字母大写</span></div><div class="line">    <span class="keyword">let</span> pinyin = <span class="keyword">self</span>.transformToPinyin().capitalizedString</div><div class="line">    <span class="keyword">var</span> headPinyinStr = <span class="string">""</span></div><div class="line"></div><div class="line">    <span class="comment">// 获取所有大写字母</span></div><div class="line">    <span class="keyword">for</span> ch <span class="keyword">in</span> pinyin.characters {</div><div class="line">        <span class="keyword">if</span> ch &lt;= <span class="string">"Z"</span> && ch &gt;= <span class="string">"A"</span> {</div><div class="line">            headPinyinStr.append(ch)</div><div class="line">        }</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> headPinyinStr</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>希望这些方法能够对大家有用。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在iOS中我们做搜索时一般会遇到通过拼音搜索关键字的情况，这时候我们的判断就需要把中文汉字转换为拼音，有些时候还需要获取汉语拼音的首字母大写缩写，那么我们应该这么做呢？</p>
+<p>有些第三方库可以完成汉字到拼音的转换，但是系统库也可以支持拼音转换的所以这里就简单介绍一下使用系统库进行转换的方法。<br>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/tags/swift/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/categories/iOS/swift/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[OC&swift中的宏定义]]></title>
@@ -823,76 +863,6 @@
     <summary type="html">
     <![CDATA[<h2 id="消息的工作流程">消息的工作流程</h2>
 <p>上一节我们主要讲了消息相关的SEL和IMP的概念，同时也了解到消息最后都会转换成类似objc_msgSend的消息函数来执行，那么 objc_msgSend 到底是怎么工作的呢？<br>]]>
-    
-    </summary>
-    
-      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title><![CDATA[Object-C runtime之消息（1）]]></title>
-    <link href="http://www.ziank.cn/2015/01/21/runtime-message-1/"/>
-    <id>http://www.ziank.cn/2015/01/21/runtime-message-1/</id>
-    <published>2015-01-21T02:20:32.000Z</published>
-    <updated>2015-03-02T09:44:02.000Z</updated>
-    <content type="html"><![CDATA[<p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">objc_msgSend</span><span class="params">(receiver, selector)</span></span></div></pre></td></tr></table></figure>
-
-<p>如果消息含有参数，则为：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">objc_msgSend(receiver, selector, arg1, arg2, <span class="keyword">...</span>)</div></pre></td></tr></table></figure>
-
-<p><a id="more"></a><br>如果消息的接收者receiver能够找到对应的selector，那么就相当于直接执行了接收者这个对象的特定方法；否则，消息要么被转发，或是临时向接收者动态添加这个selector对应的实现内容，要么就干脆玩完崩溃掉。</p>
-<h2 id="什么是消息">什么是消息</h2>
-<p>进入正题之前，我们首先要来说说跟message息息相关的几个概念：</p>
-<blockquote>
-<ol>
-<li>message（消息）<br>message的具体定义很难说，因为并没有真正的代码描述，简单的讲message 是一种抽象，包括了函数名+参数列表，他并没有实际的实体存在。</li>
-<li>method（方法）<br>method是真正的存在的代码。如：- (int)meaning { return 42; }</li>
-<li>selector（方法选择器）<br>selector 通过SEL类型存在，描述一个特定的method 或者说 message。在实际编程中，可以通过selector进行检索方法等操作。</li>
-</ol>
-</blockquote>
-<h2 id="两个跟消息相关的概念">两个跟消息相关的概念</h2>
-<h3 id="1-_SEL">1. SEL</h3>
-<p>SEL又叫做方法选择器，是objc_msgSend函数第二个参数类型，那它的定义到底是什么呢？<br>打开objc.h文件，看下SEL的定义如下:</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">objc_selector</span> *SEL;</span></div></pre></td></tr></table></figure>
-
-<p>SEL是一个指向objc_selector结构体的指针。而 objc_selector 的定义并没有在runtime.h中给出定义。我们可以尝试运行如下代码:</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">SEL sel = <span class="keyword">@selector</span>(foo);</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"%s"</span>, (<span class="keyword">char</span> *)sel);</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"%p"</span>, sel);</div><div class="line"></div><div class="line"><span class="keyword">const</span> <span class="keyword">char</span> *selName = [<span class="string">@"foo"</span> UTF8String];</div><div class="line">SEL sel2 = sel_registerName(selName);</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"%s"</span>, (<span class="keyword">char</span> *)sel2);</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"%p"</span>, sel2);</div></pre></td></tr></table></figure>
-
-<p>输出如下:</p>
-<figure class="highlight Console"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">2014<span class="tag">-11-06</span> 13<span class="pseudo">:46</span><span class="pseudo">:08</span><span class="class">.058</span> <span class="tag">Test</span><span class="attr_selector">[15053:1132268]</span> <span class="tag">foo</span></div><div class="line">2014<span class="tag">-11-06</span> 13<span class="pseudo">:46</span><span class="pseudo">:08</span><span class="class">.058</span> <span class="tag">Test</span><span class="attr_selector">[15053:1132268]</span> 0<span class="tag">x7fff8fde5114</span></div><div class="line">2014<span class="tag">-11-06</span> 13<span class="pseudo">:46</span><span class="pseudo">:08</span><span class="class">.058</span> <span class="tag">Test</span><span class="attr_selector">[15053:1132268]</span> <span class="tag">foo</span></div><div class="line">2014<span class="tag">-11-06</span> 13<span class="pseudo">:46</span><span class="pseudo">:08</span><span class="class">.058</span> <span class="tag">Test</span><span class="attr_selector">[15053:1132268]</span> 0<span class="tag">x7fff8fde5114</span></div></pre></td></tr></table></figure>
-
-<p>Objective-C在编译时，会根据方法的名字生成一个用来区分这个方法的唯一的一个ID。<br><strong>只要方法名称相同，那么它们的ID就是相同的。</strong></p>
-<p>两个类之间，不管它们是父类与子类的关系，还是之间没有这种关系，只要方法名相同，那么它的SEL就是一样的。每一个方法都对应着一个SEL。编译器会根据每个方法的方法名为那个方法生成唯一的SEL。</p>
-<p>这些SEL组成了一个Set集合，这个Set简单的说就是一个经过了优化过的hash表。而Set的特点就是唯一，也就是SEL是唯一的，因此，如果我们想到这个方法集合中查找某个方法时，只需要去找到这个方法对应的SEL就行了，SEL实际上就是根据方法名hash化了的一个字符串，而对于字符串的比较仅仅需要比较他们的地址就可以了。</p>
-<p>但是，有一个问题，就是数量增多会增大hash冲突而导致的性能下降（或是没有冲突，因为也可能用的是perfect hash）。但是不管使用什么样的方法加速，如果能够将总量减少（多个方法可能对应同一个SEL），那将是最犀利的方法。那么，我们就不难理解，为什么SEL仅仅是函数名了。</p>
-<h3 id="2-_IMP">2. IMP</h3>
-<p>不同的类可以拥有相同的selector。不同类的实例对象执行相同的selector时，会在各自的方法列表中去根据selector去寻找自己对应的IMP。<br>IMP在objc.h中是如此定义的：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">typedef id (*IMP)(id, SEL, <span class="keyword">...</span>);</div></pre></td></tr></table></figure>
-
-<p>IMP的本质就是一个函数指针，它是由编译器生成的。当发起一个 ObjC 消息之后，最终它会执行的那段代码，就是由这个函数指针指定的。而 IMP 这个函数指针就指向了这个方法的实现。<br>前面介绍过的SEL，其实就是为IMP服务的。由于每个方法都对应唯一的SEL，因此我们可以通过SEL方便、快速、准确的获得它所对应的IMP（也就是函数指针），而在取得了函数指针之后，也就意味着我们取得了执行的时候的这段方法的代码的入口，这样我们就可以像普通的C语言函数调用一样使用这个函数指针。</p>
-<h2 id="传递消息所用的几个runtime方法">传递消息所用的几个runtime方法</h2>
-<p>上篇文章中我们说过，下面的方法：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[receiver message]</div></pre></td></tr></table></figure>
-
-<p>在编译后会变成：</p>
-<figure class="highlight C++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">objc_msgSend(receiver, selector)</div></pre></td></tr></table></figure>
-
-<p>实际上，同objc_msgSend方法类似的还有几个：</p>
-<figure class="highlight Cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">objc_msgSend_stret      <span class="comment">//返回值是结构体</span></div><div class="line">objc_msgSend_fpret      <span class="comment">//返回值是浮点型 </span></div><div class="line">objc_msgSendSuper       <span class="comment">//调用父类方法 </span></div><div class="line">objc_msgSendSuper_stret <span class="comment">//调用父类方法，返回值是结构</span></div></pre></td></tr></table></figure>
-
-<p>它们的作用都是类似的，为了简单起见，后续介绍消息和消息传递机制都以objc_msgSend方法为例。</p>
-<p>下一节我们再继续讲述消息调用的流程。</p>
-]]></content>
-    <summary type="html">
-    <![CDATA[<p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">objc_msgSend</span><span class="params">(receiver, selector)</span></span></div></pre></td></tr></table></figure>
-
-<p>如果消息含有参数，则为：</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">objc_msgSend(receiver, selector, arg1, arg2, <span class="keyword">...</span>)</div></pre></td></tr></table></figure>
-
-<p>]]>
     
     </summary>
     

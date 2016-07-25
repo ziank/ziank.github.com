@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="iOS," />
+  <meta name="keywords" content="iOS,swift," />
 
 
 
@@ -84,17 +84,18 @@
 
 
 
-<meta name="description" content="最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。">
+<meta name="description" content="在iOS中我们做搜索时一般会遇到通过拼音搜索关键字的情况，这时候我们的判断就需要把中文汉字转换为拼音，有些时候还需要获取汉语拼音的首字母大写缩写，那么我们应该这么做呢？
+有些第三方库可以完成汉字到拼音的转换，但是系统库也可以支持拼音转换的所以这里就简单介绍一下使用系统库进行转换的方法。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="todayView组件的高度处理问题">
-<meta property="og:url" content="http://www.ziank.cn/2015/05/11/todayViewExtensionHeight/">
+<meta property="og:title" content="swift利用系统库汉字转换为拼音">
+<meta property="og:url" content="http://www.ziank.cn/2016/07/25/chinese-string/">
 <meta property="og:site_name" content="Ziank的技术分享">
-<meta property="og:description" content="最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。">
-<meta property="og:image" content="/img/todayViewExtensionHeight_1.png">
-<meta property="og:image" content="/img/todayViewExtensionHeight_2.png">
+<meta property="og:description" content="在iOS中我们做搜索时一般会遇到通过拼音搜索关键字的情况，这时候我们的判断就需要把中文汉字转换为拼音，有些时候还需要获取汉语拼音的首字母大写缩写，那么我们应该这么做呢？
+有些第三方库可以完成汉字到拼音的转换，但是系统库也可以支持拼音转换的所以这里就简单介绍一下使用系统库进行转换的方法。">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="todayView组件的高度处理问题">
-<meta name="twitter:description" content="最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。">
+<meta name="twitter:title" content="swift利用系统库汉字转换为拼音">
+<meta name="twitter:description" content="在iOS中我们做搜索时一般会遇到通过拼音搜索关键字的情况，这时候我们的判断就需要把中文汉字转换为拼音，有些时候还需要获取汉语拼音的首字母大写缩写，那么我们应该这么做呢？
+有些第三方库可以完成汉字到拼音的转换，但是系统库也可以支持拼音转换的所以这里就简单介绍一下使用系统库进行转换的方法。">
 
 
 
@@ -118,7 +119,7 @@
 
   <link rel="canonical" href="http://www.ziank.cn/"/>
 
-  <title> todayView组件的高度处理问题 | Ziank的技术分享 </title>
+  <title> swift利用系统库汉字转换为拼音 | Ziank的技术分享 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -258,7 +259,7 @@
             
             
               
-                todayView组件的高度处理问题
+                swift利用系统库汉字转换为拼音
               
             
           </h1>
@@ -270,8 +271,8 @@
               <i class="fa fa-calendar-o"></i>
             </span>
             <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-05-11T15:17:59+08:00" content="May 11 2015">
-              May 11 2015
+            <time itemprop="dateCreated" datetime="2016-07-25T17:18:57+08:00" content="Jul 25 2016">
+              Jul 25 2016
             </time>
           </span>
 
@@ -291,6 +292,18 @@
 
                 
                 
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/swift/" itemprop="url" rel="index">
+                    <span itemprop="name">swift</span>
+                  </a>
+                </span>
+
+                
+                
 
               
             </span>
@@ -300,8 +313,8 @@
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/05/11/todayViewExtensionHeight/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/05/11/todayViewExtensionHeight/" itemprop="commentsCount"></span>
+                <a href="/2016/07/25/chinese-string/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/07/25/chinese-string/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -322,40 +335,25 @@
 
       
       
-        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
-          
-          
-            <div class="post-gallery-row">
-              <a class="post-gallery-img fancybox"
-                 href="/img/todayViewExtensionHeight_1.png" rel="gallery_5nz3v0hq65keiwr6"
-                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
-                <img src="/img/todayViewExtensionHeight_1.png" itemprop="contentUrl"/>
-              </a>
-            
-          
-            
-              <a class="post-gallery-img fancybox"
-                 href="/img/todayViewExtensionHeight_2.png" rel="gallery_5nz3v0hq65keiwr6"
-                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
-                <img src="/img/todayViewExtensionHeight_2.png" itemprop="contentUrl"/>
-              </a>
-            
-          
-
-          
-          </div>
-        </div>
-      
 
       
-        <p>最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。<br><a id="more"></a><br><img src="/img/todayViewExtensionHeight_1.png" alt="位置不正确的图片"></p>
-<p>为此我们查了不少资料，最后发现只是一个很简单地设置问题，是由于系统默认的todayView的偏移量为</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">defaultMarginInsets =</span> (<span class="variable">top =</span> <span class="number">0</span>, <span class="variable">left =</span> <span class="number">47</span>, <span class="variable">bottom =</span> <span class="number">39</span>, <span class="variable">right =</span> <span class="number">0</span>);</div></pre></td></tr></table></figure>
+        <p>在iOS中我们做搜索时一般会遇到通过拼音搜索关键字的情况，这时候我们的判断就需要把中文汉字转换为拼音，有些时候还需要获取汉语拼音的首字母大写缩写，那么我们应该这么做呢？</p>
+<p>有些第三方库可以完成汉字到拼音的转换，但是系统库也可以支持拼音转换的所以这里就简单介绍一下使用系统库进行转换的方法。<br><a id="more"></a><br>增加判断的函数，最好的办法是对<code>String</code>类添加一个<code>extension</code>，代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">extension</span> <span class="title">String</span> </span>{}</div></pre></td></tr></table></figure>
 
-<p>所以只需要简单地修改这个偏移量，就能够解决该问题。对偏移量的修改应该在方法<code>widgetMarginInsetsForProposedMarginInsets</code>中进行修改:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIEdgeInsets</span>)widgetMarginInsetsForProposedMarginInsets:(<span class="built_in">UIEdgeInsets</span>)defaultMarginInsets</div><div class="line">{</div><div class="line">    defaultMarginInsets<span class="variable">.bottom</span> = <span class="number">0</span>;</div><div class="line">    <span class="keyword">return</span> defaultMarginInsets;</div><div class="line">}</div></pre></td></tr></table></figure>
+<p>然后第一步，是判断字符串中有没有中文字符：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">extension</span> <span class="title">String</span> </span>{</div><div class="line">    <span class="func"><span class="keyword">func</span></span> isIncludeChinese() -&gt; <span class="type">Bool</span> {</div><div class="line">        <span class="keyword">for</span> ch <span class="keyword">in</span> <span class="keyword">self</span>.unicodeScalars {</div><div class="line">        	<span class="comment">// 中文字符范围：0x4e00 ~ 0x9fff</span></div><div class="line">            <span class="keyword">if</span> (<span class="number">0x4e00</span> &lt; ch.value  && ch.value &lt; <span class="number">0x9fff</span>) {</div><div class="line">                <span class="keyword">return</span> <span class="built_in">true</span></div><div class="line">            }</div><div class="line">        }</div><div class="line">        <span class="keyword">return</span> <span class="built_in">false</span></div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
 
-<p>修改之后，todayView的界面就正常了。<br><img src="/img/todayViewExtensionHeight_2.png" alt="修改后的todayViewExtension截图"></p>
+<p>第二步，是转换为拼音：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> transformToPinyin() -&gt; <span class="type">String</span> {</div><div class="line">    <span class="keyword">let</span> stringRef = <span class="type">NSMutableString</span>(string: <span class="keyword">self</span>) <span class="keyword">as</span> <span class="type">CFMutableString</span></div><div class="line">    <span class="comment">// 转换为带音标的拼音</span></div><div class="line">    <span class="type">CFStringTransform</span>(stringRef,<span class="built_in">nil</span>, kCFStringTransformToLatin, <span class="built_in">false</span>);</div><div class="line">    <span class="comment">// 去掉音标</span></div><div class="line">    <span class="type">CFStringTransform</span>(stringRef, <span class="built_in">nil</span>, kCFStringTransformStripCombiningMarks, <span class="built_in">false</span>);</div><div class="line">    <span class="keyword">let</span> pinyin = stringRef <span class="keyword">as</span> <span class="type">String</span>;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> pinyin</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>这样转换出来的拼音字符串，每个汉字的拼音中间都会用空格隔开，增加去掉空格的函数：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> transformToPinyinWithoutBlank() -&gt; <span class="type">String</span> {</div><div class="line">    <span class="keyword">var</span> pinyin = <span class="keyword">self</span>.transformToPinyin()</div><div class="line">    <span class="comment">// 去掉空格</span></div><div class="line">    pinyin = pinyin.stringByReplacingOccurrencesOfString(<span class="string">" "</span>, withString: <span class="string">""</span>)</div><div class="line">    <span class="keyword">return</span> pinyin</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>最后一个方法，是获取大写的首字母的方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> getPinyinHead() -&gt; <span class="type">String</span> {</div><div class="line">    <span class="comment">// 字符串转换为首字母大写</span></div><div class="line">    <span class="keyword">let</span> pinyin = <span class="keyword">self</span>.transformToPinyin().capitalizedString</div><div class="line">    <span class="keyword">var</span> headPinyinStr = <span class="string">""</span></div><div class="line"></div><div class="line">    <span class="comment">// 获取所有大写字母</span></div><div class="line">    <span class="keyword">for</span> ch <span class="keyword">in</span> pinyin.characters {</div><div class="line">        <span class="keyword">if</span> ch &lt;= <span class="string">"Z"</span> && ch &gt;= <span class="string">"A"</span> {</div><div class="line">            headPinyinStr.append(ch)</div><div class="line">        }</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> headPinyinStr</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>希望这些方法能够对大家有用。</p>
 
       
     </div>
@@ -380,6 +378,8 @@
           
             <a href="/tags/iOS/" rel="tag">#iOS</a>
           
+            <a href="/tags/swift/" rel="tag">#swift</a>
+          
         </div>
       
 
@@ -387,17 +387,13 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/03/27/swift-operator/" rel="next" title="swift的操作符重载">
-                <i class="fa fa-chevron-left"></i> swift的操作符重载
+              <a href="/2016/07/08/oc-swift-define/" rel="next" title="OC&swift中的宏定义">
+                <i class="fa fa-chevron-left"></i> OC&swift中的宏定义
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/05/14/char-const/" rel="prev" title="浅析const char *, char * const, char const *, const char * const 的区别">
-                浅析const char *, char * const, char const *, const char * const 的区别 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -423,8 +419,8 @@
           
   <div class="comments" id="comments">
     
-      <div class="ds-thread" data-thread-key="2015/05/11/todayViewExtensionHeight/"
-           data-title="todayView组件的高度处理问题" data-url="http://www.ziank.cn/2015/05/11/todayViewExtensionHeight/">
+      <div class="ds-thread" data-thread-key="2016/07/25/chinese-string/"
+           data-title="swift利用系统库汉字转换为拼音" data-url="http://www.ziank.cn/2016/07/25/chinese-string/">
       </div>
     
   </div>
