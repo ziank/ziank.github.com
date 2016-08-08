@@ -84,21 +84,15 @@
 
 
 
-<meta name="description" content="当前swift正在逐步开始流行，我们也需要与时俱进，但是在项目中又不可能已下载把所有代码进行替换，这就存在了混编的必然性。对于swift和OC的混编，我说一些自己认为需要注意的地方。
-
-可选类型：swift中最经典的用法，需要注意的就是如果使用了!，一定不能够为nil，否则将会crash；OC转换时一般会为了简单，把成员变量的类型定义为!，那么一定要注意使用该变量时不可以为空。">
+<meta name="description" content="当前swift正在逐步开始流行，我们也需要与时俱进，但是在项目中又不可能已下载把所有代码进行替换，这就存在了混编的必然性。对于swift和OC的混编，我说一些自己认为需要注意的地方。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OC&Swift混编的注意点">
 <meta property="og:url" content="http://www.ziank.cn/2016/08/08/OC-Swift/">
 <meta property="og:site_name" content="Ziank的技术分享">
-<meta property="og:description" content="当前swift正在逐步开始流行，我们也需要与时俱进，但是在项目中又不可能已下载把所有代码进行替换，这就存在了混编的必然性。对于swift和OC的混编，我说一些自己认为需要注意的地方。
-
-可选类型：swift中最经典的用法，需要注意的就是如果使用了!，一定不能够为nil，否则将会crash；OC转换时一般会为了简单，把成员变量的类型定义为!，那么一定要注意使用该变量时不可以为空。">
+<meta property="og:description" content="当前swift正在逐步开始流行，我们也需要与时俱进，但是在项目中又不可能已下载把所有代码进行替换，这就存在了混编的必然性。对于swift和OC的混编，我说一些自己认为需要注意的地方。">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="OC&Swift混编的注意点">
-<meta name="twitter:description" content="当前swift正在逐步开始流行，我们也需要与时俱进，但是在项目中又不可能已下载把所有代码进行替换，这就存在了混编的必然性。对于swift和OC的混编，我说一些自己认为需要注意的地方。
-
-可选类型：swift中最经典的用法，需要注意的就是如果使用了!，一定不能够为nil，否则将会crash；OC转换时一般会为了简单，把成员变量的类型定义为!，那么一定要注意使用该变量时不可以为空。">
+<meta name="twitter:description" content="当前swift正在逐步开始流行，我们也需要与时俱进，但是在项目中又不可能已下载把所有代码进行替换，这就存在了混编的必然性。对于swift和OC的混编，我说一些自己认为需要注意的地方。">
 
 
 
@@ -340,9 +334,9 @@
       
 
       
-        <p>当前swift正在逐步开始流行，我们也需要与时俱进，但是在项目中又不可能已下载把所有代码进行替换，这就存在了混编的必然性。对于swift和OC的混编，我说一些自己认为需要注意的地方。</p>
+        <p>当前swift正在逐步开始流行，我们也需要与时俱进，但是在项目中又不可能已下载把所有代码进行替换，这就存在了混编的必然性。对于swift和OC的混编，我说一些自己认为需要注意的地方。<br><a id="more"></a></p>
 <ol>
-<li><strong>可选类型</strong>：swift中最经典的用法，需要注意的就是如果使用了!，一定不能够为nil，否则将会crash；<strong>OC转换时一般会为了简单，把成员变量的类型定义为!，那么一定要注意使用该变量时不可以为空</strong>。<a id="more"></a></li>
+<li><strong>可选类型</strong>：swift中最经典的用法，需要注意的就是如果使用了!，一定不能够为nil，否则将会crash；<strong>OC转换时一般会为了简单，把成员变量的类型定义为!，那么一定要注意使用该变量时不可以为空</strong>。</li>
 <li><strong>相互引用</strong>：OC引用swift的类，需要在swift的类定义时添加@objc，同时在.m文件中包含swift的对应头文件（<code>productName-swift.h</code>），这样才可以正常使用；而swift引用OC的类，需要在bridge文件中包含对应的头文件，然后就可以在swift中调用。</li>
 <li><strong>宏定义</strong>：OC中的宏定义，在swift中一部分可以正常使用，也有很大一部分无法再正常使用，具体的可以参见<a href="http://www.jianshu.com/p/e6ade2b24648" target="_blank" rel="external">OC&amp;swift中的宏定义</a>一文。</li>
 <li><strong>数据类型</strong>：OC中的所有对象都是一个指针，所以都可以进行强制转换，在swift中将不再允许这种使用；还有就是在swift中数字类型之间将不再进行隐式转换，都需要开发者手动进行显式的转换。<br>在swift中使用let定义常量时可以推断类型，如果要设置为特定类型的话，还是需要添加数据类型，这一点和OC中的宏不同。比如要定义长度为44，一定要使用<code>let height:CGFloat = 44</code>，而不能够使用<code>let height = 44</code>，因为后者将会把height推断为Int类型，导致后面使用的时候无法正常使用。 </li>
