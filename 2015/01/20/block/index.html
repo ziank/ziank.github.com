@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
@@ -101,10 +102,374 @@
 <p>##retain cycle（引用嵌套）<br>retain cycle问题的根源在于Block和obj可能会互相强引用，互相retain对方，这样就导致了retain cycle，最后这个Block和obj就变成了孤岛，谁也释放不了谁。<br><br><br>举个简单地例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];</div><div class="line">[request setCompletionBlock:^&#123;</div><div class="line">NSString* string = [request responseString];</div><div class="line">&#125;];</div></pre></td></tr></table></figure></p>
 <p>由于request和Block对象相互之间有强引用的关系，导致最后两者都无法释放。也就是Block对象释放必须先释放request，而request释放又必须先释放Block对象，最后都无法释放。<br><br><br>解决的办法就是在Block对象中对request进行弱引用，这样Block的释放就不依赖于request的释放，最后能够全部释放。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">__block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];</div><div class="line">[request setCompletionBlock:^&#123;</div><div class="line">NSString* string = [request responseString];</div><div class="line">&#125;];</div></pre></td></tr></table></figure></p>
 <p>##Block使用对象被提前释放<br>Block使用对象被提前释放主要是由于开发者担心retain cycle错误的使用__block导致。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">// MyClass.m</div><div class="line">- (void) test &#123;</div><div class="line">__block MyClass* weakSelf = self;</div><div class="line">double delayInSeconds = 10.0;</div><div class="line">dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));</div><div class="line">dispatch_after(popTime, dispatch_get_main_queue(), ^(void)&#123;</div><div class="line">NSLog(@&quot;%@&quot;, weakSelf);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// other.m</div><div class="line">MyClass* obj = [[[MyClass alloc] init] autorelease];</div><div class="line">[obj test];</div></pre></td></tr></table></figure></p>
+=======
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Block的简介
+Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。
+Block的使用语法
+Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="正确使用BLOCK避免CYCLE RETAIN和CRASH">
+<meta property="og:url" content="http://www.ziank.cn/2015/01/20/block/">
+<meta property="og:site_name" content="Ziank的技术分享">
+<meta property="og:description" content="Block的简介
+Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。
+Block的使用语法
+Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="正确使用BLOCK避免CYCLE RETAIN和CRASH">
+<meta name="twitter:description" content="Block的简介
+Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。
+Block的使用语法
+Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：">
+
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://www.ziank.cn/"/>
+
+  <title> 正确使用BLOCK避免CYCLE RETAIN和CRASH | Ziank的技术分享 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ziank的技术分享</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一些个人学习的文档</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/th" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                正确使用BLOCK避免CYCLE RETAIN和CRASH
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-01-20T17:30:50+08:00" content="Jan 20 2015">
+              Jan 20 2015
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/01/20/block/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/20/block/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="Block的简介">Block的简介</h2>
+<p>Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。</p>
+<h2 id="Block的使用语法">Block的使用语法</h2>
+<p>Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：<br><a id="more"></a></p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (<span class="keyword">long</span> (^)(<span class="keyword">int</span>, <span class="keyword">int</span>)) sumBlock {</div><div class="line"><span class="keyword">int</span> <span class="keyword">base</span> = <span class="number">100</span>;</div><div class="line"><span class="keyword">return</span> [[ ^ <span class="keyword">long</span> (<span class="keyword">int</span> a, <span class="keyword">int</span> b) {</div><div class="line"><span class="keyword">return</span> <span class="keyword">base</span> + a + b;</div><div class="line">} copy] autorelease];</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p><br><br>下面一个例子则是先声明了一种Block对象的类型，再定义对应的Block对象：</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">typedef <span class="keyword">long</span> (^BlkSum)(<span class="keyword">int</span>, <span class="keyword">int</span>);</div><div class="line"></div><div class="line">- (BlkSum) sumBlock {</div><div class="line"><span class="keyword">int</span> <span class="keyword">base</span> = <span class="number">100</span>;</div><div class="line">BlkSum blk = ^ <span class="keyword">long</span> (<span class="keyword">int</span> a, <span class="keyword">int</span> b) {</div><div class="line"><span class="keyword">return</span> <span class="keyword">base</span> + a + b;</div><div class="line">}</div><div class="line"><span class="keyword">return</span> [[blk copy] autorelease];</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h2 id="Block中得变量使用">Block中得变量使用</h2>
+<p>Block中的变量主要是指上下文中得assign/retain/weak等类型的局部变量或成员变量的使用：</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">int</span> <span class="keyword">base</span> = <span class="number">100</span>;</div><div class="line"><span class="keyword">base</span> += <span class="number">100</span>;</div><div class="line">BlkSum sum = ^ <span class="keyword">long</span> (<span class="keyword">int</span> a, <span class="keyword">int</span> b) {</div><div class="line"><span class="keyword">return</span> <span class="keyword">base</span> + a + b;</div><div class="line">};</div><div class="line"><span class="keyword">base</span>++;</div><div class="line">printf(<span class="string">"%ld"</span>,sum(<span class="number">1</span>,<span class="number">2</span>));</div></pre></td></tr></table></figure>
+
+<p>如上面示例中的使用，就是使用了默认assign类型的局部变量base，结果就等于203。因为Block对象在定义时对上下文中的变量进行了备份，所以base在执行Block时的值为200，输出就是203。因此，在Block的内部不能够对assign类型的变量进行修改，因为修改的时备份的值，对实际变量的值是修改无效的。<br><br><br>下面在定义base的时候加上__block，则返回的值为204。</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">__block <span class="keyword">int</span> <span class="keyword">base</span> = <span class="number">100</span>;</div><div class="line"><span class="keyword">base</span> += <span class="number">100</span>;</div><div class="line">BlkSum sum = ^ <span class="keyword">long</span> (<span class="keyword">int</span> a, <span class="keyword">int</span> b) {</div><div class="line"><span class="keyword">return</span> <span class="keyword">base</span> + a + b;</div><div class="line">};</div><div class="line"><span class="keyword">base</span>++;</div><div class="line">printf(<span class="string">"%ld"</span>,sum(<span class="number">1</span>,<span class="number">2</span>));</div></pre></td></tr></table></figure>
+
+<p><br><br>原因就是使用<strong>block/</strong>weak定义的变量，Block在定义的时候并没有进行数值的备份，而是记录了类似于指针的地址，所以在后面执行Block的时候，用的值并不是定义时候获取的备份，而是该变量的实际数值。也因此，可以在Block内部对<strong>block/</strong>weak修饰的变量进行修改。</p>
+<h2 id="retain_cycle（引用嵌套）">retain cycle（引用嵌套）</h2>
+<p>retain cycle问题的根源在于Block和obj可能会互相强引用，互相retain对方，这样就导致了retain cycle，最后这个Block和obj就变成了孤岛，谁也释放不了谁。<br><br><br>举个简单地例子：</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ASIHTTPRequest *<span class="built_in">request</span> = [ASIHTTPRequest requestWithURL:url];</div><div class="line">[<span class="built_in">request</span> setCompletionBlock:^{</div><div class="line">NSString* <span class="built_in">string</span> = [<span class="built_in">request</span> responseString];</div><div class="line">}];</div></pre></td></tr></table></figure>
+
+<p>由于request和Block对象相互之间有强引用的关系，导致最后两者都无法释放。也就是Block对象释放必须先释放request，而request释放又必须先释放Block对象，最后都无法释放。<br><br><br>解决的办法就是在Block对象中对request进行弱引用，这样Block的释放就不依赖于request的释放，最后能够全部释放。</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">__block ASIHTTPRequest *<span class="built_in">request</span> = [ASIHTTPRequest requestWithURL:url];</div><div class="line">[<span class="built_in">request</span> setCompletionBlock:^{</div><div class="line">NSString* <span class="built_in">string</span> = [<span class="built_in">request</span> responseString];</div><div class="line">}];</div></pre></td></tr></table></figure>
+
+<h2 id="Block使用对象被提前释放">Block使用对象被提前释放</h2>
+<p>Block使用对象被提前释放主要是由于开发者担心retain cycle错误的使用__block导致。</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// MyClass.m</span></div><div class="line">- (<span class="keyword">void</span>) test {</div><div class="line">__block MyClass* weakSelf = <span class="keyword">self</span>;</div><div class="line"><span class="keyword">double</span> delayInSeconds = <span class="number">10.0</span>;</div><div class="line">dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));</div><div class="line">dispatch_after(popTime, dispatch_get_main_queue(), ^(<span class="keyword">void</span>){</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, weakSelf);</div><div class="line">});</div><div class="line"></div><div class="line"><span class="comment">// other.m</span></div><div class="line">MyClass* obj = [[[MyClass alloc] init] autorelease];</div><div class="line">[obj test];</div></pre></td></tr></table></figure>
+
+>>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
 <p>这里用dispatch_after模拟了一个异步任务，10秒后执行Block。但执行Block的时候MyClass* obj已经被释放了，导致crash。解决办法是不要使用__block。</p>
 
       
     </div>
+<<<<<<< HEAD
     <footer class="article-footer">
       <a data-url="http://yoursite.com/2015/01/20/block/" data-id="ciu3hdve20005s69fw2lmnnr8" class="article-share-link">Share</a>
       
@@ -156,10 +521,66 @@
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+=======
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag">#iOS</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/01/20/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/01/20/retain/" rel="prev" title="成员对象之RETAIN/ASSIGN/COPY/WEAK/STRONG的区分">
+                成员对象之RETAIN/ASSIGN/COPY/WEAK/STRONG的区分 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+>>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
     </div>
   </div>
 
 
+<<<<<<< HEAD
   
     
   <div class="widget-wrap">
@@ -245,3 +666,268 @@
   </div>
 </body>
 </html>
+=======
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/01/20/block/"
+           data-title="正确使用BLOCK避免CYCLE RETAIN和CRASH" data-url="http://www.ziank.cn/2015/01/20/block/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/my.png"
+               alt="ziank" />
+          <p class="site-author-name" itemprop="name">ziank</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/th">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://github.com/ziank" target="_blank" title="github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  github
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Block的简介"><span class="nav-number">1.</span> <span class="nav-text">Block的简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Block的使用语法"><span class="nav-number">2.</span> <span class="nav-text">Block的使用语法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Block中得变量使用"><span class="nav-number">3.</span> <span class="nav-text">Block中得变量使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#retain_cycle（引用嵌套）"><span class="nav-number">4.</span> <span class="nav-text">retain cycle（引用嵌套）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Block使用对象被提前释放"><span class="nav-number">5.</span> <span class="nav-text">Block使用对象被提前释放</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ziank</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ziank"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+>>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb

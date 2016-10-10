@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
@@ -154,10 +155,443 @@
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+=======
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS,Push," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="我们都知道苹果的iOS应用只支持自己的APNS推送，所有的开发者如果要开发推送功能都必须申请APNS推送证书，才能够实现推送功能。基本上对iOS有点了解的开发者都明白APNS推送的基本原理，那就是客户端向APNS请求deviceToken，传递给Server，然后Server根据这个deviceToken和APNS推送证书，把要推送的消息发送给APNS服务器，APNS服务器就会把对应的消息发送给客">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS应用Push证书的申请">
+<meta property="og:url" content="http://www.ziank.cn/2015/08/14/notification/">
+<meta property="og:site_name" content="Ziank的技术分享">
+<meta property="og:description" content="我们都知道苹果的iOS应用只支持自己的APNS推送，所有的开发者如果要开发推送功能都必须申请APNS推送证书，才能够实现推送功能。基本上对iOS有点了解的开发者都明白APNS推送的基本原理，那就是客户端向APNS请求deviceToken，传递给Server，然后Server根据这个deviceToken和APNS推送证书，把要推送的消息发送给APNS服务器，APNS服务器就会把对应的消息发送给客">
+<meta property="og:image" content="/img/apns_1.jpg">
+<meta property="og:image" content="/img/apns_2.png">
+<meta property="og:image" content="/img/apns_3.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS应用Push证书的申请">
+<meta name="twitter:description" content="我们都知道苹果的iOS应用只支持自己的APNS推送，所有的开发者如果要开发推送功能都必须申请APNS推送证书，才能够实现推送功能。基本上对iOS有点了解的开发者都明白APNS推送的基本原理，那就是客户端向APNS请求deviceToken，传递给Server，然后Server根据这个deviceToken和APNS推送证书，把要推送的消息发送给APNS服务器，APNS服务器就会把对应的消息发送给客">
+
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://www.ziank.cn/"/>
+
+  <title> iOS应用Push证书的申请 | Ziank的技术分享 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ziank的技术分享</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一些个人学习的文档</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/th" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                iOS应用Push证书的申请
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-08-14T14:29:02+08:00" content="Aug 14 2015">
+              Aug 14 2015
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/08/14/notification/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/08/14/notification/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox"
+                 href="/img/apns_1.jpg" rel="gallery_i1h79799eva30dds"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/img/apns_1.jpg" itemprop="contentUrl"/>
+              </a>
+            
+          
+            
+              <a class="post-gallery-img fancybox"
+                 href="/img/apns_2.png" rel="gallery_i1h79799eva30dds"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/img/apns_2.png" itemprop="contentUrl"/>
+              </a>
+            
+          
+            
+              <a class="post-gallery-img fancybox"
+                 href="/img/apns_3.png" rel="gallery_i1h79799eva30dds"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/img/apns_3.png" itemprop="contentUrl"/>
+              </a>
+            </div>
+          
+
+          
+          
+        </div>
+      
+
+      
+        <p>我们都知道苹果的iOS应用只支持自己的APNS推送，所有的开发者如果要开发推送功能都必须申请APNS推送证书，才能够实现推送功能。<br>基本上对iOS有点了解的开发者都明白APNS推送的基本原理，那就是客户端向APNS请求deviceToken，传递给Server，然后Server根据这个deviceToken和APNS推送证书，把要推送的消息发送给APNS服务器，APNS服务器就会把对应的消息发送给客户端设备，进而分发给应用。<br><a id="more"></a><br><img src="/img/apns_1.jpg" alt="APNS推送原理"></p>
+<h2 id="申请Push证书流程">申请Push证书流程</h2>
+<p>那么我们使用服务器向APNS服务发送消息的时候，可以通过客户端获取到DeviceToken，那么推送证书，也就是上图中的payload从哪里获取呢？这个就要去苹果的开发者网站上生成对应的APNS推送证书并下载了。<br>生成APNS推送证书的主要步骤和生成开发者证书类似，都要先生成一个certSigningRequest文件，也就是在【钥匙串】【证书助理】中生成的请求文件，不会的童鞋可以百度一下开发者证书的生成过程。<br>之后在开发者网站上打开要推送应用的AppID，点击Edit，进入下图中的界面。<br><img src="/img/apns_2.png" alt="生成推送证书"><br>勾选Push Notifications，然后选择Create Certificate，分别对应开发环境的push证书，和上线AppStore后的push证书。创建证书的过程和创建开发者证书一样。</p>
+<p>下载push证书以后，可以在钥匙串中导出对应的p12证书文件，然后就可以使用该证书连接APNS服务器，发送PUSH消息了。需要注意的是发送的消息必须是指定格式的内容，否则会发送失败哦。<br><img src="/img/apns_3.png" alt="生成p12证书文件"></p>
+<h2 id="客户端获取DeviceToken的方法">客户端获取DeviceToken的方法</h2>
+<p>客户端需要在didFinishLaunching方法中添加注册push通知的方法，以获取对应的deviceToken。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">BOOL</span>)application:(<span class="built_in">UIApplication</span> *)application didFinishLaunchingWithOptions:(<span class="built_in">NSDictionary</span> *)launchOptions</div><div class="line">{</div><div class="line">[<span class="keyword">self</span><span class="variable">.window</span> makeKeyAndVisible];</div><div class="line">[[<span class="built_in">UIApplication</span> sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];</div><div class="line"><span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>然后添加接收注册结果的方法，就可以获取到对应的deviceToken。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="pp">- <span class="params">(void)</span>application:<span class="params">(<span class="variable">UIApplication</span> *)</span>application didRegisterForRemoteNotificationsWithDeviceToken:<span class="params">(<span class="variable">NSData</span> *)</span>pToken {</span></div><div class="line">NSLog<span class="params">(@<span class="string">"regisger success:%@"</span>, p<span class="variable">Token</span>)</span>;</div><div class="line">//注册成功，返回deviceToken</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>同一个应用在同一台设备上的deviceToken基本上都是不会变化的，一般只有对设备恢复出厂设置才会导致deviceToken的变化。</p>
+<h3 id="但是要注意的是，一个应用的develop和distribution版本获取到的deviceToken是不同的。">但是要注意的是，一个应用的develop和distribution版本获取到的deviceToken是不同的。</h3>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag">#iOS</a>
+          
+            <a href="/tags/Push/" rel="tag">#Push</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/07/09/todayviewReinstall/" rel="next" title="TodayExtension的覆盖安装">
+                <i class="fa fa-chevron-left"></i> TodayExtension的覆盖安装
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/11/19/weixin/" rel="prev" title="有关web微信的一些处理">
+                有关web微信的一些处理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+>>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
     </div>
   </div>
 
 
+<<<<<<< HEAD
   
     
   <div class="widget-wrap">
@@ -243,3 +677,268 @@
   </div>
 </body>
 </html>
+=======
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/08/14/notification/"
+           data-title="iOS应用Push证书的申请" data-url="http://www.ziank.cn/2015/08/14/notification/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/my.png"
+               alt="ziank" />
+          <p class="site-author-name" itemprop="name">ziank</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/th">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://github.com/ziank" target="_blank" title="github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  github
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#申请Push证书流程"><span class="nav-number">1.</span> <span class="nav-text">申请Push证书流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#客户端获取DeviceToken的方法"><span class="nav-number">2.</span> <span class="nav-text">客户端获取DeviceToken的方法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#但是要注意的是，一个应用的develop和distribution版本获取到的deviceToken是不同的。"><span class="nav-number">2.1.</span> <span class="nav-text">但是要注意的是，一个应用的develop和distribution版本获取到的deviceToken是不同的。</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ziank</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ziank"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+>>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb

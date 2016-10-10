@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
@@ -97,6 +98,353 @@
 <a id="more"></a>
 <p>如果消息的接收者receiver能够找到对应的selector，那么就相当于直接执行了接收者这个对象的特定方法；否则，消息要么被转发，或是临时向接收者动态添加这个selector对应的实现内容，要么就干脆玩完崩溃掉。</p>
 <p>##什么是消息<br>进入正题之前，我们首先要来说说跟message息息相关的几个概念：</p>
+=======
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：
+1objc_msgSend(receiver, selector)
+
+如果消息含有参数，则为：
+1objc_msgSend(receiver, selector, arg1, arg2, ...)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Object-C runtime之消息（1）">
+<meta property="og:url" content="http://www.ziank.cn/2015/01/21/runtime-message-1/">
+<meta property="og:site_name" content="Ziank的技术分享">
+<meta property="og:description" content="Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：
+1objc_msgSend(receiver, selector)
+
+如果消息含有参数，则为：
+1objc_msgSend(receiver, selector, arg1, arg2, ...)">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Object-C runtime之消息（1）">
+<meta name="twitter:description" content="Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：
+1objc_msgSend(receiver, selector)
+
+如果消息含有参数，则为：
+1objc_msgSend(receiver, selector, arg1, arg2, ...)">
+
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://www.ziank.cn/"/>
+
+  <title> Object-C runtime之消息（1） | Ziank的技术分享 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ziank的技术分享</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一些个人学习的文档</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/th" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Object-C runtime之消息（1）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-01-21T10:20:32+08:00" content="Jan 21 2015">
+              Jan 21 2015
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/01/21/runtime-message-1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/21/runtime-message-1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>Objective-C在编译时不是把[receiver message]当成简单的方法调用，而是把[receiver message]转化为：</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="title">objc_msgSend</span><span class="params">(receiver, selector)</span></span></div></pre></td></tr></table></figure>
+
+<p>如果消息含有参数，则为：</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">objc_msgSend(receiver, selector, arg1, arg2, <span class="keyword">...</span>)</div></pre></td></tr></table></figure>
+
+<p><a id="more"></a><br>如果消息的接收者receiver能够找到对应的selector，那么就相当于直接执行了接收者这个对象的特定方法；否则，消息要么被转发，或是临时向接收者动态添加这个selector对应的实现内容，要么就干脆玩完崩溃掉。</p>
+<h2 id="什么是消息">什么是消息</h2>
+<p>进入正题之前，我们首先要来说说跟message息息相关的几个概念：</p>
+>>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
 <blockquote>
 <ol>
 <li>message（消息）<br>message的具体定义很难说，因为并没有真正的代码描述，简单的讲message 是一种抽象，包括了函数名+参数列表，他并没有实际的实体存在。</li>
@@ -104,24 +452,57 @@
 <li>selector（方法选择器）<br>selector 通过SEL类型存在，描述一个特定的method 或者说 message。在实际编程中，可以通过selector进行检索方法等操作。</li>
 </ol>
 </blockquote>
+<<<<<<< HEAD
 <p>##两个跟消息相关的概念</p>
 <p>###1. SEL<br>SEL又叫做方法选择器，是objc_msgSend函数第二个参数类型，那它的定义到底是什么呢？<br>打开objc.h文件，看下SEL的定义如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">typedef struct objc_selector *SEL;</div></pre></td></tr></table></figure></p>
 <p>SEL是一个指向objc_selector结构体的指针。而 objc_selector 的定义并没有在runtime.h中给出定义。我们可以尝试运行如下代码:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">SEL sel = @selector(foo);</div><div class="line">NSLog(@&quot;%s&quot;, (char *)sel);</div><div class="line">NSLog(@&quot;%p&quot;, sel);</div><div class="line"></div><div class="line">const char *selName = [@&quot;foo&quot; UTF8String];</div><div class="line">SEL sel2 = sel_registerName(selName);</div><div class="line">NSLog(@&quot;%s&quot;, (char *)sel2);</div><div class="line">NSLog(@&quot;%p&quot;, sel2);</div></pre></td></tr></table></figure></p>
 <p>输出如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">2014-11-06 13:46:08.058 Test[15053:1132268] foo</div><div class="line">2014-11-06 13:46:08.058 Test[15053:1132268] 0x7fff8fde5114</div><div class="line">2014-11-06 13:46:08.058 Test[15053:1132268] foo</div><div class="line">2014-11-06 13:46:08.058 Test[15053:1132268] 0x7fff8fde5114</div></pre></td></tr></table></figure></p>
+=======
+<h2 id="两个跟消息相关的概念">两个跟消息相关的概念</h2>
+<h3 id="1-_SEL">1. SEL</h3>
+<p>SEL又叫做方法选择器，是objc_msgSend函数第二个参数类型，那它的定义到底是什么呢？<br>打开objc.h文件，看下SEL的定义如下:</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">objc_selector</span> *SEL;</span></div></pre></td></tr></table></figure>
+
+<p>SEL是一个指向objc_selector结构体的指针。而 objc_selector 的定义并没有在runtime.h中给出定义。我们可以尝试运行如下代码:</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">SEL sel = <span class="keyword">@selector</span>(foo);</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"%s"</span>, (<span class="keyword">char</span> *)sel);</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"%p"</span>, sel);</div><div class="line"></div><div class="line"><span class="keyword">const</span> <span class="keyword">char</span> *selName = [<span class="string">@"foo"</span> UTF8String];</div><div class="line">SEL sel2 = sel_registerName(selName);</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"%s"</span>, (<span class="keyword">char</span> *)sel2);</div><div class="line"><span class="built_in">NSLog</span>(<span class="string">@"%p"</span>, sel2);</div></pre></td></tr></table></figure>
+
+<p>输出如下:</p>
+<figure class="highlight Console"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">2014<span class="tag">-11-06</span> 13<span class="pseudo">:46</span><span class="pseudo">:08</span><span class="class">.058</span> <span class="tag">Test</span><span class="attr_selector">[15053:1132268]</span> <span class="tag">foo</span></div><div class="line">2014<span class="tag">-11-06</span> 13<span class="pseudo">:46</span><span class="pseudo">:08</span><span class="class">.058</span> <span class="tag">Test</span><span class="attr_selector">[15053:1132268]</span> 0<span class="tag">x7fff8fde5114</span></div><div class="line">2014<span class="tag">-11-06</span> 13<span class="pseudo">:46</span><span class="pseudo">:08</span><span class="class">.058</span> <span class="tag">Test</span><span class="attr_selector">[15053:1132268]</span> <span class="tag">foo</span></div><div class="line">2014<span class="tag">-11-06</span> 13<span class="pseudo">:46</span><span class="pseudo">:08</span><span class="class">.058</span> <span class="tag">Test</span><span class="attr_selector">[15053:1132268]</span> 0<span class="tag">x7fff8fde5114</span></div></pre></td></tr></table></figure>
+
+>>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
 <p>Objective-C在编译时，会根据方法的名字生成一个用来区分这个方法的唯一的一个ID。<br><strong>只要方法名称相同，那么它们的ID就是相同的。</strong></p>
 <p>两个类之间，不管它们是父类与子类的关系，还是之间没有这种关系，只要方法名相同，那么它的SEL就是一样的。每一个方法都对应着一个SEL。编译器会根据每个方法的方法名为那个方法生成唯一的SEL。</p>
 <p>这些SEL组成了一个Set集合，这个Set简单的说就是一个经过了优化过的hash表。而Set的特点就是唯一，也就是SEL是唯一的，因此，如果我们想到这个方法集合中查找某个方法时，只需要去找到这个方法对应的SEL就行了，SEL实际上就是根据方法名hash化了的一个字符串，而对于字符串的比较仅仅需要比较他们的地址就可以了。</p>
 <p>但是，有一个问题，就是数量增多会增大hash冲突而导致的性能下降（或是没有冲突，因为也可能用的是perfect hash）。但是不管使用什么样的方法加速，如果能够将总量减少（多个方法可能对应同一个SEL），那将是最犀利的方法。那么，我们就不难理解，为什么SEL仅仅是函数名了。</p>
+<<<<<<< HEAD
 <p>###2. IMP<br>不同的类可以拥有相同的selector。不同类的实例对象执行相同的selector时，会在各自的方法列表中去根据selector去寻找自己对应的IMP。<br>IMP在objc.h中是如此定义的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">typedef id (*IMP)(id, SEL, ...);</div></pre></td></tr></table></figure></p>
 <p>IMP的本质就是一个函数指针，它是由编译器生成的。当发起一个 ObjC 消息之后，最终它会执行的那段代码，就是由这个函数指针指定的。而 IMP 这个函数指针就指向了这个方法的实现。<br>前面介绍过的SEL，其实就是为IMP服务的。由于每个方法都对应唯一的SEL，因此我们可以通过SEL方便、快速、准确的获得它所对应的IMP（也就是函数指针），而在取得了函数指针之后，也就意味着我们取得了执行的时候的这段方法的代码的入口，这样我们就可以像普通的C语言函数调用一样使用这个函数指针。</p>
 <p>##传递消息所用的几个runtime方法<br>上篇文章中我们说过，下面的方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[receiver message]</div></pre></td></tr></table></figure></p>
 <p>在编译后会变成：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">objc_msgSend(receiver, selector)</div></pre></td></tr></table></figure></p>
 <p>实际上，同objc_msgSend方法类似的还有几个：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">objc_msgSend_stret      <span class="comment">//返回值是结构体</span></div><div class="line">objc_msgSend_fpret      <span class="comment">//返回值是浮点型 </span></div><div class="line">objc_msgSendSuper       <span class="comment">//调用父类方法 </span></div><div class="line">objc_msgSendSuper_stret <span class="comment">//调用父类方法，返回值是结构</span></div></pre></td></tr></table></figure></p>
+=======
+<h3 id="2-_IMP">2. IMP</h3>
+<p>不同的类可以拥有相同的selector。不同类的实例对象执行相同的selector时，会在各自的方法列表中去根据selector去寻找自己对应的IMP。<br>IMP在objc.h中是如此定义的：</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">typedef id (*IMP)(id, SEL, <span class="keyword">...</span>);</div></pre></td></tr></table></figure>
+
+<p>IMP的本质就是一个函数指针，它是由编译器生成的。当发起一个 ObjC 消息之后，最终它会执行的那段代码，就是由这个函数指针指定的。而 IMP 这个函数指针就指向了这个方法的实现。<br>前面介绍过的SEL，其实就是为IMP服务的。由于每个方法都对应唯一的SEL，因此我们可以通过SEL方便、快速、准确的获得它所对应的IMP（也就是函数指针），而在取得了函数指针之后，也就意味着我们取得了执行的时候的这段方法的代码的入口，这样我们就可以像普通的C语言函数调用一样使用这个函数指针。</p>
+<h2 id="传递消息所用的几个runtime方法">传递消息所用的几个runtime方法</h2>
+<p>上篇文章中我们说过，下面的方法：</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[receiver message]</div></pre></td></tr></table></figure>
+
+<p>在编译后会变成：</p>
+<figure class="highlight C++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">objc_msgSend(receiver, selector)</div></pre></td></tr></table></figure>
+
+<p>实际上，同objc_msgSend方法类似的还有几个：</p>
+<figure class="highlight Cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">objc_msgSend_stret      <span class="comment">//返回值是结构体</span></div><div class="line">objc_msgSend_fpret      <span class="comment">//返回值是浮点型 </span></div><div class="line">objc_msgSendSuper       <span class="comment">//调用父类方法 </span></div><div class="line">objc_msgSendSuper_stret <span class="comment">//调用父类方法，返回值是结构</span></div></pre></td></tr></table></figure>
+
+>>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
 <p>它们的作用都是类似的，为了简单起见，后续介绍消息和消息传递机制都以objc_msgSend方法为例。</p>
 <p>下一节我们再继续讲述消息调用的流程。</p>
 
       
     </div>
+<<<<<<< HEAD
     <footer class="article-footer">
       <a data-url="http://yoursite.com/2015/01/21/runtime-message-1/" data-id="ciu3hdvev0014s69fkvprt4q3" class="article-share-link">Share</a>
       
@@ -171,10 +552,60 @@
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+=======
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/01/20/self-size-cell/" rel="next" title="能够自适应高度的TABLEVIEWCELL(SELF-SIZING CELL)">
+                <i class="fa fa-chevron-left"></i> 能够自适应高度的TABLEVIEWCELL(SELF-SIZING CELL)
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/01/26/runtime-message-2/" rel="prev" title="Object-C runtime之消息（2）">
+                Object-C runtime之消息（2） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+>>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
     </div>
   </div>
 
 
+<<<<<<< HEAD
   
     
   <div class="widget-wrap">
@@ -260,3 +691,268 @@
   </div>
 </body>
 </html>
+=======
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/01/21/runtime-message-1/"
+           data-title="Object-C runtime之消息（1）" data-url="http://www.ziank.cn/2015/01/21/runtime-message-1/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/my.png"
+               alt="ziank" />
+          <p class="site-author-name" itemprop="name">ziank</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/th">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://github.com/ziank" target="_blank" title="github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  github
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#什么是消息"><span class="nav-number">1.</span> <span class="nav-text">什么是消息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#两个跟消息相关的概念"><span class="nav-number">2.</span> <span class="nav-text">两个跟消息相关的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-_SEL"><span class="nav-number">2.1.</span> <span class="nav-text">1. SEL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-_IMP"><span class="nav-number">2.2.</span> <span class="nav-text">2. IMP</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传递消息所用的几个runtime方法"><span class="nav-number">3.</span> <span class="nav-text">传递消息所用的几个runtime方法</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ziank</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ziank"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+>>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb

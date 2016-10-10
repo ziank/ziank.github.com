@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
@@ -96,6 +97,368 @@
 <p>###Scene(场景)<br>Scene也是cocos2dx中必不可少的元素，游戏中通常我们需要构建不同的Scene（至少一个），游戏里关卡、版块的切换也就是一个一个Scene的切换，就像在电影中变换舞台和场地一样。Scene的一个重要的作用就是流程控制的作用，我们可以通过Director的一系列方法控制游戏中不同的Scene的自由切换。<br>下面是Director控制场景的常用方法：</p>
 <ul>
 <li>runWithScene( Scene *scene )<br>启动游戏，并运行scene场景。本方法在主程序第一次启动主场景的时候调用。如果已有正在运行的场景则不能调用该方法；会调用pushScene–&gt;startAnimation。</li>
+=======
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Cocos," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，一个Layer又可以拥有任意个可见的Sprit。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cocos之基本概念">
+<meta property="og:url" content="http://www.ziank.cn/2015/03/02/cocos-basic/">
+<meta property="og:site_name" content="Ziank的技术分享">
+<meta property="og:description" content="Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，一个Layer又可以拥有任意个可见的Sprit。">
+<meta property="og:image" content="/img/class_relateion.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cocos之基本概念">
+<meta name="twitter:description" content="Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，一个Layer又可以拥有任意个可见的Sprit。">
+
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://www.ziank.cn/"/>
+
+  <title> Cocos之基本概念 | Ziank的技术分享 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ziank的技术分享</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">一些个人学习的文档</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/th" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Cocos之基本概念
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2015-03-02T13:53:30+08:00" content="Mar 2 2015">
+              Mar 2 2015
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Cocos/" itemprop="url" rel="index">
+                    <span itemprop="name">Cocos</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Cocos/文档/" itemprop="url" rel="index">
+                    <span itemprop="name">文档</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2015/03/02/cocos-basic/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/03/02/cocos-basic/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+        <div class="post-gallery" itemscope itemtype="http://schema.org/ImageGallery">
+          
+          
+            <div class="post-gallery-row">
+              <a class="post-gallery-img fancybox"
+                 href="/img/class_relateion.png" rel="gallery_zq5iz799uczhlrhn"
+                 itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
+                <img src="/img/class_relateion.png" itemprop="contentUrl"/>
+              </a>
+            
+          
+
+          
+          </div>
+        </div>
+      
+
+      
+        <p>Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，一个Layer又可以拥有任意个可见的Sprit。<br><a id="more"></a><br>在每一个时刻，都会有一个Scene在独立的运行，通过切换Scene来完成一个游戏流程，游戏流程的管理有Director来执行，其基本架构类图如下：<br><img src="/img/class_relateion.png" alt="基本架构类图"></p>
+<h3 id="Director">Director</h3>
+<p>Director是整个cocos-2dx引擎的核心，是整个游戏的导航仪，一些游戏的常用操作都是由Director来进行控制完成的，比如场景切换，游戏暂停，坐标转换等等。<br>由于在游戏中会使用Director控制整个游戏的流程，所以Director类的设计是单例模式的，也就是说整个游戏项目中取到的Director对象都是同一个，通常使用getInstance() 方法取得Director的实例。</p>
+<h3 id="Scene(场景)">Scene(场景)</h3>
+<p>Scene也是cocos2dx中必不可少的元素，游戏中通常我们需要构建不同的Scene（至少一个），游戏里关卡、版块的切换也就是一个一个Scene的切换，就像在电影中变换舞台和场地一样。Scene的一个重要的作用就是流程控制的作用，我们可以通过Director的一系列方法控制游戏中不同的Scene的自由切换。<br>下面是Director控制场景的常用方法：</p>
+<ul>
+<li>runWithScene( Scene *scene )<br>启动游戏，并运行scene场景。本方法在主程序第一次启动主场景的时候调用。如果已有正在运行的场景则不能调用该方法；会调用pushScene—&gt;startAnimation。</li>
+>>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
 <li>pushScene( Scene *scene )<br>将当前运行中的场景暂停并压入到代码执行场景栈中，再将传入的scene设置为当前运行场景，只有存在正在运行的场景时才调用该方法；</li>
 <li>replaceScene( Scene *scene ) 直接使用传入的scene替换当前场景来切换画面，当前场景被释放。这是切换场景时最常用的方法。</li>
 <li>popScene() 释放当前场景，再从代码执行场景中弹出栈顶的场景，并将其设置为当前运行场景。如果栈为空，直接结束应用。和PushScene结对使用</li>
@@ -104,6 +467,7 @@
 <li>resume () 恢复当前运行场景的所有计时器和动作，场景仍然会显示在屏幕上</li>
 </ul>
 <p>同时场景是层的容器，包含了所有需要显示的游戏元素。通常，当我们需要完成一个场景时候，会创建一个Scene的子类，并在子类中实现我们需要的功能。比如，我们可以在子类的初始化中载入游戏资源，为场景添加层，启动音乐播放等等。</p>
+<<<<<<< HEAD
 <p>###Layer(层)</p>
 <p>Layer是处理玩家事件响应的Node子类。与场景不同，层通常包含的是直接在屏幕上呈现的内容，并且可以接受用户的输入事件，包括触摸，加速度计和键盘输入等。我们需要在层中加入精灵，文本标签或者其他游戏元素，并设置游戏元素的属性，比如位置，方向和大小；设置游戏元素的动作等。通常，层中的对象功能类似，耦合较紧，与层中游戏内容相关的逻辑代码也编写在层中，在组织好层后，只需要把层按照顺序添加到场景中就可以显示出来了。要向场景添加层，我们可以使用addChild方法。</p>
 <p>addChild( Node child ) addChild( Node child, int zOrder ) addChild( Node *child, int zOrder, int tag )</p>
@@ -114,10 +478,32 @@
 <p>使用纹理来创建精灵:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> sprite1 = Sprite::createWithTexture(TextureCache::getInstance()-&gt;addImage(<span class="string">"HelloWorld.png"</span>));</div><div class="line"><span class="keyword">this</span>-&gt;addChild(sprite1, <span class="number">0</span>);</div></pre></td></tr></table></figure></p>
 <p>使用精灵帧来创建精灵:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> sprite2=Sprite::createWithSpriteFrameName(<span class="string">"HelloWorld.png"</span>);　　</div><div class="line"><span class="keyword">this</span>-&gt;addChild(sprite2, <span class="number">0</span>);</div></pre></td></tr></table></figure></p>
 <p>在Cocos2dx中实现精灵显示的基本过程如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//创建Scene</span></div><div class="line"><span class="keyword">auto</span> scene = Scene::create();</div><div class="line"><span class="comment">//创建层</span></div><div class="line"><span class="keyword">auto</span> layer = HelloWorld::create();</div><div class="line"><span class="comment">//把层加入场景中</span></div><div class="line">scene-&gt;addChild(layer);</div><div class="line"><span class="comment">//创建一个精灵</span></div><div class="line"><span class="keyword">auto</span> sprite = Sprite::create(<span class="string">"HelloWorld.png"</span>);</div><div class="line"><span class="comment">//把精灵加到层里</span></div><div class="line">layer-&gt;addChild(sprite, <span class="number">0</span>);</div></pre></td></tr></table></figure></p>
+=======
+<h3 id="Layer(层)">Layer(层)</h3>
+<p>Layer是处理玩家事件响应的Node子类。与场景不同，层通常包含的是直接在屏幕上呈现的内容，并且可以接受用户的输入事件，包括触摸，加速度计和键盘输入等。我们需要在层中加入精灵，文本标签或者其他游戏元素，并设置游戏元素的属性，比如位置，方向和大小；设置游戏元素的动作等。通常，层中的对象功能类似，耦合较紧，与层中游戏内容相关的逻辑代码也编写在层中，在组织好层后，只需要把层按照顺序添加到场景中就可以显示出来了。要向场景添加层，我们可以使用addChild方法。</p>
+<p>addChild( Node child ) addChild( Node child, int zOrder ) addChild( Node *child, int zOrder, int tag )</p>
+<p>其中，Child参数就是节点。对于场景而言，通常我们添加的节点就是层。先添加的层会被置于后添加的层之下。如果需要为它们指定先后次序，可以使用不同的zOrder值。tag是元素的标识号码，如果为子节点设置了tag值，就可以在它的父节点中利用tag值就可以找到它了。层可以包含任何Node作为子节点，包括Sprites(精灵), Labels(标签)，甚至其他的Layer对象。</p>
+<h3 id="Sprit(精灵)">Sprit(精灵)</h3>
+<p>Cocos2d中的精灵和其他游戏引擎中的精灵相似，它可以移动，旋转，缩放，执行动画，并接受其他转换。Cocos2dx的Sprite由Texure，frame和animation组成，由openes负责渲染。</p>
+<p>简单过程可描述为：<br>使用Texture2D加载图片，可以用Texture2D生成对应的SpriteFrame（精灵帧），将SpriteFrame添加到Animation生成动画数据，用Animation生成Animate（就是最终的动画动作），最后用Sprite执行这个动作。<br>创建精灵的几种方式：</p>
+<p>直接创建:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> sprite = Sprite::create(<span class="string">"HelloWorld.png"</span>);      </div><div class="line"><span class="keyword">this</span>-&gt;addChild(sprite,<span class="number">0</span>);</div></pre></td></tr></table></figure>
+
+<p>使用纹理来创建精灵:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> sprite1 = Sprite::createWithTexture(TextureCache::getInstance()-&gt;addImage(<span class="string">"HelloWorld.png"</span>));</div><div class="line"><span class="keyword">this</span>-&gt;addChild(sprite1, <span class="number">0</span>);</div></pre></td></tr></table></figure>
+
+<p>使用精灵帧来创建精灵:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> sprite2=Sprite::createWithSpriteFrameName(<span class="string">"HelloWorld.png"</span>);　　</div><div class="line"><span class="keyword">this</span>-&gt;addChild(sprite2, <span class="number">0</span>);</div></pre></td></tr></table></figure>
+
+<p>在Cocos2dx中实现精灵显示的基本过程如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//创建Scene</span></div><div class="line"><span class="keyword">auto</span> scene = Scene::create();</div><div class="line"><span class="comment">//创建层</span></div><div class="line"><span class="keyword">auto</span> layer = HelloWorld::create();</div><div class="line"><span class="comment">//把层加入场景中</span></div><div class="line">scene-&gt;addChild(layer);</div><div class="line"><span class="comment">//创建一个精灵</span></div><div class="line"><span class="keyword">auto</span> sprite = Sprite::create(<span class="string">"HelloWorld.png"</span>);</div><div class="line"><span class="comment">//把精灵加到层里</span></div><div class="line">layer-&gt;addChild(sprite, <span class="number">0</span>);</div></pre></td></tr></table></figure>
+
+>>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
 <p><em>以上内容基本来自<a href="http://cn.cocos2d-x.org/article/index?type=cocos2d-x" target="_blank" rel="external">官方文档</a></em></p>
 
       
     </div>
+<<<<<<< HEAD
     <footer class="article-footer">
       <a data-url="http://yoursite.com/2015/03/02/cocos-basic/" data-id="ciu3hdvec000cs69fudyj8juy" class="article-share-link">Share</a>
       
@@ -169,10 +555,66 @@
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+=======
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Cocos/" rel="tag">#Cocos</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2015/01/29/UILable_CoreText/" rel="next" title="UILabel的使用">
+                <i class="fa fa-chevron-left"></i> UILabel的使用
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2015/03/05/cocos-image/" rel="prev" title="Cocos之图像渲染与动画">
+                Cocos之图像渲染与动画 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+>>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
     </div>
   </div>
 
 
+<<<<<<< HEAD
   
     
   <div class="widget-wrap">
@@ -258,3 +700,268 @@
   </div>
 </body>
 </html>
+=======
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div class="ds-thread" data-thread-key="2015/03/02/cocos-basic/"
+           data-title="Cocos之基本概念" data-url="http://www.ziank.cn/2015/03/02/cocos-basic/">
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/my.png"
+               alt="ziank" />
+          <p class="site-author-name" itemprop="name">ziank</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/th">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="http://github.com/ziank" target="_blank" title="github">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  github
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Director"><span class="nav-number">1.</span> <span class="nav-text">Director</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Scene(场景)"><span class="nav-number">2.</span> <span class="nav-text">Scene(场景)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Layer(层)"><span class="nav-number">3.</span> <span class="nav-text">Layer(层)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Sprit(精灵)"><span class="nav-number">4.</span> <span class="nav-text">Sprit(精灵)</span></a></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ziank</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"ziank"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+
+  
+    
+    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
+    <script src="/js/src/hook-duoshuo.js"></script>
+  
+
+
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
+>>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
