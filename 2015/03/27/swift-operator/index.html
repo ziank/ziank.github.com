@@ -3,14 +3,15 @@
 <head>
   <meta charset="utf-8">
   
-  <title>swift的操作符重载 | Hexo</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>swift的操作符重载 | Ziank的技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="今天简单说一下操作符重载的相关知识吧，希望对自己和别人能够有所帮助。相信懂得C++的同学对于运算符重载并不陌生，在swift中也是支持重载运算符这种特性的。
 操作符重载的好处无需多说，相信大家都明白。那么我们在swift应该如何重载操作符呢？其实很简单，和C++基本一样，只需要添加对应的函数实现就可以了。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="swift的操作符重载">
-<meta property="og:url" content="http://yoursite.com/2015/03/27/swift-operator/index.html">
-<meta property="og:site_name" content="Hexo">
+<meta property="og:url" content="/2015/03/27/swift-operator/index.html">
+<meta property="og:site_name" content="Ziank的技术博客">
 <meta property="og:description" content="今天简单说一下操作符重载的相关知识吧，希望对自己和别人能够有所帮助。相信懂得C++的同学对于运算符重载并不陌生，在swift中也是支持重载运算符这种特性的。
 操作符重载的好处无需多说，相信大家都明白。那么我们在swift应该如何重载操作符呢？其实很简单，和C++基本一样，只需要添加对应的函数实现就可以了。">
 <meta property="og:updated_time" content="2015-03-27T03:31:46.000Z">
@@ -19,65 +20,114 @@
 <meta name="twitter:description" content="今天简单说一下操作符重载的相关知识吧，希望对自己和别人能够有所帮助。相信懂得C++的同学对于运算符重载并不陌生，在swift中也是支持重载运算符这种特性的。
 操作符重载的好处无需多说，相信大家都明白。那么我们在swift应该如何重载操作符呢？其实很简单，和C++基本一样，只需要添加对应的函数实现就可以了。">
   
-    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="Ziank的技术博客" type="application/atom+xml">
   
   
-    <link rel="icon" href="/favicon.png">
+    <link rel="icon" href="//favicon.png">
   
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link rel="stylesheet" href="/css/style.css">
+  <script src="/style.js"></script>
   
 
 </head>
 
 <body>
   <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Hexo</a>
-      </h1>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-swift-operator" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2015/03/27/swift-operator/" class="article-date">
-  <time datetime="2015-03-27T02:23:38.000Z" itemprop="datePublished">2015-03-27</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/iOS/">iOS</a>►<a class="article-category-link" href="/categories/iOS/swift/">swift</a>
-  </div>
+    <div class="left-col">
+      <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="/img/my.png" class="js-avatar">
+			
+		</a>
 
-  </div>
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Ziank</a></h1>
+		</hgroup>
+
+		
+
+		<nav class="header-menu">
+			<ul>
+			
+				<li><a href="/">主页</a></li>
+	        
+				<li><a href="/categories">分类</a></li>
+	        
+				<li><a href="/tags">标签</a></li>
+	        
+			</ul>
+		</nav>
+		<nav class="header-smart-menu">
+	        
+    		
+    			
+    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">关于我</a>
+    			
+    			
+            
+		</nav>
+		<nav class="header-nav">
+			<div class="social">
+				
+					<a class="github" target="_blank" href="https://github.com/ziank" title="github">github</a>
+		        
+			</div>
+		</nav>
+	</header>		
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"><i class="icon-list"></i></div>
+  		<h1 class="header-author js-mobile-header hide">Ziank</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+				
+					<img src="/img/my.png" class="js-avatar">
+				
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Ziank</h1>
+			</hgroup>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">主页</a></li>
+		        
+					<li><a href="/categories">分类</a></li>
+		        
+					<li><a href="/tags">标签</a></li>
+		        
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/ziank" title="github">github</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap">
+        <article id="post-swift-operator" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
       <header class="article-header">
@@ -115,20 +165,34 @@
 <table><tr><th colspan="2">Exponentiative <tt>{precedence 160}</tt></th></tr><tbody><tr><td><tt>&lt;&lt;</tt></td><td>Bitwise left shift</td></tr><tr><td><tt>&gt;&gt;</tt></td><td>Bitwise right shift</td></tr></tbody><tr><th colspan="2">Multiplicative <tt>{ associativity left precedence 150 }</tt></th></tr><tbody><tr><td><tt><em></em></tt></td><td>Multiply</td></tr><tr><td><tt>/</tt></td><td>Divide</td></tr><tr><td><tt>%</tt></td><td>Remainder</td></tr><tr><td><tt>&amp;</tt></td><td>Multiply, ignoring overflow</td></tr><tr><td><tt>&amp;/</tt></td><td>Divide, ignoring overflow</td></tr><tr><td><tt>&amp;%</tt></td><td>Remainder, ignoring overflow</td></tr><tr><td><tt>&amp;</tt></td><td>Bitwise AND</td></tr></tbody><tr><th colspan="2">Additive <tt>{ associativity left precedence 140 }</tt></th></tr><tbody><tr><td><tt>+</tt></td><td>Add</td></tr><tr><td><tt>-</tt></td><td>Subtract</td></tr><tr><td><tt>&amp;+</tt></td><td>Add with overflow</td></tr><tr><td><tt>&amp;-</tt></td><td>Subtract with overflow</td></tr><tr><td><tt>|</tt></td><td>Bitwise OR</td></tr><tr><td><tt>^</tt></td><td>Bitwise XOR</td></tr></tbody><tr><th colspan="2">Range <tt>{ precedence 135 }</tt></th></tr><tbody><tr><td><tt>..&lt;</tt></td><td>Half-open range</td></tr><tr><td><tt>…</tt></td><td>Closed range</td></tr></tbody><tr><th colspan="2">Cast <tt>{ precedence 132 }</tt></th></tr><tbody><tr><td><tt>is</tt></td><td>Type check</td></tr><tr><td><tt>as</tt></td><td>Type cast</td></tr></tbody><tr><th colspan="2">Comparative <tt>{ precedence 130 }</tt></th></tr><tbody><tr><td><tt>&lt;</tt></td><td>Less than</td></tr><tr><td><tt>&lt;=</tt></td><td>Less than or equal</td></tr><tr><td><tt>&gt;</tt></td><td>Greater than</td></tr><tr><td><tt>&gt;=</tt></td><td>Greater than or equal</td></tr><tr><td><tt>==</tt></td><td>Equal</td></tr><tr><td><tt>!=</tt></td><td>Not equal</td></tr><tr><td><tt>===</tt></td><td>Identical</td></tr><tr><td><tt>!==</tt></td><td>Not identical</td></tr><tr><td><tt>~=</tt></td><td>Pattern match</td></tr></tbody><tr><th colspan="2">Conjunctive <tt>{ associativity left precedence 120 }</tt></th></tr><tbody><tr><td><tt>&amp;&amp;</tt></td><td>Logical AND</td></tr></tbody><tr><th colspan="2">Disjunctive <tt>{ associativity left precedence 110 }</tt></th></tr><tbody><tr><td><tt>||</tt></td><td>Logical OR</td></tr></tbody><tr><th colspan="2">Nil Coalescing <tt>{ associativity right precedence 110 }</tt></th></tr><tbody><tr><td><tt>??</tt></td><td>Nil coalescing</td></tr></tbody><tr><th colspan="2">Ternary Conditional <tt>{ associativity right precedence 100 }</tt></th></tr><tbody><tr><td><tt>?:</tt></td><td>Ternary conditional</td></tr></tbody><tr><th colspan="2">Assignment <tt>{ associativity right precedence 90 }</tt></th></tr><tbody><tr><td><tt>=</tt></td><td>Assign</td></tr><tr><td><tt>*=</tt></td><td>Multiply and assign</td></tr><tr><td><tt>/=</tt></td><td>Divide and assign</td></tr><tr><td><tt>%=</tt></td><td>Remainder and assign</td></tr><tr><td><tt>+=</tt></td><td>Add and assign</td></tr><tr><td><tt>-=</tt></td><td>Subtract and assign</td></tr><tr><td><tt>&lt;&lt;=</tt></td><td>Left bit shift and assign</td></tr><tr><td><tt>&gt;&gt;=</tt></td><td>Right bit shift and assign</td></tr><tr><td><tt>&amp;=</tt></td><td>Bitwise AND and assign</td></tr><tr><td><tt>^=</tt></td><td>Bitwise XOR and assign</td></tr><tr><td><tt>|=</tt></td><td>Bitwise OR and assign</td></tr><tr><td><tt>&amp;&amp;=</tt></td><td>Logical AND and assign</td></tr><tr><td><tt>||=</tt></td><td>Logical OR and assign</td></tr></tbody></table>
       
     </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/03/27/swift-operator/" data-id="ciu3i360t001xd39f414x9npj" class="article-share-link">Share</a>
+    <div class="article-info article-info-index">
       
+      <a href="/2015/03/27/swift-operator/" class="archive-article-date">
+  	<time datetime="2015-03-27T02:23:38.000Z" itemprop="datePublished"><i class="icon-clock"></i>2015-03-27</time>
+</a>
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags"></i>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
+	</div>
 
-    </footer>
+      
+	<div class="article-category tagcloud">
+	<i class="icon-price-tags"></i>
+	<a class="article-category-link" href="/categories/iOS/">iOS</a><a class="article-category-link" href="/categories/iOS/swift/">swift</a>
+	</div>
+
+
+      <div class="clearfix"></div>
+    </div>
   </div>
+</article>
+
   
-    
 <nav id="article-nav">
   
     <a href="/2015/05/11/todayViewExtensionHeight/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
+      <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
           todayView组件的高度处理问题
@@ -138,120 +202,192 @@
   
   
     <a href="/2015/03/25/swift-2/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
       <div class="article-nav-title">swift的一些注意点(2)</div>
+      <i class="icon-circle-right"></i>
     </a>
   
 </nav>
 
-  
-</article>
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
-    </div>
-  </div>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
-    </div>
-  </div>
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+	    <a class="jiathis_button_twitter"></a>
+	    <a class="jiathis_button_plus"></a> 
+	    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Cocos/" style="font-size: 13.33px;">Cocos</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/extension/" style="font-size: 10px;">extension</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/swift/" style="font-size: 16.67px;">swift</a> <a href="/tags/today/" style="font-size: 10px;">today</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
-    </div>
-  </div>
 
 
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2016/10/10/wkwebview/">WKWebView的使用</a>
-          </li>
-        
-          <li>
-            <a href="/2016/08/08/OC-Swift/">OC&amp;Swift混编的注意点</a>
-          </li>
-        
-          <li>
-            <a href="/2016/07/25/chinese-string/">swift利用系统库汉字转换为拼音</a>
-          </li>
-        
-          <li>
-            <a href="/2016/07/08/oc-swift-define/">OC&amp;swift中的宏定义</a>
-          </li>
-        
-          <li>
-            <a href="/2016/07/06/webview-keyboard/">UIWebView键盘的accessoryBar隐藏</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
 
-  
-</aside>
-        
+
+<div class="duoshuo">
+	<!-- 多说评论框 start -->
+	<div class="ds-thread" data-thread-key="swift-operator" data-title="swift的操作符重载" data-url="/2015/03/27/swift-operator/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"true"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+	<!-- 多说公共JS代码 end -->
+</div>
+
+
+
+
+
       </div>
       <footer id="footer">
-  
   <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2016 John Doe<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Ziank
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
     </div>
   </div>
 </footer>
     </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+    <script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: false,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false,
+		root: "/",
+		innerArchive: true
+	}
+</script>
+
+<script src="/./main.js"></script>
+
+
+    
+<div class="tools-col">
+  <ul class="btn-wrap">
+    
+      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
+    
+    
+    
+    
+      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+    
+  </ul>
+  <div class="tools-wrap">
+    
+    	<section class="tools-section tools-section-all chose">
+    	</section>
     
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    
 
+    
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+    
+    	<section class="tools-section tools-section-me">
+  	  	
+  	  		<div class="aboutme-wrap" id="js-aboutme">很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</div>
+  	  	
+    	</section>
+    
+  </div>
+  
+</div>
+    <!-- Root element of PhotoSwipe. Must have class pswp. -->
+<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
+    <!-- Background of PhotoSwipe. 
+         It's a separate element as animating opacity is faster than rgba(). -->
+    <div class="pswp__bg"></div>
 
-<script src="/js/script.js"></script>
+    <!-- Slides wrapper with overflow:hidden. -->
+    <div class="pswp__scroll-wrap">
 
+        <!-- Container that holds slides. 
+            PhotoSwipe keeps only 3 of them in the DOM to save memory.
+            Don't modify these 3 pswp__item elements, data is added later on. -->
+        <div class="pswp__container">
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+            <div class="pswp__item"></div>
+        </div>
+
+        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
+        <div class="pswp__ui pswp__ui--hidden">
+
+            <div class="pswp__top-bar">
+
+                <!--  Controls are self-explanatory. Order can be changed. -->
+
+                <div class="pswp__counter"></div>
+
+                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
+
+                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
+                <!-- element will get class pswp__preloader--active when preloader is running -->
+                <div class="pswp__preloader">
+                    <div class="pswp__preloader__icn">
+                      <div class="pswp__preloader__cut">
+                        <div class="pswp__preloader__donut"></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
+                <div class="pswp__share-tooltip"></div> 
+            </div>
+
+            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+            </button>
+
+            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
+            </button>
+
+            <div class="pswp__caption">
+                <div class="pswp__caption__center"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
   </div>
 </body>
 </html>
