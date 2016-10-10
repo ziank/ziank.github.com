@@ -11,7 +11,7 @@
 <meta property="og:url" content="http://yoursite.com/2016/10/10/wkwebview/index.html">
 <meta property="og:site_name" content="Hexo">
 <meta property="og:description" content="随着iOS10的出现，大部分应用都已经抛弃了iOS7的支持，那么将UIWebView替换为WKWebView的工作也就提上了日程。毕竟UIWebView的占用内存大，而且存在泄漏问题，包括对js的支持也是不如WKWebView的，所以大部分的UIWebView都应该替换为WKWebView。">
-<meta property="og:updated_time" content="2016-10-10T02:55:37.000Z">
+<meta property="og:updated_time" content="2016-10-10T03:10:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WKWebView的使用">
 <meta name="twitter:description" content="随着iOS10的出现，大部分应用都已经抛弃了iOS7的支持，那么将UIWebView替换为WKWebView的工作也就提上了日程。毕竟UIWebView的占用内存大，而且存在泄漏问题，包括对js的支持也是不如WKWebView的，所以大部分的UIWebView都应该替换为WKWebView。">
@@ -54,7 +54,7 @@
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Søk"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -89,7 +89,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>随着iOS10的出现，大部分应用都已经抛弃了iOS7的支持，那么将<code>UIWebView</code>替换为<code>WKWebView</code>的工作也就提上了日程。毕竟<code>UIWebView</code>的占用内存大，而且存在泄漏问题，包括对js的支持也是不如<code>WKWebView</code>的，所以大部分的<code>UIWebView</code>都应该替换为<code>WKWebView</code>。<br><a id="more"></a><br>由于我们的工程对js只进行了简单的支持和调用，并没有太多复杂的交互，这里就不对<code>WKUIDelegate</code>进行说明了，毕竟我也不是很清楚。这里简单说一下我在替换过程中遇到的一些问题吧：</p>
+        <p>随着iOS10的出现，大部分应用都已经抛弃了iOS7的支持，那么将<code>UIWebView</code>替换为<code>WKWebView</code>的工作也就提上了日程。毕竟<code>UIWebView</code>的占用内存大，而且存在泄漏问题，包括对js的支持也是不如<code>WKWebView</code>的，所以大部分的<code>UIWebView</code>都应该替换为<code>WKWebView</code>。<br><a id="more"></a><br>由于我们的工程对js只进行了简单的支持和调用，并没有太多复杂的交互，这里就不对<code>WKUIDelegate</code>进行说明了，毕竟我也不是很清楚。这里简单说一下我在替换过程中遇到的一些问题吧： </p>
 <ol>
 <li><p>弹出的链接替换</p>
 <p>在UIWebViewDelegate中，<code>shouldStartLoadWithRequest</code>方法里可以获取到对应的NSURLRequest，进行处理，然后返回<code>YES</code>/<code>NO</code>；而在<code>WKNavigationDelegate</code>中，对应的方法应该是<code>decidePolicyForNavigationAction</code>，可以在navigationAction中获取到对应的request，然后进行处理，不过没有返回值，而是使用回调方法进行处理。</p>
@@ -114,7 +114,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2016/10/10/wkwebview/" data-id="ciu3h1q1v002hhs9fvqo7wzat" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2016/10/10/wkwebview/" data-id="ciu3hdvfm0028s69f291fm1xk" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
@@ -142,7 +142,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
+    <h3 class="widget-title">Kategorier</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
     </div>
@@ -171,7 +171,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
+    <h3 class="widget-title">Arkiv</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
     </div>
@@ -181,7 +181,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
+    <h3 class="widget-title">Siste innlegg</h3>
     <div class="widget">
       <ul>
         
