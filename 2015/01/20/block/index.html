@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>正确使用BLOCK避免CYCLE RETAIN和CRASH | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="##Block的简介Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。
+##Block的使用语法Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="正确使用BLOCK避免CYCLE RETAIN和CRASH">
+<meta property="og:url" content="http://yoursite.com/2015/01/20/block/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="##Block的简介Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。
+##Block的使用语法Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：">
+<meta property="og:updated_time" content="2015-03-02T06:39:53.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="正确使用BLOCK避免CYCLE RETAIN和CRASH">
+<meta name="twitter:description" content="##Block的简介Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。
+##Block的使用语法Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-block" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/20/block/" class="article-date">
+  <time datetime="2015-01-20T09:30:50.000Z" itemprop="datePublished">2015-01-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      正确使用BLOCK避免CYCLE RETAIN和CRASH
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##Block的简介<br>Block是Object-C中的一个对象，类似于C语言中的函数指针。与函数指针不同的时Block可以使用上下文中的变量，而函数指针只可以使用全局的变量和入参。</p>
+<p>##Block的使用语法<br>Block可以命名，也可以直接使用未命名的Block对象，如下面示例，就是直接返回了一个未命名的Block对象：<br><a id="more"></a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (long (^)(int, int)) sumBlock &#123;</div><div class="line">int base = 100;</div><div class="line">return [[ ^ long (int a, int b) &#123;</div><div class="line">return base + a + b;</div><div class="line">&#125; copy] autorelease];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p><br><br>下面一个例子则是先声明了一种Block对象的类型，再定义对应的Block对象：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">typedef long (^BlkSum)(int, int);</div><div class="line"></div><div class="line">- (BlkSum) sumBlock &#123;</div><div class="line">int base = 100;</div><div class="line">BlkSum blk = ^ long (int a, int b) &#123;</div><div class="line">return base + a + b;</div><div class="line">&#125;</div><div class="line">return [[blk copy] autorelease];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>##Block中得变量使用<br>Block中的变量主要是指上下文中得assign/retain/weak等类型的局部变量或成员变量的使用：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">int base = 100;</div><div class="line">base += 100;</div><div class="line">BlkSum sum = ^ long (int a, int b) &#123;</div><div class="line">return base + a + b;</div><div class="line">&#125;;</div><div class="line">base++;</div><div class="line">printf(&quot;%ld&quot;,sum(1,2));</div></pre></td></tr></table></figure></p>
+<p>如上面示例中的使用，就是使用了默认assign类型的局部变量base，结果就等于203。因为Block对象在定义时对上下文中的变量进行了备份，所以base在执行Block时的值为200，输出就是203。因此，在Block的内部不能够对assign类型的变量进行修改，因为修改的时备份的值，对实际变量的值是修改无效的。<br><br><br>下面在定义base的时候加上__block，则返回的值为204。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">__block int base = 100;</div><div class="line">base += 100;</div><div class="line">BlkSum sum = ^ long (int a, int b) &#123;</div><div class="line">return base + a + b;</div><div class="line">&#125;;</div><div class="line">base++;</div><div class="line">printf(&quot;%ld&quot;,sum(1,2));</div></pre></td></tr></table></figure></p>
+<p><br><br>原因就是使用<strong>block/</strong>weak定义的变量，Block在定义的时候并没有进行数值的备份，而是记录了类似于指针的地址，所以在后面执行Block的时候，用的值并不是定义时候获取的备份，而是该变量的实际数值。也因此，可以在Block内部对<strong>block/</strong>weak修饰的变量进行修改。</p>
+<p>##retain cycle（引用嵌套）<br>retain cycle问题的根源在于Block和obj可能会互相强引用，互相retain对方，这样就导致了retain cycle，最后这个Block和obj就变成了孤岛，谁也释放不了谁。<br><br><br>举个简单地例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];</div><div class="line">[request setCompletionBlock:^&#123;</div><div class="line">NSString* string = [request responseString];</div><div class="line">&#125;];</div></pre></td></tr></table></figure></p>
+<p>由于request和Block对象相互之间有强引用的关系，导致最后两者都无法释放。也就是Block对象释放必须先释放request，而request释放又必须先释放Block对象，最后都无法释放。<br><br><br>解决的办法就是在Block对象中对request进行弱引用，这样Block的释放就不依赖于request的释放，最后能够全部释放。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">__block ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];</div><div class="line">[request setCompletionBlock:^&#123;</div><div class="line">NSString* string = [request responseString];</div><div class="line">&#125;];</div></pre></td></tr></table></figure></p>
+<p>##Block使用对象被提前释放<br>Block使用对象被提前释放主要是由于开发者担心retain cycle错误的使用__block导致。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">// MyClass.m</div><div class="line">- (void) test &#123;</div><div class="line">__block MyClass* weakSelf = self;</div><div class="line">double delayInSeconds = 10.0;</div><div class="line">dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(delayInSeconds * NSEC_PER_SEC));</div><div class="line">dispatch_after(popTime, dispatch_get_main_queue(), ^(void)&#123;</div><div class="line">NSLog(@&quot;%@&quot;, weakSelf);</div><div class="line">&#125;);</div><div class="line"></div><div class="line">// other.m</div><div class="line">MyClass* obj = [[[MyClass alloc] init] autorelease];</div><div class="line">[obj test];</div></pre></td></tr></table></figure></p>
+<p>这里用dispatch_after模拟了一个异步任务，10秒后执行Block。但执行Block的时候MyClass* obj已经被释放了，导致crash。解决办法是不要使用__block。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/01/20/block/" data-id="ciu3h1q080006hs9fhk1w8qya" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/01/20/retain/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          成员对象之RETAIN/ASSIGN/COPY/WEAK/STRONG的区分
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/01/20/hello-world/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Hello World</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Cocos/" style="font-size: 13.33px;">Cocos</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/extension/" style="font-size: 10px;">extension</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/swift/" style="font-size: 16.67px;">swift</a> <a href="/tags/today/" style="font-size: 10px;">today</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/10/wkwebview/">WKWebView的使用</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/08/OC-Swift/">OC&amp;Swift混编的注意点</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/25/chinese-string/">swift利用系统库汉字转换为拼音</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/08/oc-swift-define/">OC&amp;swift中的宏定义</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/06/webview-keyboard/">UIWebView键盘的accessoryBar隐藏</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

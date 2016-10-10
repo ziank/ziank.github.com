@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>键盘处理 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="本文主要讲述iOS中键盘的常用方法和注意事项。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="键盘处理">
+<meta property="og:url" content="http://yoursite.com/2016/06/17/keyboard/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="本文主要讲述iOS中键盘的常用方法和注意事项。">
+<meta property="og:updated_time" content="2016-06-17T11:28:48.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="键盘处理">
+<meta name="twitter:description" content="本文主要讲述iOS中键盘的常用方法和注意事项。">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-keyboard" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/06/17/keyboard/" class="article-date">
+  <time datetime="2016-06-17T08:35:46.000Z" itemprop="datePublished">2016-06-17</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      键盘处理
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>本文主要讲述iOS中键盘的常用方法和注意事项。<br><a id="more"></a></p>
+<h2 id="键盘焦点方法"><a href="#键盘焦点方法" class="headerlink" title="键盘焦点方法"></a>键盘焦点方法</h2><p>键盘事件主要有两个，一个是获得焦点，一个是失去焦点。或者说一个是呼出键盘，另一个是消失键盘。</p>
+<h4 id="获得焦点"><a href="#获得焦点" class="headerlink" title="获得焦点"></a>获得焦点</h4><p>获取焦点的方法为<code>becomeFirstResponder</code>，我们可以通过调用这个方法来呼出键盘。**需要注意的是，只有支持编辑的控件才可以呼出键盘，如<code>UITextView</code>,<code>UITextField</code>；而普通的控件或<code>UIView</code>即使获取焦点也不会呼出键盘，如<code>UITableView</code>，<code>UIButton</code></p>
+<p><strong>如果想使用<code>webView</code>自动获取焦点，那么一定不要忘记设置<code>keyboardDisplayRequiresUserAction</code>为<code>false</code>，否则键盘不会弹出。</strong><br></p>
+<h4 id="失去焦点"><a href="#失去焦点" class="headerlink" title="失去焦点"></a>失去焦点</h4><p>常用的失去焦点的方法为<code>resignFirstResponder</code>，调用这个方法可以让当前控件失去焦点，从而使键盘落下；<strong>需要注意的是调用方法的对象必须是弹出键盘的控件本身，而不能是其父<code>View</code></strong></p>
+<p>如果没有办法获取到获取焦点的控件本身，而必须利用其父<code>View</code>失去焦点的话，可以使用另一个方法<code>endEdit</code>，这个方法带有一个参数，为是否强制终止编辑，一般选择为YES，从而使键盘消失。</p>
+<p>如果不是必须的话，更建议大家使用<code>resignFirstResponder</code>方法</p>
+<h2 id="键盘事件通知"><a href="#键盘事件通知" class="headerlink" title="键盘事件通知"></a>键盘事件通知</h2><p>iOS系统支持的常用键盘事件通知有六个，分别是<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">UIKeyboardWillShowNotification      // 键盘将要出现</div><div class="line">UIKeyboardDidShowNotification       // 键盘已经出现</div><div class="line">UIKeyboardWillHideNotification      // 键盘将要消失</div><div class="line">UIKeyboardDidHideNotification       // 键盘已经消失</div><div class="line">UIKeyboardWillChangeFrameNotification   // 键盘将要修改frame</div><div class="line">UIKeyboardDidChangeFrameNotification    // 键盘已经修改frame</div></pre></td></tr></table></figure></p>
+<p>在这些事件的userInfo中会有以下几个属性，可以用于进行界面的处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">UIKeyboardFrameBeginUserInfoKey         // 开始时的键盘位置</div><div class="line">UIKeyboardFrameEndUserInfoKey           // 结束时的键盘位置</div><div class="line">UIKeyboardAnimationCurveUserInfoKey     // 动画类型</div><div class="line">UIKeyboardAnimationDurationUserInfoKey  // 动画持续事件</div><div class="line">UIKeyboardIsLocalUserInfoKey            // 是否为本地用户键盘</div><div class="line"></div><div class="line">UIKeyboardCenterBeginUserInfoKey        // 开始时的键盘中心</div><div class="line">UIKeyboardCenterEndUserInfoKey          // 结束时的键盘中心</div><div class="line">UIKeyboardBoundsUserInfoKey             // 键盘边界</div></pre></td></tr></table></figure></p>
+<p>后面三个属性用户可以根据前两个进行计算。<strong>需要注意的是在iPad上由于键盘支持浮动，需要支持<code>UIKeyboardWillChangeFrameNotification</code>和<code>UIKeyboardDidChangeFrameNotification</code>两个键盘通知。</strong></p>
+<h2 id="自定义键盘"><a href="#自定义键盘" class="headerlink" title="自定义键盘"></a>自定义键盘</h2><h4 id="UITextView和UITextField"><a href="#UITextView和UITextField" class="headerlink" title="UITextView和UITextField"></a><code>UITextView</code>和<code>UITextField</code></h4><p>由于<code>UITextView</code>和<code>UITextField</code>支持属性<code>inputView</code>和<code>inputAccessoryView</code>，所以只需要把要替换键盘和工具栏的界面画好，直接进行设置尽可以了。</p>
+<h4 id="UIWebView"><a href="#UIWebView" class="headerlink" title="UIWebView"></a><code>UIWebView</code></h4><p>对于<code>UIWebView</code>的键盘处理比较麻烦，需要手动去掉accessoryView，具体的去除方法可以参考网上一些实现。<br>如iOS8下可以参考<a href="http://stackoverflow.com/questions/25022089/remove-next-previous-buttons-inputaccessoryview-for-custom-keyboard-in-ios8" target="_blank" rel="external">Remove Next / Previous buttons (inputAccessoryView) for Custom Keyboard in iOS8 WebView</a></p>
+<p>就写这些吧，更多的还要在实践中具体分析使用。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/06/17/keyboard/" data-id="ciu3h1q0x0011hs9fpx1bi47m" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/06/webview-keyboard/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          UIWebView键盘的accessoryBar隐藏
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/01/12/storyboard/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">从storyboard中加载ViewController</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Cocos/" style="font-size: 13.33px;">Cocos</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/extension/" style="font-size: 10px;">extension</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/swift/" style="font-size: 16.67px;">swift</a> <a href="/tags/today/" style="font-size: 10px;">today</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/10/wkwebview/">WKWebView的使用</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/08/OC-Swift/">OC&amp;Swift混编的注意点</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/25/chinese-string/">swift利用系统库汉字转换为拼音</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/08/oc-swift-define/">OC&amp;swift中的宏定义</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/06/webview-keyboard/">UIWebView键盘的accessoryBar隐藏</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Object-C runtime之消息（2） | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="##消息的工作流程上一节我们主要讲了消息相关的SEL和IMP的概念，同时也了解到消息最后都会转换成类似objc_msgSend的消息函数来执行，那么 objc_msgSend 到底是怎么工作的呢？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Object-C runtime之消息（2）">
+<meta property="og:url" content="http://yoursite.com/2015/01/26/runtime-message-2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="##消息的工作流程上一节我们主要讲了消息相关的SEL和IMP的概念，同时也了解到消息最后都会转换成类似objc_msgSend的消息函数来执行，那么 objc_msgSend 到底是怎么工作的呢？">
+<meta property="og:image" content="http://yoursite.com/img/message_flow.png">
+<meta property="og:updated_time" content="2015-03-02T06:39:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Object-C runtime之消息（2）">
+<meta name="twitter:description" content="##消息的工作流程上一节我们主要讲了消息相关的SEL和IMP的概念，同时也了解到消息最后都会转换成类似objc_msgSend的消息函数来执行，那么 objc_msgSend 到底是怎么工作的呢？">
+<meta name="twitter:image" content="http://yoursite.com/img/message_flow.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-runtime-message-2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/26/runtime-message-2/" class="article-date">
+  <time datetime="2015-01-26T07:46:58.000Z" itemprop="datePublished">2015-01-26</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Object-C runtime之消息（2）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>##消息的工作流程<br>上一节我们主要讲了消息相关的SEL和IMP的概念，同时也了解到消息最后都会转换成类似objc_msgSend的消息函数来执行，那么 objc_msgSend 到底是怎么工作的呢？<br><a id="more"></a><br>在Objective-C中，消息直到运行时才会绑定到方法的实现上。编译器会把代码中<code>[receiver message]</code>转换成 objc_msgSend消息函数，这个函数完成了动态绑定的所有事情。它的运行流程如下:<br><img src="/img/message_flow.png" alt="消息处理流程"></p>
+<ol>
+<li><p>检查receiver是否为nil，如果为nil，直接cleanup，然后return。这也是我们可以向nil发送消息的原因。</p>
+</li>
+<li><p>检查message对应的selector是否需要忽略。(ps: Mac开发中开启GC就会忽略retain,release方法。)</p>
+</li>
+<li><p>在receiver对应的Class中根据Selector去找IMP</p>
+<blockquote>
+<p>在Class中寻找IMP的过程:</p>
+<ol>
+<li>查找当前class的cache方法列表（cache methodLists）里去找<br>找到了，跳到对应函数实现；</li>
+<li>没找到，就从class的方法列表（methodLists）里查找；</li>
+</ol>
+</blockquote>
+</li>
+<li><p>如果在receiver对应的Class中没有找到，就到super class的方法列表里此处输入代码找，直到找到基类(NSObject)为止。</p>
+</li>
+<li><p>如果在所有的super Class 方法中都没有找到，就会走到动态方法解析的流程中。动态方法解析是说你可以动态地提供一个方法的实现。<br>我们可以通过分别重载resolveInstanceMethod:和resolveClassMethod:方法分别添加实例方法实现和类方法实现。因为当 Runtime 系统在Cache和方法分发表中（包括超类）找不到要执行的方法时，Runtime会调用resolveInstanceMethod:或resolveClassMethod:来给程序员一次动态添加方法实现的机会。我们需要用class_addMethod函数完成向特定类添加特定方法实现的操作。<br>例如我们要添加一个名为<code>resolveThisMethodDynamically</code>的对象方法，那么我们就需要添加如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">void dynamicMethodIMP(id self, SEL _cmd) &#123;</div><div class="line">// implementation ....</div><div class="line">&#125;</div><div class="line">@implementation MyClass</div><div class="line">+ (BOOL)resolveInstanceMethod:(SEL)aSEL</div><div class="line">&#123;</div><div class="line">if (aSEL == @selector(resolveThisMethodDynamically)) &#123;</div><div class="line">class_addMethod([self class], aSEL, (IMP) dynamicMethodIMP, &quot;v@:&quot;);</div><div class="line">return YES;</div><div class="line">&#125;</div><div class="line">return [super resolveInstanceMethod:aSEL];</div><div class="line">&#125;</div><div class="line">@end</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>上面的例子为<code>resolveThisMethodDynamically</code>方法添加了实现内容，也就是<code>dynamicMethodIMP</code>方法中的代码。其中 “v@:” 表示返回值和参数，这个符号涉及 <a href="https://developer.apple.com/library/mac/DOCUMENTATION/Cocoa/Conceptual/ObjCRuntimeGuide/Articles/ocrtTypeEncodings.html" target="_blank" rel="external">Type Encoding</a>。<br><br></p>
+<ol>
+<li>如果没有对消息进行动态方法解析处理，那么我们就会走到receiver重定向的流程。<br>重定向是runtime系统在消息转发机制执行前，给我们的又一次偷梁换柱的机会，即通过重载<code>- (id)forwardingTargetForSelector:(SEL)aSelector</code>方法替换消息的receiver。<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">- (id)forwardingTargetForSelector:(SEL)aSelector</div><div class="line">&#123;</div><div class="line">if(aSelector == @selector(mysteriousMethod:))&#123;</div><div class="line">return alternateObject;</div><div class="line">&#125;</div><div class="line">return [super forwardingTargetForSelector:aSelector];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>毕竟进行消息转发要耗费更多时间，如果可以的画，抓住这次机会将消息重定向给其他对象进行处理是一个不错的选择。<strong>重定向绝对不可以返回self，因为那样会造成死循环。</strong><br><br></p>
+<ol>
+<li>消息转发<br>当动态方法解析不作处理返回NO时，也没有进行对象的重定向，那么消息转发机制就会被触发。在这时<code>forwardInvocation:</code>方法会被执行，我们可以重写这个方法来定义我们的转发逻辑：<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- (void)forwardInvocation:(NSInvocation *)anInvocation</div><div class="line">&#123;</div><div class="line">if ([someOtherObject respondsToSelector:</div><div class="line">[anInvocation selector]])</div><div class="line">[anInvocation invokeWithTarget:someOtherObject];</div><div class="line">else</div><div class="line">[super forwardInvocation:anInvocation];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>该消息的唯一参数是个NSInvocation类型的对象——该对象封装了原始的消息和消息的参数。我们可以实现<code>forwardInvocation:</code>方法来对不能处理的消息做一些默认的处理，也可以将消息转发给其他对象来处理，而不抛出错误。</p>
+<p>最后，需要注意一点：<strong>如果想要通过动态方法解析、重定向或者是消息转发把对象A的消息message转发给另一个对象B的话，那么在A对象中必须没有消息message的对应处理，否则会转发失败。</strong></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/01/26/runtime-message-2/" data-id="ciu3h1q12001chs9fj1k8ija5" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/01/29/UILable_CoreText/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          UILabel的使用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/01/21/runtime-message-1/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Object-C runtime之消息（1）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Cocos/" style="font-size: 13.33px;">Cocos</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/extension/" style="font-size: 10px;">extension</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/swift/" style="font-size: 16.67px;">swift</a> <a href="/tags/today/" style="font-size: 10px;">today</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/10/wkwebview/">WKWebView的使用</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/08/OC-Swift/">OC&amp;Swift混编的注意点</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/25/chinese-string/">swift利用系统库汉字转换为拼音</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/08/oc-swift-define/">OC&amp;swift中的宏定义</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/06/webview-keyboard/">UIWebView键盘的accessoryBar隐藏</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

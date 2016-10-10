@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>OC&amp;swift中的宏定义 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在使用OC和swift进行混编时，我们经常会需要在swift中使用OC中的宏定义，但是这些宏定义经常会提示无法找到或者类型错误，那么我们到底应该怎么做才正确呢？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OC&swift中的宏定义">
+<meta property="og:url" content="http://yoursite.com/2016/07/08/oc-swift-define/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在使用OC和swift进行混编时，我们经常会需要在swift中使用OC中的宏定义，但是这些宏定义经常会提示无法找到或者类型错误，那么我们到底应该怎么做才正确呢？">
+<meta property="og:image" content="http://yoursite.com/img/OC_define.png">
+<meta property="og:image" content="http://yoursite.com/img/swift_define.png">
+<meta property="og:updated_time" content="2016-07-08T06:29:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OC&swift中的宏定义">
+<meta name="twitter:description" content="在使用OC和swift进行混编时，我们经常会需要在swift中使用OC中的宏定义，但是这些宏定义经常会提示无法找到或者类型错误，那么我们到底应该怎么做才正确呢？">
+<meta name="twitter:image" content="http://yoursite.com/img/OC_define.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-oc-swift-define" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/08/oc-swift-define/" class="article-date">
+  <time datetime="2016-07-08T06:22:51.000Z" itemprop="datePublished">2016-07-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>►<a class="article-category-link" href="/categories/iOS/swift/">swift</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      OC&amp;swift中的宏定义
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在使用OC和swift进行混编时，我们经常会需要在swift中使用OC中的宏定义，但是这些宏定义经常会提示无法找到或者类型错误，那么我们到底应该怎么做才正确呢？</p>
+<a id="more"></a>
+<p><img src="/img/OC_define.png" alt="OC宏定义"></p>
+<p>OC中的宏定义和C一样，主要有以下几种情况：</p>
+<ol>
+<li>定义一个常量值，后面可以方便使用；如 <code>#define TOOLBAR_HEIGHT           44</code>；</li>
+<li>定义一个不会变化的常用变量值，或者一个较长的对象属性；如<code>#define SCREEN_WIDTH             ([[UIScreen mainScreen] bounds].size.width)</code>；</li>
+<li>定义一个会变化的常用变量值，或者一个较长的对象属性；如：<code>#define STATUS_BAR_HEIGHT        ([UIApplication sharedApplication].statusBarFrame.size.height)</code>；</li>
+<li>定义一个带参数的宏，类似于一个函数；如<code>#define RGB_COLOR(r,g,b) [UIColor colorWithRed:r/255.f green:g/255.f blue:b/255.f alpha:1.0]</code></li>
+</ol>
+<p>对于这四种情况，在swift中只能处理第一种情况，而且是直接转换为了<code>let TOOLBAR_HEIGHT = 44;</code>那么由于使用<code>TOOLBAR_HEIGTH</code>的地方基本上都是使用<code>CGFloat</code>，而<code>TOOLBAR_HEIGTH</code>的类型却是Int，就会导致类型不匹配。</p>
+<p><img src="/img/swift_define.png" alt="swift宏定义替换"></p>
+<p>所以我们在混编时对于这些宏定义都需要单独处理：</p>
+<ul>
+<li>第一种的话就比较简单，可以直接使用<code>let TOOLBAR_HEIGTH:CGFloat = 44</code>来替换就可以了；</li>
+<li>第二种因为后面的值永远不会改变，也可以使用<code>let</code>来替换；可以用<code>let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width</code>；</li>
+<li>第三种情况，也就是后面的值会发生改变，如状态栏高度，就不能够使用<code>let</code>来替换了，因为<code>let</code>是定义的常量，如果使用<code>let</code>，如果将会导致不能够获取正确的值；这里可以使用函数来获取：<code>func STATUSBAR_HEIGHT() -&gt; CGFloat { return UIApplication.sharedApplication().statusBarFrame.size.height }</code>；使用时通过函数<code>STATUSBAR_HEIGTH()</code>获取状态栏高度；</li>
+<li>第四种，因为有输入参数，所以也只能使用函数来替换；如：<code>func RGB_COLOR(r:CGFloat, g:CGFloat, b:CGFloat) -&gt; UIColor {return UIColor(red: r, green: g, blue: b, alpha: 1.0)}</code>;</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/08/oc-swift-define/" data-id="ciu3h1q0u000whs9fsspitc24" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/25/chinese-string/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          swift利用系统库汉字转换为拼音
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/06/webview-keyboard/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">UIWebView键盘的accessoryBar隐藏</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Cocos/" style="font-size: 13.33px;">Cocos</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/extension/" style="font-size: 10px;">extension</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/swift/" style="font-size: 16.67px;">swift</a> <a href="/tags/today/" style="font-size: 10px;">today</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/10/wkwebview/">WKWebView的使用</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/08/OC-Swift/">OC&amp;Swift混编的注意点</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/25/chinese-string/">swift利用系统库汉字转换为拼音</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/08/oc-swift-define/">OC&amp;swift中的宏定义</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/06/webview-keyboard/">UIWebView键盘的accessoryBar隐藏</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

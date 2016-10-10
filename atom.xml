@@ -1,0 +1,853 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[Ziank的技术分享]]></title>
+  <subtitle><![CDATA[一些个人学习的文档]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://www.ziank.cn/"/>
+  <updated>2016-08-08T06:14:07.225Z</updated>
+  <id>http://www.ziank.cn/</id>
+  
+  <author>
+    <name><![CDATA[ziank]]></name>
+    <email><![CDATA[zhaixianqi0111@163.com]]></email>
+  </author>
+  
+  <generator uri="http://zespia.tw/hexo/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[OC&Swift混编的注意点]]></title>
+    <link href="http://www.ziank.cn/2016/08/08/OC-Swift/"/>
+    <id>http://www.ziank.cn/2016/08/08/OC-Swift/</id>
+    <published>2016-08-08T06:02:55.000Z</published>
+    <updated>2016-08-08T06:14:03.000Z</updated>
+    <content type="html"><![CDATA[<p>当前swift正在逐步开始流行，我们也需要与时俱进，但是在项目中又不可能已下载把所有代码进行替换，这就存在了混编的必然性。对于swift和OC的混编，我说一些自己认为需要注意的地方。<br><a id="more"></a></p>
+<ol>
+<li><strong>可选类型</strong>：swift中最经典的用法，需要注意的就是如果使用了!，一定不能够为nil，否则将会crash；<strong>OC转换时一般会为了简单，把成员变量的类型定义为!，那么一定要注意使用该变量时不可以为空</strong>。</li>
+<li><strong>相互引用</strong>：OC引用swift的类，需要在swift的类定义时添加@objc，同时在.m文件中包含swift的对应头文件（<code>productName-swift.h</code>），这样才可以正常使用；而swift引用OC的类，需要在bridge文件中包含对应的头文件，然后就可以在swift中调用。</li>
+<li><strong>宏定义</strong>：OC中的宏定义，在swift中一部分可以正常使用，也有很大一部分无法再正常使用，具体的可以参见<a href="http://www.jianshu.com/p/e6ade2b24648" target="_blank" rel="external">OC&amp;swift中的宏定义</a>一文。</li>
+<li><strong>数据类型</strong>：OC中的所有对象都是一个指针，所以都可以进行强制转换，在swift中将不再允许这种使用；还有就是在swift中数字类型之间将不再进行隐式转换，都需要开发者手动进行显式的转换。<br>在swift中使用let定义常量时可以推断类型，如果要设置为特定类型的话，还是需要添加数据类型，这一点和OC中的宏不同。比如要定义长度为44，一定要使用<code>let height:CGFloat = 44</code>，而不能够使用<code>let height = 44</code>，因为后者将会把height推断为Int类型，导致后面使用的时候无法正常使用。 </li>
+<li><strong>成员（函数）可见性</strong>：在swift中，不存在头文件，所以在类中声明的成员和函数都默认是外部可见的，如果需要定义内部的变量和函数，需要使用<code>private</code>关键字。</li>
+<li><strong>delegate</strong>：单独说delegate是因为delegate一般会定义为weak类型，而在swift中由于不使用strong关键字，容易让我们忽略了使用weak，导致循环引用。注意在swift中同样存在weak的使用，在定义delegate时不要忘记添加。</li>
+<li><strong>struct</strong>：swift中的struct在OC中没有对应的数据类型，如果不是必须的话，不建议在接口的地方使用struct。</li>
+<li><strong>初始化方法</strong>：swift中对于<code>UIViewController</code>，<code>UIView</code>等类非继承的初始化方法，都是用<code>convenience</code>关键字，否则需要重新实现父类的初始化方法。</li>
+</ol>
+<p>目前想到就这几点吧。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>当前swift正在逐步开始流行，我们也需要与时俱进，但是在项目中又不可能已下载把所有代码进行替换，这就存在了混编的必然性。对于swift和OC的混编，我说一些自己认为需要注意的地方。<br>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/tags/swift/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/categories/iOS/swift/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[swift利用系统库汉字转换为拼音]]></title>
+    <link href="http://www.ziank.cn/2016/07/25/chinese-string/"/>
+    <id>http://www.ziank.cn/2016/07/25/chinese-string/</id>
+    <published>2016-07-25T09:18:57.000Z</published>
+    <updated>2016-07-25T09:19:52.000Z</updated>
+    <content type="html"><![CDATA[<p>在iOS中我们做搜索时一般会遇到通过拼音搜索关键字的情况，这时候我们的判断就需要把中文汉字转换为拼音，有些时候还需要获取汉语拼音的首字母大写缩写，那么我们应该这么做呢？</p>
+<p>有些第三方库可以完成汉字到拼音的转换，但是系统库也可以支持拼音转换的所以这里就简单介绍一下使用系统库进行转换的方法。<br><a id="more"></a><br>增加判断的函数，最好的办法是对<code>String</code>类添加一个<code>extension</code>，代码如下：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">extension</span> <span class="title">String</span> </span>{}</div></pre></td></tr></table></figure>
+
+<p>然后第一步，是判断字符串中有没有中文字符：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">extension</span> <span class="title">String</span> </span>{</div><div class="line">    <span class="func"><span class="keyword">func</span></span> isIncludeChinese() -&gt; <span class="type">Bool</span> {</div><div class="line">        <span class="keyword">for</span> ch <span class="keyword">in</span> <span class="keyword">self</span>.unicodeScalars {</div><div class="line">        	<span class="comment">// 中文字符范围：0x4e00 ~ 0x9fff</span></div><div class="line">            <span class="keyword">if</span> (<span class="number">0x4e00</span> &lt; ch.value  && ch.value &lt; <span class="number">0x9fff</span>) {</div><div class="line">                <span class="keyword">return</span> <span class="built_in">true</span></div><div class="line">            }</div><div class="line">        }</div><div class="line">        <span class="keyword">return</span> <span class="built_in">false</span></div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>第二步，是转换为拼音：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> transformToPinyin() -&gt; <span class="type">String</span> {</div><div class="line">    <span class="keyword">let</span> stringRef = <span class="type">NSMutableString</span>(string: <span class="keyword">self</span>) <span class="keyword">as</span> <span class="type">CFMutableString</span></div><div class="line">    <span class="comment">// 转换为带音标的拼音</span></div><div class="line">    <span class="type">CFStringTransform</span>(stringRef,<span class="built_in">nil</span>, kCFStringTransformToLatin, <span class="built_in">false</span>);</div><div class="line">    <span class="comment">// 去掉音标</span></div><div class="line">    <span class="type">CFStringTransform</span>(stringRef, <span class="built_in">nil</span>, kCFStringTransformStripCombiningMarks, <span class="built_in">false</span>);</div><div class="line">    <span class="keyword">let</span> pinyin = stringRef <span class="keyword">as</span> <span class="type">String</span>;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> pinyin</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>这样转换出来的拼音字符串，每个汉字的拼音中间都会用空格隔开，增加去掉空格的函数：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> transformToPinyinWithoutBlank() -&gt; <span class="type">String</span> {</div><div class="line">    <span class="keyword">var</span> pinyin = <span class="keyword">self</span>.transformToPinyin()</div><div class="line">    <span class="comment">// 去掉空格</span></div><div class="line">    pinyin = pinyin.stringByReplacingOccurrencesOfString(<span class="string">" "</span>, withString: <span class="string">""</span>)</div><div class="line">    <span class="keyword">return</span> pinyin</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>最后一个方法，是获取大写的首字母的方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> getPinyinHead() -&gt; <span class="type">String</span> {</div><div class="line">    <span class="comment">// 字符串转换为首字母大写</span></div><div class="line">    <span class="keyword">let</span> pinyin = <span class="keyword">self</span>.transformToPinyin().capitalizedString</div><div class="line">    <span class="keyword">var</span> headPinyinStr = <span class="string">""</span></div><div class="line"></div><div class="line">    <span class="comment">// 获取所有大写字母</span></div><div class="line">    <span class="keyword">for</span> ch <span class="keyword">in</span> pinyin.characters {</div><div class="line">        <span class="keyword">if</span> ch &lt;= <span class="string">"Z"</span> && ch &gt;= <span class="string">"A"</span> {</div><div class="line">            headPinyinStr.append(ch)</div><div class="line">        }</div><div class="line">    }</div><div class="line">    <span class="keyword">return</span> headPinyinStr</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>希望这些方法能够对大家有用。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在iOS中我们做搜索时一般会遇到通过拼音搜索关键字的情况，这时候我们的判断就需要把中文汉字转换为拼音，有些时候还需要获取汉语拼音的首字母大写缩写，那么我们应该这么做呢？</p>
+<p>有些第三方库可以完成汉字到拼音的转换，但是系统库也可以支持拼音转换的所以这里就简单介绍一下使用系统库进行转换的方法。<br>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/tags/swift/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/categories/iOS/swift/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[OC&swift中的宏定义]]></title>
+    <link href="http://www.ziank.cn/2016/07/08/oc-swift-define/"/>
+    <id>http://www.ziank.cn/2016/07/08/oc-swift-define/</id>
+    <published>2016-07-08T06:22:51.000Z</published>
+    <updated>2016-07-08T06:29:30.000Z</updated>
+    <content type="html"><![CDATA[<p>在使用OC和swift进行混编时，我们经常会需要在swift中使用OC中的宏定义，但是这些宏定义经常会提示无法找到或者类型错误，那么我们到底应该怎么做才正确呢？</p>
+<p><a id="more"></a><br><img src="/img/OC_define.png" alt="OC宏定义"></p>
+<p>OC中的宏定义和C一样，主要有以下几种情况：</p>
+<ol>
+<li>定义一个常量值，后面可以方便使用；如 <code>#define TOOLBAR_HEIGHT           44</code>；</li>
+<li>定义一个不会变化的常用变量值，或者一个较长的对象属性；如<code>#define SCREEN_WIDTH             ([[UIScreen mainScreen] bounds].size.width)</code>；</li>
+<li>定义一个会变化的常用变量值，或者一个较长的对象属性；如：<code>#define STATUS_BAR_HEIGHT        ([UIApplication sharedApplication].statusBarFrame.size.height)</code>；</li>
+<li>定义一个带参数的宏，类似于一个函数；如<code>#define RGB_COLOR(r,g,b) [UIColor colorWithRed:r/255.f green:g/255.f blue:b/255.f alpha:1.0]</code></li>
+</ol>
+<p>对于这四种情况，在swift中只能处理第一种情况，而且是直接转换为了<code>let TOOLBAR_HEIGHT = 44;</code>那么由于使用<code>TOOLBAR_HEIGTH</code>的地方基本上都是使用<code>CGFloat</code>，而<code>TOOLBAR_HEIGTH</code>的类型却是Int，就会导致类型不匹配。</p>
+<p><img src="/img/swift_define.png" alt="swift宏定义替换"></p>
+<p>所以我们在混编时对于这些宏定义都需要单独处理：</p>
+<ul>
+<li>第一种的话就比较简单，可以直接使用<code>let TOOLBAR_HEIGTH:CGFloat = 44</code>来替换就可以了；</li>
+<li>第二种因为后面的值永远不会改变，也可以使用<code>let</code>来替换；可以用<code>let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width</code>；</li>
+<li>第三种情况，也就是后面的值会发生改变，如状态栏高度，就不能够使用<code>let</code>来替换了，因为<code>let</code>是定义的常量，如果使用<code>let</code>，如果将会导致不能够获取正确的值；这里可以使用函数来获取：<code>func STATUSBAR_HEIGHT() -&gt; CGFloat { return UIApplication.sharedApplication().statusBarFrame.size.height }</code>；使用时通过函数<code>STATUSBAR_HEIGTH()</code>获取状态栏高度；</li>
+<li>第四种，因为有输入参数，所以也只能使用函数来替换；如：<code>func RGB_COLOR(r:CGFloat, g:CGFloat, b:CGFloat) -&gt; UIColor {return UIColor(red: r, green: g, blue: b, alpha: 1.0)}</code>;</li>
+</ul>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在使用OC和swift进行混编时，我们经常会需要在swift中使用OC中的宏定义，但是这些宏定义经常会提示无法找到或者类型错误，那么我们到底应该怎么做才正确呢？</p>
+<p>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/tags/swift/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/categories/iOS/swift/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[UIWebView键盘的accessoryBar隐藏]]></title>
+    <link href="http://www.ziank.cn/2016/07/06/webview-keyboard/"/>
+    <id>http://www.ziank.cn/2016/07/06/webview-keyboard/</id>
+    <published>2016-07-06T06:31:49.000Z</published>
+    <updated>2016-07-06T06:40:46.000Z</updated>
+    <content type="html"><![CDATA[<p>当前越来越多的iOS应用开始使用html进行交互显示，却会发现在<code>UIWebView</code>弹出的键盘比<code>UITextView</code>的键盘多出了左右移动以及完成按钮，那么如何去掉这些我们并不需要的按钮呢？苹果官方并没有给出方法，所以我们只能够自己来解决。<br><a id="more"></a><br><img src="/img/webview_keyboard.png" alt="webview键盘图片"></p>
+<p>对于不同的iOS版本，我们的处理方法也会不同，因为官方没有提供方法，所有的方法都是需要自己去发现和修改。这里只写出iOS7以上版本的方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> hideKeyBoard() -&gt; <span class="type">Void</span> {</div><div class="line"><span class="keyword">for</span> window <span class="keyword">in</span> <span class="type">UIApplication</span>.sharedApplication().windows {</div><div class="line"><span class="keyword">if</span> !window.isMemberOfClass(<span class="type">UIWindow</span>.<span class="keyword">self</span>) {</div><div class="line"><span class="keyword">let</span> keyboardWindow = window</div><div class="line"><span class="keyword">if</span> #available(iOS <span class="number">9.0</span>, *) {</div><div class="line"><span class="keyword">self</span>.removeAccessoryBarForiOS9(keyboardWindow <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">} <span class="keyword">else</span> <span class="keyword">if</span> #available(iOS <span class="number">8.0</span>, *) {</div><div class="line"><span class="keyword">self</span>.removeAccessoryBarForiOS8(keyboardWindow <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">} <span class="keyword">else</span> {</div><div class="line"><span class="keyword">self</span>.removeAccessoryBarForiOS7(keyboardWindow <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line"><span class="keyword">if</span> #available(iOS <span class="number">9.0</span>, *) {</div><div class="line"><span class="keyword">self</span>.removeAccessoryBarForiOS9(<span class="type">UIApplication</span>.sharedApplication().windows.last! <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">}</div><div class="line">}</div><div class="line"></div><div class="line"><span class="func"><span class="keyword">func</span></span> removeAccessoryBarForiOS9(keyboardWindow:<span class="type">UIView</span>) -&gt; <span class="type">Void</span> {</div><div class="line"><span class="keyword">for</span> possibleFormView:<span class="type">UIView</span> <span class="keyword">in</span> keyboardWindow.subviews {</div><div class="line"><span class="keyword">if</span> possibleFormView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetContainerView"</span>)!) {</div><div class="line"><span class="keyword">for</span> subviewOfInputSetContainerView <span class="keyword">in</span> possibleFormView.subviews {</div><div class="line"><span class="keyword">if</span> subviewOfInputSetContainerView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetHostView"</span>)!) {</div><div class="line"><span class="keyword">for</span> subviewOfInputSetHostView <span class="keyword">in</span> subviewOfInputSetContainerView.subviews {</div><div class="line"><span class="comment">// 隐藏工具条NSClassFromString</span></div><div class="line"><span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) {</div><div class="line">subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfInputSetHostView.frame = <span class="type">CGRectZero</span></div><div class="line">} <span class="keyword">else</span> <span class="keyword">if</span> (subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"_UIRemoteKeyboardPlaceholderView"</span>)!)) {</div><div class="line">subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfInputSetHostView.frame = <span class="type">CGRectZero</span></div><div class="line"></div><div class="line"><span class="comment">// 这里使用了私有方法获取对应的accessorBar，然后进行隐藏</span></div><div class="line"><span class="keyword">var</span> accessory = subviewOfInputSetHostView.performSelector(<span class="type">Selector</span>(<span class="string">"placeheldView"</span>)).takeRetainedValue()</div><div class="line"><span class="keyword">if</span> accessory.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) {</div><div class="line"><span class="keyword">let</span> accessory = accessory <span class="keyword">as</span>! <span class="type">UIView</span></div><div class="line">accessory.layer.opacity = <span class="number">0</span></div><div class="line">accessory.frame = <span class="type">CGRectZero</span></div><div class="line">}</div><div class="line"></div><div class="line">}</div><div class="line"><span class="comment">// 键盘背景, UIKBInputBackdropView有两个只隐藏上面的</span></div><div class="line"><span class="keyword">else</span> <span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIKBInputBackdropView"</span>)!) && subviewOfInputSetHostView.frame.size.height &lt; <span class="number">100</span> {</div><div class="line">subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfInputSetHostView.userInteractionEnabled = <span class="built_in">false</span></div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line"></div><div class="line"><span class="func"><span class="keyword">func</span></span> removeAccessoryBarForiOS8(keyboardWindow:<span class="type">UIView</span>) -&gt; <span class="type">Void</span> {</div><div class="line"><span class="keyword">for</span> possibleFormView:<span class="type">UIView</span> <span class="keyword">in</span> keyboardWindow.subviews {</div><div class="line"><span class="keyword">if</span> possibleFormView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetContainerView"</span>)!) {</div><div class="line"><span class="keyword">for</span> subviewOfInputSetContainerView <span class="keyword">in</span> possibleFormView.subviews {</div><div class="line"><span class="keyword">if</span> subviewOfInputSetContainerView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetHostView"</span>)!) {</div><div class="line"><span class="keyword">for</span> subviewOfInputSetHostView <span class="keyword">in</span> subviewOfInputSetContainerView.subviews {</div><div class="line"><span class="comment">// 隐藏工具条</span></div><div class="line"><span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) {</div><div class="line">subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfInputSetHostView.frame = <span class="type">CGRectZero</span></div><div class="line">}</div><div class="line"><span class="comment">// 键盘背景, UIKBInputBackdropView有两个只隐藏上面的</span></div><div class="line"><span class="keyword">else</span> <span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIKBInputBackdropView"</span>)!) && subviewOfInputSetHostView.frame.size.height &lt; <span class="number">100</span> {</div><div class="line">subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfInputSetHostView.userInteractionEnabled = <span class="built_in">false</span></div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line"></div><div class="line"><span class="func"><span class="keyword">func</span></span> removeAccessoryBarForiOS7(keyboardWindow:<span class="type">UIView</span>) -&gt; <span class="type">Void</span> {</div><div class="line"><span class="keyword">for</span> possibleFormView:<span class="type">UIView</span> <span class="keyword">in</span> keyboardWindow.subviews {</div><div class="line"><span class="keyword">if</span> possibleFormView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIPeripheralHostView"</span>)!) {</div><div class="line"><span class="keyword">for</span> subviewOfPeripheralHostView <span class="keyword">in</span> possibleFormView.subviews {</div><div class="line"><span class="comment">// 隐藏工具条</span></div><div class="line"><span class="keyword">if</span> subviewOfPeripheralHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) {</div><div class="line">subviewOfPeripheralHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfPeripheralHostView.frame = <span class="type">CGRectZero</span></div><div class="line">}</div><div class="line"><span class="comment">// 键盘背景, UIKBInputBackdropView有两个只隐藏上面的</span></div><div class="line"><span class="keyword">else</span> <span class="keyword">if</span> subviewOfPeripheralHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIKBInputBackdropView"</span>)!) && subviewOfPeripheralHostView.frame.size.height &lt; <span class="number">100</span> {</div><div class="line">subviewOfPeripheralHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfPeripheralHostView.userInteractionEnabled = <span class="built_in">false</span></div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>实际中，隐藏键盘<code>accessory</code>后的样子如下图：</p>
+<p><img src="/img/webview_keyboard_hideaccessory.png" alt="隐藏accessory的界面"></p>
+<p><strong>需要注意的是，在示例代码使用设置layer透明，frame为空来进行隐藏，而不使用<code>removeFromSuperView</code>，是因为使用了<code>removeFromSuperView</code>，在键盘重新布局时会导致crash。当然如果有朋友解决了crash，使用<code>removeFromSuperView</code>会更好。</strong></p>
+<p>下面贴上crash的崩溃栈：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="number">2016</span>-<span class="number">07</span>-<span class="number">06</span> <span class="number">14</span>:<span class="number">10</span>:<span class="number">32.018</span> WebViewKeyBoard[<span class="number">10846</span>:<span class="number">930540</span>] The view hierarchy <span class="keyword">is</span> <span class="keyword">not</span> prepared <span class="keyword">for</span> the constraint: &lt;NSLayoutConstraint:<span class="number">0x7f82a172d880</span> V:[_UIRemoteKeyboardPlaceholderView:<span class="number">0x7f82a14e7e30</span>]-(<span class="number">0</span>)-[_UIKBCompatInputView:<span class="number">0x7f82a16f9950</span>]&gt;</div><div class="line"><span class="keyword">When</span> added <span class="keyword">to</span> a view, the constraint<span class="attribute">'s</span> items must be descendants <span class="keyword">of</span> that view (<span class="keyword">or</span> the view itself). This will crash <span class="keyword">if</span> the constraint needs <span class="keyword">to</span> be resolved before the view hierarchy <span class="keyword">is</span> assembled. Break <span class="keyword">on</span> -[UIView(UIConstraintBasedLayout) _viewHierarchyUnpreparedForConstraint:] <span class="keyword">to</span> debug.</div><div class="line"><span class="number">2016</span>-<span class="number">07</span>-<span class="number">06</span> <span class="number">14</span>:<span class="number">10</span>:<span class="number">32.018</span> WebViewKeyBoard[<span class="number">10846</span>:<span class="number">930540</span>] *** Assertion failure <span class="keyword">in</span> -[UIInputSetHostView _layoutEngine_didAddLayoutConstraint:roundingAdjustment:mutuallyExclusiveConstraints:], /BuildRoot/<span class="keyword">Library</span>/Caches/com.apple.xbs/Sources/UIKit_Sim/UIKit-<span class="number">3512.60</span><span class="number">.7</span>/NSLayoutConstraint_UIKitAdditions.m:<span class="number">590</span></div><div class="line"><span class="number">2016</span>-<span class="number">07</span>-<span class="number">06</span> <span class="number">14</span>:<span class="number">10</span>:<span class="number">32.025</span> WebViewKeyBoard[<span class="number">10846</span>:<span class="number">930540</span>] *** Terminating app due <span class="keyword">to</span> uncaught exception <span class="attribute">'NSInternalInconsistencyException</span>', reason: <span class="attribute">'Impossible</span> <span class="keyword">to</span> set up layout <span class="keyword">with</span> view hierarchy unprepared <span class="keyword">for</span> constraint.'</div><div class="line">*** First throw call stack:</div><div class="line">(</div><div class="line"><span class="number">0</span>   CoreFoundation                      <span class="number">0x0000000105517d85</span> __exceptionPreprocess + <span class="number">165</span></div><div class="line"><span class="number">1</span>   libobjc.A.dylib                     <span class="number">0x00000001072bbdeb</span> objc_exception_throw + <span class="number">48</span></div><div class="line"><span class="number">2</span>   CoreFoundation                      <span class="number">0x0000000105517bea</span> +[NSException raise:format:arguments:] + <span class="number">106</span></div><div class="line"><span class="number">3</span>   Foundation                          <span class="number">0x0000000105968d5a</span> -[NSAssertionHandler handleFailureInMethod:object:<span class="keyword">file</span>:lineNumber:description:] + <span class="number">198</span></div><div class="line"><span class="number">4</span>   UIKit                               <span class="number">0x0000000106626b99</span> __120-[UIView(UIConstraintBasedLayout) _layoutEngine_didAddLayoutConstraint:roundingAdjustment:mutuallyExclusiveConstraints:]_block_invoke_2 + <span class="number">254</span></div><div class="line"><span class="number">5</span>   UIKit                               <span class="number">0x000000010662698b</span> -[UIView(UIConstraintBasedLayout) _layoutEngine_didAddLayoutConstraint:roundingAdjustment:mutuallyExclusiveConstraints:] + <span class="number">385</span></div><div class="line"><span class="number">6</span>   UIKit                               <span class="number">0x0000000106626e04</span> -[UIView(UIConstraintBasedLayout) _tryToAddConstraintWithoutUpdatingConstraintsArray:roundingAdjustment:mutuallyExclusiveConstraints:] + <span class="number">65</span></div><div class="line"><span class="number">7</span>   UIKit                               <span class="number">0x0000000106626f7d</span> -[UIView(UIConstraintBasedLayout) _tryToAddConstraint:roundingAdjustment:mutuallyExclusiveConstraints:] + <span class="number">288</span></div><div class="line"><span class="number">8</span>   UIKit                               <span class="number">0x000000010662719f</span> -[UIView(UIConstraintBasedLayout) _addConstraint:] + <span class="number">274</span></div><div class="line"><span class="number">9</span>   UIKit                               <span class="number">0x0000000106627438</span> __50-[UIView(UIConstraintBasedLayout) addConstraints:]_block_invoke + <span class="number">197</span></div><div class="line"><span class="number">10</span>  Foundation                          <span class="number">0x00000001058f23d3</span> -[NSISEngine withBehaviors:performModifications:] + <span class="number">155</span></div><div class="line"><span class="number">11</span>  UIKit                               <span class="number">0x0000000106626577</span> -[UIView(UIConstraintBasedLayout) _withAutomaticEngineOptimizationDisabled:] + <span class="number">58</span></div><div class="line"><span class="number">12</span>  UIKit                               <span class="number">0x0000000106627348</span> -[UIView(UIConstraintBasedLayout) addConstraints:] + <span class="number">379</span></div><div class="line"><span class="number">13</span>  UIKit                               <span class="number">0x00000001066b5531</span> -[UIInputWindowController updateViewConstraints] + <span class="number">3558</span></div><div class="line"><span class="number">14</span>  UIKit                               <span class="number">0x00000001066b1fde</span> -[UIInputSetHostView _didChangeKeyplaneWithContext:] + <span class="number">224</span></div><div class="line"><span class="number">15</span>  UIKit                               <span class="number">0x000000010650f1cc</span> -[_UIKBCompatInputView _didChangeKeyplaneWithContext:] + <span class="number">87</span></div><div class="line"><span class="number">16</span>  UIKit                               <span class="number">0x0000000106004397</span> -[UIKeyboard _didChangeKeyplaneWithContext:] + <span class="number">324</span></div><div class="line"><span class="number">17</span>  UIKit                               <span class="number">0x0000000105fe7b04</span> -[UIKeyboardImpl _didChangeKeyplaneWithContext:] + <span class="number">1100</span></div><div class="line"><span class="number">18</span>  UIKit                               <span class="number">0x000000010620d5a3</span> -[UIKeyboardLayoutStar(UIKeyboardLayoutJapanese50OnFlick) _didChangeKeyplaneWithContext:] + <span class="number">183</span></div><div class="line"><span class="number">19</span>  UIKit                               <span class="number">0x00000001061f121e</span> -[UIKeyboardLayoutStar setKeyplaneName:] + <span class="number">4512</span></div><div class="line"><span class="number">20</span>  UIKit                               <span class="number">0x0000000106209c37</span> -[UIKeyboardLayoutStar setShift:] + <span class="number">158</span></div><div class="line"><span class="number">21</span>  UIKit                               <span class="number">0x0000000105fec46a</span> -[UIKeyboardImpl notifyShiftState] + <span class="number">73</span></div><div class="line"><span class="number">22</span>  CoreFoundation                      <span class="number">0x000000010543cc37</span> __CFRUNLOOP_IS_CALLING_OUT_TO_AN_OBSERVER_CALLBACK_FUNCTION__ + <span class="number">23</span></div><div class="line"><span class="number">23</span>  CoreFoundation                      <span class="number">0x000000010543cba7</span> __CFRunLoopDoObservers + <span class="number">391</span></div><div class="line"><span class="number">24</span>  CoreFoundation                      <span class="number">0x00000001054326c4</span> __CFRunLoopRun + <span class="number">836</span></div><div class="line"><span class="number">25</span>  CoreFoundation                      <span class="number">0x00000001054320f8</span> CFRunLoopRunSpecific + <span class="number">488</span></div><div class="line"><span class="number">26</span>  GraphicsServices                    <span class="number">0x0000000109badad2</span> GSEventRunModal + <span class="number">161</span></div><div class="line"><span class="number">27</span>  UIKit                               <span class="number">0x0000000105d3ff09</span> UIApplicationMain + <span class="number">171</span></div><div class="line"><span class="number">28</span>  WebViewKeyBoard                     <span class="number">0x000000010532a242</span> main + <span class="number">114</span></div><div class="line"><span class="number">29</span>  libdyld.dylib                       <span class="number">0x0000000107d7f92d</span> start + <span class="number">1</span></div><div class="line"><span class="number">30</span>  ???                                 <span class="number">0x0000000000000001</span> <span class="number">0x0</span> + <span class="number">1</span></div><div class="line">)</div><div class="line">libc++abi.dylib: terminating <span class="keyword">with</span> uncaught exception <span class="keyword">of</span> <span class="keyword">type</span> NSException</div></pre></td></tr></table></figure>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>当前越来越多的iOS应用开始使用html进行交互显示，却会发现在<code>UIWebView</code>弹出的键盘比<code>UITextView</code>的键盘多出了左右移动以及完成按钮，那么如何去掉这些我们并不需要的按钮呢？苹果官方并没有给出方法，所以我们只能够自己来解决。<br>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/tags/swift/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/categories/iOS/swift/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[键盘处理]]></title>
+    <link href="http://www.ziank.cn/2016/06/17/keyboard/"/>
+    <id>http://www.ziank.cn/2016/06/17/keyboard/</id>
+    <published>2016-06-17T08:35:46.000Z</published>
+    <updated>2016-06-17T11:28:48.000Z</updated>
+    <content type="html"><![CDATA[<p>本文主要讲述iOS中键盘的常用方法和注意事项。<br><a id="more"></a></p>
+<h2 id="键盘焦点方法">键盘焦点方法</h2>
+<p>键盘事件主要有两个，一个是获得焦点，一个是失去焦点。或者说一个是呼出键盘，另一个是消失键盘。</p>
+<h4 id="获得焦点">获得焦点</h4>
+<p>获取焦点的方法为<code>becomeFirstResponder</code>，我们可以通过调用这个方法来呼出键盘。**需要注意的是，只有支持编辑的控件才可以呼出键盘，如<code>UITextView</code>,<code>UITextField</code>；而普通的控件或<code>UIView</code>即使获取焦点也不会呼出键盘，如<code>UITableView</code>，<code>UIButton</code></p>
+<p><strong>如果想使用<code>webView</code>自动获取焦点，那么一定不要忘记设置<code>keyboardDisplayRequiresUserAction</code>为<code>false</code>，否则键盘不会弹出。</strong><br></p>
+<h4 id="失去焦点">失去焦点</h4>
+<p>常用的失去焦点的方法为<code>resignFirstResponder</code>，调用这个方法可以让当前控件失去焦点，从而使键盘落下；<strong>需要注意的是调用方法的对象必须是弹出键盘的控件本身，而不能是其父<code>View</code></strong></p>
+<p>如果没有办法获取到获取焦点的控件本身，而必须利用其父<code>View</code>失去焦点的话，可以使用另一个方法<code>endEdit</code>，这个方法带有一个参数，为是否强制终止编辑，一般选择为YES，从而使键盘消失。</p>
+<p>如果不是必须的话，更建议大家使用<code>resignFirstResponder</code>方法</p>
+<h2 id="键盘事件通知">键盘事件通知</h2>
+<p>iOS系统支持的常用键盘事件通知有六个，分别是</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">UIKeyboardWillShowNotification      <span class="comment">// 键盘将要出现</span></div><div class="line">UIKeyboardDidShowNotification       <span class="comment">// 键盘已经出现</span></div><div class="line">UIKeyboardWillHideNotification      <span class="comment">// 键盘将要消失</span></div><div class="line">UIKeyboardDidHideNotification       <span class="comment">// 键盘已经消失</span></div><div class="line">UIKeyboardWillChangeFrameNotification   <span class="comment">// 键盘将要修改frame</span></div><div class="line">UIKeyboardDidChangeFrameNotification    <span class="comment">// 键盘已经修改frame</span></div></pre></td></tr></table></figure>
+
+<p>在这些事件的userInfo中会有以下几个属性，可以用于进行界面的处理。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">UIKeyboardFrameBeginUserInfoKey         <span class="comment">// 开始时的键盘位置</span></div><div class="line">UIKeyboardFrameEndUserInfoKey           <span class="comment">// 结束时的键盘位置</span></div><div class="line">UIKeyboardAnimationCurveUserInfoKey     <span class="comment">// 动画类型</span></div><div class="line">UIKeyboardAnimationDurationUserInfoKey  <span class="comment">// 动画持续事件</span></div><div class="line">UIKeyboardIsLocalUserInfoKey            <span class="comment">// 是否为本地用户键盘</span></div><div class="line"></div><div class="line">UIKeyboardCenterBeginUserInfoKey        <span class="comment">// 开始时的键盘中心</span></div><div class="line">UIKeyboardCenterEndUserInfoKey          <span class="comment">// 结束时的键盘中心</span></div><div class="line">UIKeyboardBoundsUserInfoKey             <span class="comment">// 键盘边界</span></div></pre></td></tr></table></figure>
+
+<p>后面三个属性用户可以根据前两个进行计算。<strong>需要注意的是在iPad上由于键盘支持浮动，需要支持<code>UIKeyboardWillChangeFrameNotification</code>和<code>UIKeyboardDidChangeFrameNotification</code>两个键盘通知。</strong></p>
+<h2 id="自定义键盘">自定义键盘</h2>
+<h4 id="UITextView和UITextField"><code>UITextView</code>和<code>UITextField</code></h4>
+<p>由于<code>UITextView</code>和<code>UITextField</code>支持属性<code>inputView</code>和<code>inputAccessoryView</code>，所以只需要把要替换键盘和工具栏的界面画好，直接进行设置尽可以了。</p>
+<h4 id="UIWebView"><code>UIWebView</code></h4>
+<p>对于<code>UIWebView</code>的键盘处理比较麻烦，需要手动去掉accessoryView，具体的去除方法可以参考网上一些实现。<br>如iOS8下可以参考<a href="http://stackoverflow.com/questions/25022089/remove-next-previous-buttons-inputaccessoryview-for-custom-keyboard-in-ios8" target="_blank" rel="external">Remove Next / Previous buttons (inputAccessoryView) for Custom Keyboard in iOS8 WebView</a></p>
+<p>就写这些吧，更多的还要在实践中具体分析使用。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>本文主要讲述iOS中键盘的常用方法和注意事项。<br>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[从storyboard中加载ViewController]]></title>
+    <link href="http://www.ziank.cn/2016/01/12/storyboard/"/>
+    <id>http://www.ziank.cn/2016/01/12/storyboard/</id>
+    <published>2016-01-12T02:27:05.000Z</published>
+    <updated>2016-01-12T03:31:04.000Z</updated>
+    <content type="html"><![CDATA[<p>以前我也使用storyboard，但是都只是使用第一个ViewController，而后面的ViewController都是使用Xib或者代码重新绘制，而不会在storyboard中进行画图。最近的一个项目也许因为自己懒吧，不想创建很多的Xib，就查了一下storyboard的用法，发现还是挺不错的。<br><a id="more"></a><br>Xib可以直接拖拽控件，进行画图，storyboard也拥有相同的功能；除此之外，storyboard可以添加多个ViewController，并添加其对应的关系。例如可以在按钮上可以直接添加点击后push/present显示另一个ViewController，可以省略对应的代码编写。对应的操作就是按住ctrl键，然后选择空间，拉到对应VC上，可以选择是push还是modal形式弹出对应VC。<br><img src="/img/pushViewController.png" alt="push或弹出页面"><br>除了可以直接实现push和present以外，storyboard还可以更方便的管理页面之间的关系，比如navigationController，tabViewController的设置等，而不需要在代码中设置。<br>但是使用storyboard也有不方便的地方，那就是在协作编程时，如果创建相同的页面，就需要创建多次，而使用Xib的话就可以直接相互copy。当然如果同一个人的两个界面，是可以在storyboard中直接进行copy的。<br>下面说一下如果使用了storyboard，要注意的一些东西。我觉得主要有三点：</p>
+<ul>
+<li><strong>在storyboard中要对ViewController进行storyIdentifier的设置；这个设置保证了你可以在代码中获取到对应的ViewController，所以一定要设置</strong>；</li>
+<li><strong>在创建ViewController的时候，不能使用<code>[[UIViewController alloc] init]</code>，而要从storyboard中获取对应的ViewController。</strong></li>
+</ul>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="constant">UIStoryboard *storyBoard</span> = [UIStoryboard storyboardWithName:@<span class="string">"Main"</span> bundle:nil];</div><div class="line"><span class="constant">  UIViewController *viewControlelr</span> = [storyBoard instantiateViewControllerWithIdentifier:@<span class="string">"ViewController"</span>];</div></pre></td></tr></table></figure>
+
+<p>这样两句代码就可以获取到Main.stroyboard中storyIdentifier为“ViewController”的UIViewController了。</p>
+<ul>
+<li><strong>使用storyboard创建ViewController不会调用init方法，而是会调用initWithCoder方法。 </strong></li>
+</ul>
+<p>最后就越是一个提醒<strong>storyboard可以创建多个</strong>，千万不要因为系统默认创建了一个，就傻乎乎的只使用一个，那样在协作工作时真的会变傻眼的。<br>关于storyboard其实我也只是简单的有一些了解，就说这么多吧，希望以后能够有更多的了解吧。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>以前我也使用storyboard，但是都只是使用第一个ViewController，而后面的ViewController都是使用Xib或者代码重新绘制，而不会在storyboard中进行画图。最近的一个项目也许因为自己懒吧，不想创建很多的Xib，就查了一下storyboard的用法，发现还是挺不错的。<br>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Swift中guard语句的作用]]></title>
+    <link href="http://www.ziank.cn/2015/12/18/guard/"/>
+    <id>http://www.ziank.cn/2015/12/18/guard/</id>
+    <published>2015-12-18T02:55:44.000Z</published>
+    <updated>2015-12-18T03:13:49.000Z</updated>
+    <content type="html"><![CDATA[<p>在2.0版本中，swift引入了新的关键字guard，用于进行条件判断。但是大家知道if完全可以完成guard所拥有的功能，那么为什么还要有guard语句呢？<br><a id="more"></a><br>我们先看看guard语句的用法：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> fooBinding(x: <span class="type">Int</span>?) {</div><div class="line">guard <span class="keyword">let</span> x = x <span class="keyword">where</span> x &gt; <span class="number">0</span> <span class="keyword">else</span> { <span class="keyword">return</span>; }</div><div class="line"><span class="comment">// do something else</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>可以看到guard语句的作用就是判断一个表达式是否为True，然后进行处理。<br>如果不使用swift的话，这句话的表达应该是</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> fooBinding(x: <span class="type">Int</span>?) {</div><div class="line"><span class="keyword">if</span> (x == <span class="built_in">nil</span> || x &lt; <span class="number">0</span>) { <span class="keyword">return</span>; }</div><div class="line"><span class="comment">// do something else</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>可以看到我们需要判断和想要的结果刚好相反的情况，然后才可以正确执行。使用了swift的语法后，会变成</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> fooBinding(x: <span class="type">Int</span>?) {</div><div class="line"><span class="keyword">if</span> (<span class="keyword">let</span> x = x <span class="keyword">where</span> x &gt; <span class="number">0</span>) {</div><div class="line"><span class="comment">// do something else </span></div><div class="line">}</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>我们可以直接判断想要的结果，但是我们需要把执行的语句都放在代码块内，多了一层嵌套关系。<br>而使用guard以后，就不存在这些问题了，既可以直接判断想要的结果，也不会多出一层嵌套关系。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在2.0版本中，swift引入了新的关键字guard，用于进行条件判断。但是大家知道if完全可以完成guard所拥有的功能，那么为什么还要有guard语句呢？<br>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/tags/swift/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/categories/iOS/swift/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[有关web微信的一些处理]]></title>
+    <link href="http://www.ziank.cn/2015/11/19/weixin/"/>
+    <id>http://www.ziank.cn/2015/11/19/weixin/</id>
+    <published>2015-11-19T05:50:47.000Z</published>
+    <updated>2015-11-19T07:12:46.000Z</updated>
+    <content type="html"><![CDATA[<p>最近由于某些原因吧，想要找一些关于微信发送消息的协议，最后也没有真正的找到，又懒得自己去抓包进行解析，就查找了一些通过http进行微信通信的文章，这里也对自己了解的做一个简单总结。<br><a id="more"></a><br>web微信的通信过程主要就那么几步，登陆，同步，发送消息等等。因为我只看了发送消息的部分，这里也就只简单说一下发送的方法，不多描述接收消息的想法。如果有人想要了解接收的话，可以查看<a href="http://www.myhack58.com/Article/54/93/2015/66422.htm" target="_blank" rel="external">挖掘微信Web网页版通信的全过程</a>，配合自己进行http抓包可以简单的通过分析进行实现。</p>
+<ol>
+<li>获取二维码。<br> 大家都知道web微信登录主要是通过手机扫描二维码实现，所以第一步就是获取对应的二维码。<ul>
+<li>请求uuid，URL地址可以使用<code>https://login.weixin.qq.com/jslogin?appid=wx782c26e4c19acffb&amp;redirect_uri=https%%3A%%2F%%2Fwx.qq.com%%2Fcgi-bin%%2Fmmwebwx-bin%%2Fwebwxnewloginpage&amp;fun=new&amp;lang=zh_CN&amp;_={now_time}</code>，<code>{now_time}</code>为当前时间。返回的结果格式应为<code>window.QRLogin.code = 200; window.QRLogin.uuid = &quot;QaH7gdt7Jg==&quot;</code>;其中uuid就是<code>QaH7gdt7Jg==</code></li>
+<li>根据uuid请求登录二维码，URL地址为<code>https://login.weixin.qq.com/qrcode/{uuid}?t=webwx</code>，返回的结果就是二维码图片的二进制流。</li>
+</ul>
+</li>
+<li>扫描二维码。<br> 这里的扫描二维码不是说手机的扫描，而是获取手机的扫描结果过程。这个过程只需要轮询一个URL地址，微信服务器会根据当前扫描状态的不同返回不同的响应结果。这个URL地址为<code>https://login.weixin.qq.com/cgi-bin/mmwebwx-bin/login?uuid={uuid}&amp;tip=1&amp;_={now_time}</code><ul>
+<li>如果响应结果返回<code>window.code=201;</code>说明用户已经扫描完成，但是还没有登录；</li>
+<li>如果响应结果返回<code>window.redirect_uri={redirect_url}</code>格式，则说明用户已近登录。</li>
+</ul>
+</li>
+<li>获取uin，sid和ticket<ul>
+<li>如果只是简单的发送文字消息，ticket是不需要使用的。</li>
+<li>这一步主要是访问上一步返回的<code>{redirect_url}</code>，我在实际访问时添加了<code>&amp;fun=new</code>，实际中可根据需要自行判断使用old还是new。在服务器返回的cookie中会包含wxuin，wxsid，webwx_data_ticket等字段，根据需要把这些内容记录下来。</li>
+</ul>
+</li>
+<li>初始化微信信息<br> 所谓的初始化微信信息就是获取一些当前用户的信息，访问的URL地址为<code>https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxinit?r={now_time}</code>。需要注意的是：<ul>
+<li>访问该链接需要使用POST，并且在Body中带上以下的JSON信息：<code>{&quot;BaseRequest&quot;:{&quot;Uin&quot;:&quot;2545437902&quot;,&quot;Sid&quot;:&quot;QfLp+Z+FePzvOFoG&quot;,&quot;Skey&quot;:&quot;&quot;,&quot;DeviceID&quot;:&quot;e1615250492&quot;}}</code>。这个JSON串中Uin和Sid分别是上面步骤中获得的那两个Cookie值，DeviceID是一个本地生成的随机字符串（分析了官方的总是e+一串数字，所以我们也保持这样的格式）。</li>
+<li>服务器会返回一个很长的JSON串，其中主要包括有BaseResponse（相应返回码等信息），ContactList（常用联系人），SyncKey（用于和服务器同步消息），User（当前用户的信息），SKey（用于后面发送消息认证使用）等内容。</li>
+</ul>
+</li>
+<li>获取通讯录列表<br> 在初始化微信信息时返回的联系人列表并不全，需要用这一步的接口才可以获取全部的联系人列表。接口URL地址为<code>https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxgetcontact?r={now_time}</code>。这一步也需要使用POST，但是POST内容只需要设置为空JSON（<code>{}</code>）即可。在返回的JSON串中，MemberList中就包含了所有的好友信息。</li>
+<li>发送文字信息<br>发送消息主要通过URL地址<code>https://wx.qq.com/cgi-bin/mmwebwx-bin/webwxsendmsg?sid={sid}&amp;r={now_time}</code>。访问该URL采用POST方式，在Body中的JSON串形如以下的格式：</li>
+</ol>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">{</div><div class="line">    <span class="string">"BaseRequest"</span>   : {</div><div class="line">        <span class="string">"DeviceID"</span>  : <span class="string">"{DeviceID}"</span>,</div><div class="line">        <span class="string">"Sid"</span>       : <span class="string">"{sid}"</span>,</div><div class="line">        <span class="string">"Skey"</span>      : <span class="string">"{skey}"</span>,</div><div class="line">        <span class="string">"Uin"</span>       : <span class="string">"{uin}"</span></div><div class="line">    },</div><div class="line">    <span class="string">"Msg"</span>           : {</div><div class="line">        <span class="string">"ClientMsgId"</span>   : {clientMsgId},</div><div class="line">        <span class="string">"Content"</span>       : <span class="string">"{{messageContent}"</span>,</div><div class="line">        <span class="string">"FromUserName"</span>  : <span class="string">"{currentUserName}"</span>,</div><div class="line">        <span class="string">"LocalID"</span>       : {localId},</div><div class="line">        <span class="string">"ToUserName"</span>    : <span class="string">"{toUserName}"</span>,</div><div class="line">        <span class="string">"Type"</span> : <span class="number">1</span></div><div class="line">    },</div><div class="line">    <span class="string">"rr"</span> = {now_time}</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>其中BaseRequest都是授权相关的值，与上面的步骤中的值对应，Msg是对消息的描述，包括了发送人与接收人，消息内容，消息的类型(1为文本)，ClientMsgId和LocalID由本地生成。rr可用当前的时间。<br>    在返回JSON结果中BaseResponse描述了发送情况，Ret为0表示发送成功。</p>
+<p>我了解的基本也只有这些了，如果以后有兴趣做新的了解的再继续描述吧。</p>
+<p>参考资料：<br><a href="http://www.myhack58.com/Article/54/93/2015/66422.htm" target="_blank" rel="external">《挖掘微信Web网页版通信的全过程》</a><br><a href="http://bbs.125.la/thread-13711355-1-1.html" target="_blank" rel="external">微信Post/Get的封包，论坛还没有发布</a><br><a href="https://github.com/xiangzhai/qwx/blob/master/doc/protocol.md" target="_blank" rel="external">网页微信客户端封包大全</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>最近由于某些原因吧，想要找一些关于微信发送消息的协议，最后也没有真正的找到，又懒得自己去抓包进行解析，就查找了一些通过http进行微信通信的文章，这里也对自己了解的做一个简单总结。<br>]]>
+    
+    </summary>
+    
+      <category term="微信" scheme="http://www.ziank.cn/tags/%E5%BE%AE%E4%BF%A1/"/>
+    
+      <category term="网络" scheme="http://www.ziank.cn/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+      <category term="网络" scheme="http://www.ziank.cn/categories/%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[iOS应用Push证书的申请]]></title>
+    <link href="http://www.ziank.cn/2015/08/14/notification/"/>
+    <id>http://www.ziank.cn/2015/08/14/notification/</id>
+    <published>2015-08-14T06:29:02.000Z</published>
+    <updated>2015-08-14T07:13:30.000Z</updated>
+    <content type="html"><![CDATA[<p>我们都知道苹果的iOS应用只支持自己的APNS推送，所有的开发者如果要开发推送功能都必须申请APNS推送证书，才能够实现推送功能。<br>基本上对iOS有点了解的开发者都明白APNS推送的基本原理，那就是客户端向APNS请求deviceToken，传递给Server，然后Server根据这个deviceToken和APNS推送证书，把要推送的消息发送给APNS服务器，APNS服务器就会把对应的消息发送给客户端设备，进而分发给应用。<br><a id="more"></a><br><img src="/img/apns_1.jpg" alt="APNS推送原理"></p>
+<h2 id="申请Push证书流程">申请Push证书流程</h2>
+<p>那么我们使用服务器向APNS服务发送消息的时候，可以通过客户端获取到DeviceToken，那么推送证书，也就是上图中的payload从哪里获取呢？这个就要去苹果的开发者网站上生成对应的APNS推送证书并下载了。<br>生成APNS推送证书的主要步骤和生成开发者证书类似，都要先生成一个certSigningRequest文件，也就是在【钥匙串】【证书助理】中生成的请求文件，不会的童鞋可以百度一下开发者证书的生成过程。<br>之后在开发者网站上打开要推送应用的AppID，点击Edit，进入下图中的界面。<br><img src="/img/apns_2.png" alt="生成推送证书"><br>勾选Push Notifications，然后选择Create Certificate，分别对应开发环境的push证书，和上线AppStore后的push证书。创建证书的过程和创建开发者证书一样。</p>
+<p>下载push证书以后，可以在钥匙串中导出对应的p12证书文件，然后就可以使用该证书连接APNS服务器，发送PUSH消息了。需要注意的是发送的消息必须是指定格式的内容，否则会发送失败哦。<br><img src="/img/apns_3.png" alt="生成p12证书文件"></p>
+<h2 id="客户端获取DeviceToken的方法">客户端获取DeviceToken的方法</h2>
+<p>客户端需要在didFinishLaunching方法中添加注册push通知的方法，以获取对应的deviceToken。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">BOOL</span>)application:(<span class="built_in">UIApplication</span> *)application didFinishLaunchingWithOptions:(<span class="built_in">NSDictionary</span> *)launchOptions</div><div class="line">{</div><div class="line">[<span class="keyword">self</span><span class="variable">.window</span> makeKeyAndVisible];</div><div class="line">[[<span class="built_in">UIApplication</span> sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];</div><div class="line"><span class="keyword">return</span> <span class="literal">YES</span>;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>然后添加接收注册结果的方法，就可以获取到对应的deviceToken。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="pp">- <span class="params">(void)</span>application:<span class="params">(<span class="variable">UIApplication</span> *)</span>application didRegisterForRemoteNotificationsWithDeviceToken:<span class="params">(<span class="variable">NSData</span> *)</span>pToken {</span></div><div class="line">NSLog<span class="params">(@<span class="string">"regisger success:%@"</span>, p<span class="variable">Token</span>)</span>;</div><div class="line">//注册成功，返回deviceToken</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>同一个应用在同一台设备上的deviceToken基本上都是不会变化的，一般只有对设备恢复出厂设置才会导致deviceToken的变化。</p>
+<h3 id="但是要注意的是，一个应用的develop和distribution版本获取到的deviceToken是不同的。">但是要注意的是，一个应用的develop和distribution版本获取到的deviceToken是不同的。</h3>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>我们都知道苹果的iOS应用只支持自己的APNS推送，所有的开发者如果要开发推送功能都必须申请APNS推送证书，才能够实现推送功能。<br>基本上对iOS有点了解的开发者都明白APNS推送的基本原理，那就是客户端向APNS请求deviceToken，传递给Server，然后Server根据这个deviceToken和APNS推送证书，把要推送的消息发送给APNS服务器，APNS服务器就会把对应的消息发送给客户端设备，进而分发给应用。<br>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="Push" scheme="http://www.ziank.cn/tags/Push/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[TodayExtension的覆盖安装]]></title>
+    <link href="http://www.ziank.cn/2015/07/09/todayviewReinstall/"/>
+    <id>http://www.ziank.cn/2015/07/09/todayviewReinstall/</id>
+    <published>2015-07-09T07:16:37.000Z</published>
+    <updated>2015-07-09T07:35:22.000Z</updated>
+    <content type="html"><![CDATA[<p>这里有两个问题需要注意一下，一个是覆盖安装或者升级后TodayExtension的内容不会更新；另一个是在覆盖安装后TodayExtension的界面整个冻结，无法点击。<br><a id="more"></a></p>
+<p>我们先说第一个问题，这个问题主要出现在使用XCode重复安转应用之后，会发现自己对TodayExtension的修改没有生效，其主要原因是设置的问题，XCode中对于TodayExtension有一项设置是只在安装和更新时copy插件，需要取消选中才能够在使用XCode时对TodayExtension的修改直接生效。<br><img src="/img/copyOnly.png" alt="XCode设置项位置"></p>
+<p>再说第二个问题，我在使用fir安装应用的时候遇到了第二个问题，搜索了stackOverFlow，查看了苹果的官方文档，都没有发现解决方案，最后才发现这个问题可以说是庸人自扰。这个问题是由于使用了企业发布的安装方式才导致的。由于使用企业发布，重新安装时不会在原来的应用程序上直接覆盖，而是新安装应用，然后删除原来的应用。这样就导致了原来应用的TodayExtension没有重新刷新，所以会导致界面冻结的情况。实际上只要使用苹果提供的testFlight进行测试就会发现，这个问题在上传到AppStore时并不会存在，不需要进行过多的关心。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>这里有两个问题需要注意一下，一个是覆盖安装或者升级后TodayExtension的内容不会更新；另一个是在覆盖安装后TodayExtension的界面整个冻结，无法点击。<br>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="today" scheme="http://www.ziank.cn/tags/today/"/>
+    
+      <category term="extension" scheme="http://www.ziank.cn/tags/extension/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[浅析const char *, char * const, char const *, const char * const 的区别]]></title>
+    <link href="http://www.ziank.cn/2015/05/14/char-const/"/>
+    <id>http://www.ziank.cn/2015/05/14/char-const/</id>
+    <published>2015-05-14T08:14:31.000Z</published>
+    <updated>2015-05-14T08:33:02.000Z</updated>
+    <content type="html"><![CDATA[<p>不知道别人是什么样，反正我每次看到<code>const char *</code> 和<code>char * const</code> 就想把写这个代码的人给拉出来枪毙十分钟，教科书上说过它们的区别，但是每次都会忘记，所以只能够每次都去网上查找。<br><a id="more"></a><br>这次我也只是相当于做一个记录，让自己和看到这篇博客的人知道可以在这里找到答案。</p>
+<ul>
+<li><code>const char *p</code> 是一个指向常量的指针，就是说不能能够修改<code>*p</code>的值，但是可以修改<code>p</code>的值</li>
+<li><code>char *const p</code> 是一个常量指针，指向的内容是变量，所以<code>p</code>可以修改<code>*p</code>的值，但是不可以修改<code>p</code>的值</li>
+<li><code>char const *p</code> 和<code>const char* p</code>是一样的</li>
+<li><code>const *char p</code> 会引起编译错误，是一种错误的写法</li>
+<li><code>const char * const p</code> 是一个指向常量的常量指针，就是说p和*p都不可以修改</li>
+</ul>
+<p>或者简单地说，1，2的情况就是<code>const</code>修饰更近的参数，与<code>char</code>相近时修饰<code>char</code>，也就是指针值不可修改；与<code>*</code>相近时修饰地址，也就是指针不可修改。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>不知道别人是什么样，反正我每次看到<code>const char *</code> 和<code>char * const</code> 就想把写这个代码的人给拉出来枪毙十分钟，教科书上说过它们的区别，但是每次都会忘记，所以只能够每次都去网上查找。<br>]]>
+    
+    </summary>
+    
+      <category term="C" scheme="http://www.ziank.cn/tags/C/"/>
+    
+      <category term="C/C++" scheme="http://www.ziank.cn/categories/C-C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[todayView组件的高度处理问题]]></title>
+    <link href="http://www.ziank.cn/2015/05/11/todayViewExtensionHeight/"/>
+    <id>http://www.ziank.cn/2015/05/11/todayViewExtensionHeight/</id>
+    <published>2015-05-11T07:17:59.000Z</published>
+    <updated>2015-05-11T08:51:29.000Z</updated>
+    <content type="html"><![CDATA[<p>最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。<br><a id="more"></a><br><img src="/img/todayViewExtensionHeight_1.png" alt="位置不正确的图片"></p>
+<p>为此我们查了不少资料，最后发现只是一个很简单地设置问题，是由于系统默认的todayView的偏移量为</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="variable">defaultMarginInsets =</span> (<span class="variable">top =</span> <span class="number">0</span>, <span class="variable">left =</span> <span class="number">47</span>, <span class="variable">bottom =</span> <span class="number">39</span>, <span class="variable">right =</span> <span class="number">0</span>);</div></pre></td></tr></table></figure>
+
+<p>所以只需要简单地修改这个偏移量，就能够解决该问题。对偏移量的修改应该在方法<code>widgetMarginInsetsForProposedMarginInsets</code>中进行修改:</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (<span class="built_in">UIEdgeInsets</span>)widgetMarginInsetsForProposedMarginInsets:(<span class="built_in">UIEdgeInsets</span>)defaultMarginInsets</div><div class="line">{</div><div class="line">    defaultMarginInsets<span class="variable">.bottom</span> = <span class="number">0</span>;</div><div class="line">    <span class="keyword">return</span> defaultMarginInsets;</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>修改之后，todayView的界面就正常了。<br><img src="/img/todayViewExtensionHeight_2.png" alt="修改后的todayViewExtension截图"></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。<br>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[swift的操作符重载]]></title>
+    <link href="http://www.ziank.cn/2015/03/27/swift-operator/"/>
+    <id>http://www.ziank.cn/2015/03/27/swift-operator/</id>
+    <published>2015-03-27T02:23:38.000Z</published>
+    <updated>2015-03-27T03:31:46.000Z</updated>
+    <content type="html"><![CDATA[<p>今天简单说一下操作符重载的相关知识吧，希望对自己和别人能够有所帮助。相信懂得C++的同学对于运算符重载并不陌生，在swift中也是支持重载运算符这种特性的。</p>
+<p>操作符重载的好处无需多说，相信大家都明白。那么我们在swift应该如何重载操作符呢？其实很简单，和C++基本一样，只需要添加对应的函数实现就可以了。</p>
+<a id="more"></a>
+
+<p>例如我们重载加号操作符的话：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> +(<span class="keyword">left</span>:<span class="type">CalcNode</span>, <span class="keyword">right</span>: <span class="type">CalcNode</span>) -&gt; <span class="type">CalcNode</span> {</div><div class="line">    <span class="keyword">return</span> <span class="type">CalcNode</span>(number:<span class="keyword">left</span>.value + <span class="keyword">right</span>.value)</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>但是，和C++中得运算符冲在不同的是，如果要使用新增的运算符的话，还需要在函数重载之前对该操作符进行声明。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">infix</span> <span class="keyword">operator</span> ** { </div><div class="line">    <span class="keyword">associativity</span> <span class="keyword">left</span> </div><div class="line">    <span class="keyword">precedence</span> <span class="number">160</span> </div><div class="line">}</div><div class="line"><span class="func"><span class="keyword">func</span></span> ** (<span class="keyword">left</span>: <span class="type">Double</span>, <span class="keyword">right</span>: <span class="type">Double</span>) -&gt; <span class="type">Double</span> {</div><div class="line">    <span class="keyword">return</span> pow(<span class="keyword">left</span>, <span class="keyword">right</span>)</div><div class="line">}</div><div class="line"></div><div class="line"><span class="number">2</span> ** <span class="number">3</span> </div><div class="line"><span class="comment">// 8</span></div></pre></td></tr></table></figure>
+
+<p>上述代码就是声明了一个中位操作符+*，后面就可以添加对应的重载函数实现该运算符的具体操作。<br>我们先说一下几个关键字的具体作用吧：</p>
+<ul>
+<li>infix/prefix/postfix： 分别用来表示中位操作符、前位操作符和后位操作符。其中infix说明操作符前后都是输入。</li>
+<li></li>
+<li><p>associativity：<br>定义了结合律，即如果多个同类的操作符顺序出现的计算顺序， left，就是说多个操作同时出现时按照从左往右的顺序计算 </p>
+</li>
+<li><p>precedence：<br>运算的优先级，越高的话越优先进行运算。Swift 中乘法和除法的优先级是 150，加法和减法是 140，这里我们定义乘方的优先级为 160，就是说应该早于普通的乘除进行运算。</p>
+</li>
+</ul>
+<p>其中associativity和precedence都是swift的中位运算符的一些属性修饰。如果是前位/后位运算符的话，则不能够实用这些属性来进行修改。</p>
+<p>简单地举个prefix的示例：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">prefix</span> <span class="keyword">operator</span> √ {}</div><div class="line"><span class="keyword">prefix</span> <span class="func"><span class="keyword">func</span></span> √ (number: <span class="type">Double</span>) -&gt; <span class="type">Double</span> {</div><div class="line">    <span class="keyword">return</span> sqrt(number)</div><div class="line">}</div><div class="line"></div><div class="line">√<span class="number">4</span></div><div class="line"><span class="comment">// 2</span></div></pre></td></tr></table></figure>
+
+<p>需要注意的是:<h3><strong>运算符重载函数只能够定义在全局作用域。</strong></h3></p>
+<p>附&lt; swift中的常用操作符 &gt;：</p>
+<h3 id="prefix">Prefix:</h3><br><code>++</code>: Increment<br><code>—</code>: Decrement<br><code>+</code> : Unary plus<br><code>-</code> : Unary minus<br><code>!</code> : Logical NOT<br><code>~</code> : Bitwise NOT<br><br><h3 id="postfix">Postfix:</h3><br><code>++</code>: Increment<br><code>—</code>: Decrement<br><br><h3 id="infix">Infix:</h3>
+
+<table><tr><th colspan="2">Exponentiative <tt>{precedence 160}</tt></th></tr><tbody><tr><td><tt>&lt;&lt;</tt></td><td>Bitwise left shift</td></tr><tr><td><tt>&gt;&gt;</tt></td><td>Bitwise right shift</td></tr></tbody><tr><th colspan="2">Multiplicative <tt>{ associativity left precedence 150 }</tt></th></tr><tbody><tr><td><tt><em></em></tt></td><td>Multiply</td></tr><tr><td><tt>/</tt></td><td>Divide</td></tr><tr><td><tt>%</tt></td><td>Remainder</td></tr><tr><td><tt>&amp;</tt></td><td>Multiply, ignoring overflow</td></tr><tr><td><tt>&amp;/</tt></td><td>Divide, ignoring overflow</td></tr><tr><td><tt>&amp;%</tt></td><td>Remainder, ignoring overflow</td></tr><tr><td><tt>&amp;</tt></td><td>Bitwise AND</td></tr></tbody><tr><th colspan="2">Additive <tt>{ associativity left precedence 140 }</tt></th></tr><tbody><tr><td><tt>+</tt></td><td>Add</td></tr><tr><td><tt>-</tt></td><td>Subtract</td></tr><tr><td><tt>&amp;+</tt></td><td>Add with overflow</td></tr><tr><td><tt>&amp;-</tt></td><td>Subtract with overflow</td></tr><tr><td><tt>|</tt></td><td>Bitwise OR</td></tr><tr><td><tt>^</tt></td><td>Bitwise XOR</td></tr></tbody><tr><th colspan="2">Range <tt>{ precedence 135 }</tt></th></tr><tbody><tr><td><tt>..&lt;</tt></td><td>Half-open range</td></tr><tr><td><tt>…</tt></td><td>Closed range</td></tr></tbody><tr><th colspan="2">Cast <tt>{ precedence 132 }</tt></th></tr><tbody><tr><td><tt>is</tt></td><td>Type check</td></tr><tr><td><tt>as</tt></td><td>Type cast</td></tr></tbody><tr><th colspan="2">Comparative <tt>{ precedence 130 }</tt></th></tr><tbody><tr><td><tt>&lt;</tt></td><td>Less than</td></tr><tr><td><tt>&lt;=</tt></td><td>Less than or equal</td></tr><tr><td><tt>&gt;</tt></td><td>Greater than</td></tr><tr><td><tt>&gt;=</tt></td><td>Greater than or equal</td></tr><tr><td><tt>==</tt></td><td>Equal</td></tr><tr><td><tt>!=</tt></td><td>Not equal</td></tr><tr><td><tt>===</tt></td><td>Identical</td></tr><tr><td><tt>!==</tt></td><td>Not identical</td></tr><tr><td><tt>~=</tt></td><td>Pattern match</td></tr></tbody><tr><th colspan="2">Conjunctive <tt>{ associativity left precedence 120 }</tt></th></tr><tbody><tr><td><tt>&amp;&amp;</tt></td><td>Logical AND</td></tr></tbody><tr><th colspan="2">Disjunctive <tt>{ associativity left precedence 110 }</tt></th></tr><tbody><tr><td><tt>||</tt></td><td>Logical OR</td></tr></tbody><tr><th colspan="2">Nil Coalescing <tt>{ associativity right precedence 110 }</tt></th></tr><tbody><tr><td><tt>??</tt></td><td>Nil coalescing</td></tr></tbody><tr><th colspan="2">Ternary Conditional <tt>{ associativity right precedence 100 }</tt></th></tr><tbody><tr><td><tt>?:</tt></td><td>Ternary conditional</td></tr></tbody><tr><th colspan="2">Assignment <tt>{ associativity right precedence 90 }</tt></th></tr><tbody><tr><td><tt>=</tt></td><td>Assign</td></tr><tr><td><tt>*=</tt></td><td>Multiply and assign</td></tr><tr><td><tt>/=</tt></td><td>Divide and assign</td></tr><tr><td><tt>%=</tt></td><td>Remainder and assign</td></tr><tr><td><tt>+=</tt></td><td>Add and assign</td></tr><tr><td><tt>-=</tt></td><td>Subtract and assign</td></tr><tr><td><tt>&lt;&lt;=</tt></td><td>Left bit shift and assign</td></tr><tr><td><tt>&gt;&gt;=</tt></td><td>Right bit shift and assign</td></tr><tr><td><tt>&amp;=</tt></td><td>Bitwise AND and assign</td></tr><tr><td><tt>^=</tt></td><td>Bitwise XOR and assign</td></tr><tr><td><tt>|=</tt></td><td>Bitwise OR and assign</td></tr><tr><td><tt>&amp;&amp;=</tt></td><td>Logical AND and assign</td></tr><tr><td><tt>||=</tt></td><td>Logical OR and assign</td></tr></tbody></table>]]></content>
+    <summary type="html">
+    <![CDATA[<p>今天简单说一下操作符重载的相关知识吧，希望对自己和别人能够有所帮助。相信懂得C++的同学对于运算符重载并不陌生，在swift中也是支持重载运算符这种特性的。</p>
+<p>操作符重载的好处无需多说，相信大家都明白。那么我们在swift应该如何重载操作符呢？其实很简单，和C++基本一样，只需要添加对应的函数实现就可以了。</p>
+]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/tags/swift/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/categories/iOS/swift/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[swift的一些注意点(2)]]></title>
+    <link href="http://www.ziank.cn/2015/03/25/swift-2/"/>
+    <id>http://www.ziank.cn/2015/03/25/swift-2/</id>
+    <published>2015-03-25T02:23:38.000Z</published>
+    <updated>2015-03-25T08:58:59.000Z</updated>
+    <content type="html"><![CDATA[<p>之前说了在学习swift过程中发现的一些和其他语言不同的点，最近在使用swift语言进行一个简单计算器的开发工作，在使用中又发现了一些需要注意的地方，这里就简单的说一下。<br><a id="more"></a></p>
+<h3 id="6-_switch/case的使用">6. switch/case的使用</h3>
+<p>和其他语言一样，swift也支持switch的使用。但是和其他语言不同的是，swift里面的每一个case分支不需要显示break，而是在执行结束后会自动break。<br>而且如果对不同case执行相同操作的话，和其他语言的写法也不相同。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">init</span>(calc: <span class="type">CalcType</span>) {</div><div class="line">    calcElement = <span class="type">NodeType</span>.<span class="type">Action</span>(calc)</div><div class="line">    <span class="keyword">switch</span> calc {</div><div class="line">    <span class="keyword">case</span> .<span class="type">Add</span>, .<span class="type">Minus</span>, .<span class="type">Mod</span>:</div><div class="line">        calcOrder = <span class="type">CalcOrder</span>.<span class="type">Add</span></div><div class="line">    <span class="keyword">case</span> .<span class="type">Multi</span>, .<span class="type">Divide</span>:</div><div class="line">        calcOrder = <span class="type">CalcOrder</span>.<span class="type">Multi</span></div><div class="line">    <span class="keyword">case</span> .<span class="type">And</span>, .<span class="type">Or</span>, .<span class="type">Xor</span>:</div><div class="line">        calcOrder = <span class="type">CalcOrder</span>.<span class="type">Logic</span></div><div class="line">    <span class="keyword">case</span> .<span class="type">ShiftLeft</span>, .<span class="type">ShiftRight</span>:</div><div class="line">        calcOrder = <span class="type">CalcOrder</span>.<span class="type">Shift</span></div><div class="line">    }</div><div class="line">    </div><div class="line">    <span class="keyword">super</span>.<span class="keyword">init</span>()</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="7-_成员变量getter/setter方法的定义">7. 成员变量getter/setter方法的定义</h3>
+<p>OC中get/set方法的定义一般是通过getter/setter来声明，或者直接修改系统默认的getter/setter方法。而在swift中对属性的getter/setter方法实在定义该属性时直接通过get/set进行设置。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> value:<span class="type">UInt</span> {</div><div class="line">    <span class="keyword">get</span> {</div><div class="line">        <span class="keyword">switch</span> <span class="keyword">self</span>.calcElement {</div><div class="line">        <span class="keyword">case</span> <span class="keyword">let</span> .<span class="type">Number</span>(number):</div><div class="line">            <span class="keyword">return</span> number</div><div class="line">        <span class="keyword">case</span> <span class="keyword">let</span> .<span class="type">Action</span>(str):</div><div class="line">            <span class="keyword">return</span> <span class="keyword">self</span>.calcValue(str)</div><div class="line">        }</div><div class="line">    }</div><div class="line">    </div><div class="line">    <span class="keyword">set</span> (newValue) {</div><div class="line">        <span class="keyword">self</span>.value = newValue</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="8-_enum的使用">8. enum的使用</h3>
+<p>在OC等语言中，enum就是一个枚举类型，只能够定义一组枚举常量。但是在swift中，enum除了类似功能以外，还可以把不同的数据类型存储在同一个变量中，有点类似于C中union的用法。<br>如可以这样定义enum：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">enum</span> <span class="title">NodeType</span> </span>{</div><div class="line">    <span class="keyword">case</span> <span class="type">Number</span>(<span class="type">UInt</span>)</div><div class="line">    <span class="keyword">case</span> <span class="type">Action</span>(<span class="type">CalcType</span>)</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>那么在NodeType类型的变量中就会有一个UInt或者是CalcType类型的变量，可以在适当的时候获取对应的数据。由7的示例代码中可以看到，当需要获取对应数据时，使用case let可以把数据从enum的变量中获取出来。</p>
+<p>当然，在enum中也可以直接定义函数，用来对内部的一些数据进行处理。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">enum</span> <span class="title">CalcOrder</span>:<span class="title">Int</span> </span>{</div><div class="line">    <span class="keyword">case</span> <span class="type">Number</span> = <span class="number">5</span></div><div class="line">    <span class="keyword">case</span> <span class="type">Add</span>    = <span class="number">1</span></div><div class="line">    <span class="keyword">case</span> <span class="type">Multi</span>  = <span class="number">2</span></div><div class="line">    <span class="keyword">case</span> <span class="type">Logic</span>  = <span class="number">3</span></div><div class="line">    <span class="keyword">case</span> <span class="type">Shift</span>  = <span class="number">4</span></div><div class="line">    <span class="func"><span class="keyword">func</span></span> isLargerThan(val:<span class="type">CalcOrder</span>) -&gt; <span class="type">Bool</span> {</div><div class="line">        <span class="keyword">return</span> <span class="keyword">self</span>.rawValue &gt; val.rawValue</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="9-_函数外部参数名的使用规则">9. 函数外部参数名的使用规则</h3>
+<p>我们前面说过函数外部参数名的概念，其实也就是参数的一个外部调用标签。那么在调用时这些标签是否能够省略是有着以下规则的：</p>
+<ol>
+<li>在类型的init方法调用时是必须要加入参数标签的</li>
+<li>在类的实例方法和类方法中，对其调用时Swift将忽略第一个参数的标签，而强制要求之后的参数名称</li>
+<li>在全局方法中，所有的参数标签默认都是忽略掉得</li>
+</ol>
+<p>暂时就先说这么多了，后续有新的内容，会再添加补充。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>之前说了在学习swift过程中发现的一些和其他语言不同的点，最近在使用swift语言进行一个简单计算器的开发工作，在使用中又发现了一些需要注意的地方，这里就简单的说一下。<br>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/tags/swift/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/categories/iOS/swift/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[swift函数的一些注意点]]></title>
+    <link href="http://www.ziank.cn/2015/03/18/swift-funciton/"/>
+    <id>http://www.ziank.cn/2015/03/18/swift-funciton/</id>
+    <published>2015-03-18T08:18:21.000Z</published>
+    <updated>2016-01-15T01:43:06.000Z</updated>
+    <content type="html"><![CDATA[<p>学习swift的过程中，简单说一下自己感觉swift和其他语言不太相同的几个注意点。</p>
+<h3 id="1-_swift的函数的入参和返回值都可以是一个函数。">1. swift的函数的入参和返回值都可以是一个函数。</h3>
+<a id="more"></a>
+
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> voidFunc() -&gt; <span class="type">Void</span> {</div><div class="line">}</div><div class="line"></div><div class="line"><span class="func"><span class="keyword">func</span></span> testFunc(<span class="type">Void</span>-&gt;<span class="type">Void</span>) -&gt; <span class="type">Void</span>-&gt;<span class="type">Void</span> {</div><div class="line">    <span class="keyword">return</span> voidFunc</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="2-_swift的函数返回值可以同时返回多个值">2. swift的函数返回值可以同时返回多个值</h3>
+<p>swift的函数返回值可以是一个由多个数值组成的元组(tuple)，这样就可以同时返回多个数值。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> testFunc(<span class="type">Void</span>-&gt;<span class="type">Void</span>) -&gt; (<span class="type">Int</span>, <span class="type">Int</span>) {</div><div class="line">    <span class="keyword">return</span> (<span class="number">3</span>, <span class="number">4</span>)</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="3-_外部参数名">3. 外部参数名</h3>
+<p>在swift的函数中，每一个参数都可以有本地参数名和外部参数名两个名称。<br>本地参数名就是定义函数名时，在参数列表中所写的参数名，它只可以在函数主体内使用；<br>外部参数名在函数定义时需要写在本地参数名之前，并使用空格将其分开。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> testFunc(outParam inParam:<span class="type">Int</span>) -&gt; <span class="type">Int</span> {</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span></div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>如上述代码中，外部参数名是outParam，本地参数名是inParam，在调用时需要写上外部参数名</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">testFunc(outParam: <span class="number">123</span>)</div></pre></td></tr></table></figure>
+
+<h3 id="4-_类里面的静态函数">4. 类里面的静态函数</h3>
+<p>在swift1.0中类里面的静态函数，不能使用static关键字来修饰，而应该使用Class关键字来进行修饰<br>在swift2.0中，同时支持static和class关键字。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestClass</span> </span>{</div><div class="line">    <span class="keyword">class</span> <span class="func"><span class="keyword">func</span></span> testFunc() {</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<h3 id="5-_ViewController和xib文件的对应">5. ViewController和xib文件的对应</h3>
+<p>除了和OC一样在xib里面设置对应的Class以外，由于swift不会自动调用xib的初始化，所以需要手动添加对应的初始化函数。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">TestViewController</span>: <span class="title">UIViewController</span> </span>{</div><div class="line">    convenience <span class="keyword">override</span> <span class="keyword">init</span>() {</div><div class="line">        </div><div class="line">        <span class="keyword">var</span> nibNameOrNil = <span class="type">String</span>?(<span class="string">"TestViewController"</span>)</div><div class="line">        </div><div class="line">        <span class="comment">//考虑到xib文件可能不存在或被删，故加入判断</span></div><div class="line">        <span class="keyword">if</span> <span class="type">NSBundle</span>.mainBundle().pathForResource(nibNameOrNil, ofType: <span class="string">"nib"</span>) == <span class="built_in">nil</span> {</div><div class="line">            nibNameOrNil = <span class="built_in">nil</span></div><div class="line">        }</div><div class="line">        <span class="keyword">self</span>.<span class="keyword">init</span>(nibName: nibNameOrNil, bundle: <span class="built_in">nil</span>)</div><div class="line">    }</div><div class="line">    </div><div class="line">    <span class="keyword">override</span> <span class="keyword">init</span>(nibName nibNameOrNil: <span class="type">String</span>?, bundle nibBundleOrNil: <span class="type">NSBundle</span>?) {</div><div class="line">        <span class="keyword">super</span>.<span class="keyword">init</span>(nibName: nibNameOrNil, bundle: nibBundleOrNil)</div><div class="line">    }</div><div class="line">    </div><div class="line">    required <span class="keyword">init</span>(coder aDecoder: <span class="type">NSCoder</span>) {</div><div class="line">        fatalError(<span class="string">"init(coder:) has not been implemented"</span>)</div><div class="line">    }</div><div class="line">}</div></pre></td></tr></table></figure>
+
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>学习swift的过程中，简单说一下自己感觉swift和其他语言不太相同的几个注意点。</p>
+<h3 id="1-_swift的函数的入参和返回值都可以是一个函数。">1. swift的函数的入参和返回值都可以是一个函数。</h3>
+]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/tags/swift/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+      <category term="swift" scheme="http://www.ziank.cn/categories/iOS/swift/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Cocos之场景转换（Transitions)]]></title>
+    <link href="http://www.ziank.cn/2015/03/11/cocos-scene/"/>
+    <id>http://www.ziank.cn/2015/03/11/cocos-scene/</id>
+    <published>2015-03-11T07:58:12.000Z</published>
+    <updated>2015-03-11T08:20:41.000Z</updated>
+    <content type="html"><![CDATA[<p>我们在基础概念一节讲过修改当前场景的常见方式有三种，pushScene，replaceScene和popScene；但是切换场景使用的效果则会有很多种，例如淡入淡出，放大缩小，跳动等等。<br>Cocos提供了这种在两个场景之间直接进行转换的能力，在技术上讲，一个场景转换就是在展示并控制一个新场景之前执行的一个切换效果。<br><a id="more"></a></p>
+<p>场景之间通过TransitionScene系列类来实现过渡跳转的效果。TransitionScene继承于Scene，该系列类主要是与场景切换特效相关的一些使用类。如TransitionFadeDown、TransitionPageTurn、TransitionJumpZoom等等。</p>
+<h3 id="切换特效">切换特效</h3>
+<p>在Cocos中提供的场景切换特效主要由以下几种：</p>
+<ul>
+<li>TransitionRotoZoom    旋转进入</li>
+<li>TransitionJumpZoom    跳动进入</li>
+<li>TransitionPageTurn    翻页效果进入</li>
+<li>TransitionRadialCCW   钟摆效果</li>
+<li>TransitionMoveInL / TransitionMoveInR / TransitionMoveInT / TransitionMoveInB     左侧/右侧/顶部/底部进入</li>
+<li>TransitionSlideInL / TransitionSlideInR / TransitionSlideInT / TransitionSlideInB  分别从左侧/右侧/顶部/底部滑入</li>
+<li>TransitionShrinkGrow  交替进入</li>
+<li>TransitionFlipX/TransitionFlipY   X轴翻入（左右）/Y轴翻入</li>
+<li>TransitionFlipAngular 左上右下轴翻入</li>
+<li>TransitionFadeTR ／TransitionFadeBL／TransitionFadeUp／TransitionFadeDown    小方格右上角显示进入／ 小方格左下角显示进入／ 横条向上显示进入／ 横条向下显示进入</li>
+<li>TransitionSplitCols ／ TransitionSplitRows 竖条切换进入／ 横条切换进入</li>
+<li>TransitionZoomFlipAngular 左上右下轴翻入放大缩小效果</li>
+<li>TransitionFade 渐隐进入</li>
+<li>TransitionCrossFade 渐变进入</li>
+<li>TransitionTurnOffTiles 小方格消失进入</li>
+<li>TransitionRadialCCW／TransitionRadialCW 扇面展开收起</li>
+</ul>
+<p>场景转换的实现代码一般如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> transitions = TransitionMoveInL::create(<span class="number">0.2f</span>, scene);</div><div class="line">Director::getInstance()-&gt;replaceScene(transitions);</div></pre></td></tr></table></figure>
+
+<p>场景的转换是由Director类来控制的，通过调用Director类的replaceScene(Scene scene）方法可直接使用传入scene替换当前场景来切换画面，当前场景会被释放，它是切换场景时最常用的方法。<br>前面说过，场景转换的一系列类都继承于Scene类，所以可以创建一个转换场景的对象代替scene，从而实现各种转换场景的效果。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>我们在基础概念一节讲过修改当前场景的常见方式有三种，pushScene，replaceScene和popScene；但是切换场景使用的效果则会有很多种，例如淡入淡出，放大缩小，跳动等等。<br>Cocos提供了这种在两个场景之间直接进行转换的能力，在技术上讲，一个场景转换就是在展示并控制一个新场景之前执行的一个切换效果。<br>]]>
+    
+    </summary>
+    
+      <category term="Cocos" scheme="http://www.ziank.cn/tags/Cocos/"/>
+    
+      <category term="Cocos" scheme="http://www.ziank.cn/categories/Cocos/"/>
+    
+      <category term="文档" scheme="http://www.ziank.cn/categories/Cocos/%E6%96%87%E6%A1%A3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[如何把UIButton中的图片和文字上下对齐]]></title>
+    <link href="http://www.ziank.cn/2015/03/06/edgeInsets/"/>
+    <id>http://www.ziank.cn/2015/03/06/edgeInsets/</id>
+    <published>2015-03-06T02:27:08.000Z</published>
+    <updated>2015-03-11T07:56:26.000Z</updated>
+    <content type="html"><![CDATA[<h2 id="前言">前言</h2>
+<p>我们都知道在UIButton中可以设置图片和文字，也经常见到同时设置有图片和下方提示文字的按钮，但是当我自己去对图片按钮添加提示文字的时候，却发现这并不是想象中的那么简单。</p>
+<p><a id="more"></a></p>
+<h2 id="设置图片和文字">设置图片和文字</h2>
+<p>如示例代码：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> initView() -&gt; <span class="type">Void</span> {</div><div class="line"><span class="keyword">var</span> button:<span class="type">UIButton</span> = <span class="type">UIButton</span>(frame: <span class="type">CGRectMake</span>(<span class="number">100</span>, <span class="number">200</span>, <span class="number">100</span>, <span class="number">100</span>))</div><div class="line"></div><div class="line">button.setImage(<span class="type">UIImage</span>(named: <span class="string">"button.png"</span>), forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>)</div><div class="line">button.setTitle(<span class="string">"按钮"</span>, forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>)</div><div class="line">button.backgroundColor = <span class="type">UIColor</span>.blueColor()</div><div class="line"></div><div class="line"><span class="keyword">self</span>.view.addSubview(button)</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>我们可以通过UIButton的setTitle和setImage方法分别为按钮设置图片和文字信息，但是会发现设置完成以后我们的图片和文字并没有重合排列，也没有上下排列，而是一个左右排列的样子。<br><img src="/img/button_image1.png" alt="设置图片和文字"></p>
+<p>说到这里，肯定会有人想到设置图片和文字的frame来进行处理，而且我们也确实可以通过UIButton的对象获取到对应的imageView和titleLabel，但是如果经过测试的话，你就会发现这是一个trike的方法，而且是不生效的。</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> initView() -&gt; <span class="type">Void</span> {</div><div class="line"><span class="keyword">var</span> button:<span class="type">UIButton</span> = <span class="type">UIButton</span>(frame: <span class="type">CGRectMake</span>(<span class="number">100</span>, <span class="number">200</span>, <span class="number">100</span>, <span class="number">100</span>))</div><div class="line"></div><div class="line">button.setImage(<span class="type">UIImage</span>(named: <span class="string">"button.png"</span>), forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>)</div><div class="line">button.setTitle(<span class="string">"按钮"</span>, forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>)</div><div class="line">button.backgroundColor = <span class="type">UIColor</span>.blueColor()</div><div class="line">button.titleLabel?.frame = <span class="type">CGRectMake</span>(<span class="number">20</span>, <span class="number">0</span>, <span class="number">30</span>, <span class="number">30</span>)</div><div class="line">button.imageView?.frame = <span class="type">CGRectMake</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">20</span>, <span class="number">20</span>)</div><div class="line"></div><div class="line"><span class="keyword">self</span>.view.addSubview(button)</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>修改为这样以后，运行程序，会发现对应的视图没有任何变化。<br><img src="/img/button_image2.png" alt="添加frame设置"></p>
+<h2 id="UIEdgeInsets">UIEdgeInsets</h2>
+<p>查看UIButton的属性，我们会找到titleEdgeInsets和imageEdgeInsets两个属性。修改这两个属性，可以实现我们想要的效果。<br>titleEdgeInsets和imageEdgeInsets都是UIEdgeInsets的对象，我们先说一下UIEdgeInsets的几个属性的具体效果。<br>我们知道，UIEdgeInsets有top，left，bottom，right几个属性，但是通过测试，就会发现设置了top以后自己的y坐标并没有增加响应的距离，而是增加了1/2，那么它们到底应该如何计算呢？<br>当设置了top以后，其实就是相当于view的<strong>上边缘</strong>向下移动了相应的距离。用在title中，如果titleLabel的frame(50, 50, 24, 24);那么Button的上下边缘应该分别是0和124，因为正常情况下titleLabel必然处于Button的中间位置。当设置了titleEdgeInsets的top为10以后，相当于button的上下坐标为10，124，则titleLabel的坐标就变成了(50, 55, 24, 24)，也就是上下边缘变为了55和79， 向下移动了5个点。</p>
+<p>经过计算可以得出，如果要将文字移动到图片的下方，需要设置titleEdgeInsets和imageEdgeInsets，且分别设置为<br>若titleLabel为 w1,h1, imageView为w2,h2, 上下间距为space<br>titleEdgeInsets = (h2 + space, - w2, 0, 0)<br>imageEdgeInsets = (-h1 - space, w1)<br>如上述例子若改为：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="func"><span class="keyword">func</span></span> initView() -&gt; <span class="type">Void</span> {</div><div class="line"><span class="keyword">var</span> button:<span class="type">UIButton</span> = <span class="type">UIButton</span>(frame: <span class="type">CGRectMake</span>(<span class="number">100</span>, <span class="number">200</span>, <span class="number">100</span>, <span class="number">100</span>))</div><div class="line"></div><div class="line">button.setImage(<span class="type">UIImage</span>(named: <span class="string">"button.png"</span>), forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>)</div><div class="line">button.setTitle(<span class="string">"按钮"</span>, forState: <span class="type">UIControlState</span>.<span class="type">Normal</span>)</div><div class="line">button.backgroundColor = <span class="type">UIColor</span>.blueColor()</div><div class="line"></div><div class="line"><span class="keyword">var</span> imageSize:<span class="type">CGSize</span> = button.imageView!.frame.size</div><div class="line"><span class="keyword">var</span> titleSize:<span class="type">CGSize</span> = button.titleLabel!.frame.size</div><div class="line">button.titleEdgeInsets = <span class="type">UIEdgeInsets</span>(top: <span class="number">0</span>, <span class="keyword">left</span>:-imageSize.width, bottom: -imageSize.height - <span class="number">5</span>, <span class="keyword">right</span>: <span class="number">0</span>)</div><div class="line">button.imageEdgeInsets = <span class="type">UIEdgeInsets</span>(top: -titleSize.height - <span class="number">5</span>, <span class="keyword">left</span>: <span class="number">0</span>, bottom: <span class="number">0</span>, <span class="keyword">right</span>: -titleSize.width)</div><div class="line"><span class="keyword">self</span>.view.addSubview(button)</div><div class="line">}</div></pre></td></tr></table></figure>
+
+<p>则可实现我们要求的效果：<br><img src="/img/button_image3.png" alt="设置insets"></p>
+<p><strong>注意：如果设置了button的frame，而且button的宽度不足以同时显示图片和文字的大小的话，titleLabel的size将会获取错误。所以如果需要设置frame，建议先将button的宽度设置为frame.size.width * 2, 等titleEdgeInsets和imageEdgeInsets全部设置完成以后再重新设置frame。</strong></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="前言">前言</h2>
+<p>我们都知道在UIButton中可以设置图片和文字，也经常见到同时设置有图片和下方提示文字的按钮，但是当我自己去对图片按钮添加提示文字的时候，却发现这并不是想象中的那么简单。</p>
+<p>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/tags/iOS/"/>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Cocos之图像渲染与动画]]></title>
+    <link href="http://www.ziank.cn/2015/03/05/cocos-image/"/>
+    <id>http://www.ziank.cn/2015/03/05/cocos-image/</id>
+    <published>2015-03-05T07:30:55.000Z</published>
+    <updated>2015-03-05T07:40:10.000Z</updated>
+    <content type="html"><![CDATA[<p>本文主要描述坐标系和Action（动作）的一些基本概念。</p>
+<h3 id="坐标系">坐标系</h3>
+<p>Cocos2d的坐标系是和OpenGL坐标系一样，原点为屏幕的左下角，然后X轴向右，Y轴向上。<br><a id="more"></a></p>
+<p>将一个节点添加到父节点里面时，需要设置其在父节点上的位置，本质上是设置节点的锚点在父节点坐标系上的位置。</p>
+<ul>
+<li>Anchor Point的两个参数都在0~1之间。它们表示的并不是像素点，而是乘数因子。(0.5, 0.5)表示Anchor Point位于节点长度乘0.5和宽度乘0.5的地方，即节点的中心</li>
+<li>在Cocos2d-x中Layer的Anchor Point为默认值(0, 0)，其他Node的默认值为(0.5, 0.5)。<br>锚点（Anchor Point）</li>
+</ul>
+<h3 id="Action(动作)">Action(动作)</h3>
+<p>Action是所有动作的基类，它创建的一个对象代表一个动作。动作作用于Node，因此每个动作都需要由Node对象执行。Action作为基类，实际上是一个接口，动作类的大多数实现类都派生于有限时间动作类(FiniteTimeAction)。</p>
+<p>在实际开发中我们通常用到两类动作-即时动作(ActionInstant)和持续动作(ActionInterval)，它们均继承于有限时间动作类。<br>我们一般用的动作类如下图：<br><img src="/img/cocos_action.png" alt="常用动作类关系"></p>
+<h4 id="ActionInstant(即时动作)">ActionInstant(即时动作)</h4>
+<p>即时动作是指能够立刻完成的动作，这类动作是在下一帧立刻完成的动作，如设定位置、设定缩放等。把它们包装成动作后，可以与其他动作类组合为复杂动作。<br>下面介绍一下常用的即时动作：</p>
+<ul>
+<li>Place<br>该动作用于将节点放置到某个指定位置，起作用与修改节点的position属性相同。例如将节点放到屏幕坐标(10,10)处的代码应该如下：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> placeAction = Place::create(Point(<span class="number">10</span>, <span class="number">10</span>));</div></pre></td></tr></table></figure>
+
+<ul>
+<li>FlipX和FlipY<br>这两个动作分别用于将节点沿X轴和Y轴反向显示，起作用与设置精灵的FlipX和FlipY属性相同，将其包装成动作是为了便于和其他动作进行组合。<br>下面代码将一个Sprit移动到一端后反向显示再移回原点的动作：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> flipxAction = FlipX::create(<span class="keyword">true</span>);</div><div class="line"><span class="keyword">auto</span> moveTo = MoveTo::create(<span class="number">0.4f</span>, Point(<span class="number">0</span>, <span class="number">0</span>));</div><div class="line"><span class="keyword">auto</span> action = Sequence::create(moveTo, flipxAction, moveTo-&gt;reverse(), NULL);</div></pre></td></tr></table></figure>
+
+<ul>
+<li>Show和Hide<br>这两个动作分别用于现实和隐藏节点，起作用和设置节点的visible属性作用一致。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> hideAction = Hide::create();</div><div class="line"><span class="keyword">auto</span> moveTo = MoveTo::create(<span class="number">0.4f</span>, Point(<span class="number">0</span>, <span class="number">0</span>));</div><div class="line"><span class="keyword">auto</span> action = Sequence::create(moveTo, hideAction, NULL);</div></pre></td></tr></table></figure>
+
+<ul>
+<li>CallFunc<br>CallFunc系列动作包括CallFunc、CallFuncN两个动作，用来在动作中进行方法调用。在游戏中为了节约内存资源，我们可以在动作完成后调用相应函数清理内存，如下代码：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> actionMoveDone = CallFuncN::create([&](http:<span class="comment">//cn.cocos2d-x.org/doc/cocos-docs-master/manual/framework/native/v3/action/Ref* sender){</span></div><div class="line">    <span class="built_in">log</span>(<span class="string">"Clear memory"</span>);</div><div class="line">});</div><div class="line"><span class="keyword">auto</span> moveTo = MoveTo::create(<span class="number">0.4f</span>, Point(<span class="number">0</span>, <span class="number">0</span>));</div><div class="line"><span class="keyword">auto</span> action = Sequence::create(moveTo, actionMoveDone, NULL);</div></pre></td></tr></table></figure>
+
+<ul>
+<li>RemoveSelf<br>RemoveSelf动作用于删除节点，常用于某项动作完成后删除动作节点。</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">this</span>-&gt;runAction(Sequence::create(</div><div class="line"><span class="keyword">this</span>-&gt;runAction(Sequence::create(</div><div class="line">CallFunc::create(CC_CALLBACK_0(UI_Config::TestLogic,<span class="keyword">this</span>)),</div><div class="line">DelayTime::create(<span class="number">0.2f</span>),</div><div class="line">RemoveSelf::create(<span class="keyword">true</span>),</div><div class="line"><span class="keyword">nullptr</span>));</div></pre></td></tr></table></figure>
+
+<ul>
+<li><p>ReuseGrid和StopGrid<br>这两个动作分别是重复网格动作和停止网格动作。和持续动作中的GridAction（网格动作）关联使用。</p>
+</li>
+<li><p>ToggleVisibility<br>切换节点的可视属性。该动作相当于visible属性发生变化。</p>
+</li>
+<li><p>CCBSetSpriteFrame<br>用坐标创建一个位置动作，用于设置Sprite的位置</p>
+</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">CCSequence::createWithTwoActions(CCDelayTime::create(duration), CCBSetSpriteFrame::create((CCSpriteFrame *)pKeyframe1-&gt;getValue()));</div></pre></td></tr></table></figure>
+
+<ul>
+<li>CCBSoundEffect<br>播放声音效果</li>
+</ul>
+<h4 id="ActionInterval(持续动作)">ActionInterval(持续动作)</h4>
+<ul>
+<li><p>属性变化动作<br>属性变化动作通过属性值的逐渐变化来实现动画效果。需要注意的是XXTo和XXBy的区别在于XXTo是表示最终值，而XXBy则表示向量——改变值。<br>MoveTo和MoveBy          移动<br>JumpTo和JumpBy          跳跃<br>BezierTo和BezierBy      曲线运动<br>ScaleTo和ScaleBy        缩放动作<br>RotateTo和RotateBy      旋转动作</p>
+</li>
+<li><p>视觉特效动作<br>该类用来实现特殊视觉效果。<br>FadeIn, FadeOut和FateTo 淡入、淡出和透明效果<br>TintTo和TintBy          设置色调变化<br>Blink                   闪烁效果<br>Animation               帧动画效果</p>
+</li>
+<li><p>复合动作<br>通常在开发中我们需要将各种动作组合起来再让节点执行，复合动作的作用就是将各种动作组合在一起。而且，复合动作本身也是动作。因此可以作为一个普通动作嵌入到其他动作中。</p>
+<blockquote>
+<p>注意：Sequence动作不能嵌入其他复合动作内使用，DelayTime不属于复合动作，但是只能在复合动作内使用。</p>
+</blockquote>
+</li>
+</ul>
+<p>DelayTime               延时动作<br>Repeat/RepeatForever    重复执行某个动作<br>Spawn                   同时执行两个动作<br>Sequence                顺序执行多个动作</p>
+<ul>
+<li>变速动作<br>变速动作和复合动作类似，也是一种特殊的动作，它可以把任何动作按照改变后的速度执行。</li>
+</ul>
+<ul>
+<li>Speed<br>用于线性的改变某个动作的速度，为了改变一个动作的速度，首先需要将目标动作包装到Speed动作中：</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> repeat = RepeatForever::create(animation);</div><div class="line"><span class="keyword">auto</span> speed = Speed::create(repeat, <span class="number">0.5f</span>);</div><div class="line">sprite-&gt;runAction(speed);</div></pre></td></tr></table></figure>
+
+<p>第二个参数为变速比例，设置为0.5f则速度为原来一半。</p>
+<ul>
+<li>ActionEase<br>Speed虽然能改变动作的速度，但是只能按比例改变速度，ActionEase可以实现动作的速度又快到慢、速度随时间改变的匀速运动。该类包含5类运动，指数缓冲、Sine缓冲、弹性缓冲、跳跃缓冲和回震缓冲。每类运动都包含3个不同时期的变换：In、Out和InOut。</li>
+</ul>
+<p><em>以上内容基本来自<a href="http://cn.cocos2d-x.org/article/index?type=cocos2d-x" target="_blank" rel="external">官方文档</a></em></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>本文主要描述坐标系和Action（动作）的一些基本概念。</p>
+<h3 id="坐标系">坐标系</h3>
+<p>Cocos2d的坐标系是和OpenGL坐标系一样，原点为屏幕的左下角，然后X轴向右，Y轴向上。<br>]]>
+    
+    </summary>
+    
+      <category term="Cocos" scheme="http://www.ziank.cn/tags/Cocos/"/>
+    
+      <category term="Cocos" scheme="http://www.ziank.cn/categories/Cocos/"/>
+    
+      <category term="文档" scheme="http://www.ziank.cn/categories/Cocos/%E6%96%87%E6%A1%A3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[Cocos之基本概念]]></title>
+    <link href="http://www.ziank.cn/2015/03/02/cocos-basic/"/>
+    <id>http://www.ziank.cn/2015/03/02/cocos-basic/</id>
+    <published>2015-03-02T05:53:30.000Z</published>
+    <updated>2015-03-11T08:01:40.000Z</updated>
+    <content type="html"><![CDATA[<p>Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，一个Layer又可以拥有任意个可见的Sprit。<br><a id="more"></a><br>在每一个时刻，都会有一个Scene在独立的运行，通过切换Scene来完成一个游戏流程，游戏流程的管理有Director来执行，其基本架构类图如下：<br><img src="/img/class_relateion.png" alt="基本架构类图"></p>
+<h3 id="Director">Director</h3>
+<p>Director是整个cocos-2dx引擎的核心，是整个游戏的导航仪，一些游戏的常用操作都是由Director来进行控制完成的，比如场景切换，游戏暂停，坐标转换等等。<br>由于在游戏中会使用Director控制整个游戏的流程，所以Director类的设计是单例模式的，也就是说整个游戏项目中取到的Director对象都是同一个，通常使用getInstance() 方法取得Director的实例。</p>
+<h3 id="Scene(场景)">Scene(场景)</h3>
+<p>Scene也是cocos2dx中必不可少的元素，游戏中通常我们需要构建不同的Scene（至少一个），游戏里关卡、版块的切换也就是一个一个Scene的切换，就像在电影中变换舞台和场地一样。Scene的一个重要的作用就是流程控制的作用，我们可以通过Director的一系列方法控制游戏中不同的Scene的自由切换。<br>下面是Director控制场景的常用方法：</p>
+<ul>
+<li>runWithScene( Scene *scene )<br>启动游戏，并运行scene场景。本方法在主程序第一次启动主场景的时候调用。如果已有正在运行的场景则不能调用该方法；会调用pushScene—&gt;startAnimation。</li>
+<li>pushScene( Scene *scene )<br>将当前运行中的场景暂停并压入到代码执行场景栈中，再将传入的scene设置为当前运行场景，只有存在正在运行的场景时才调用该方法；</li>
+<li>replaceScene( Scene *scene ) 直接使用传入的scene替换当前场景来切换画面，当前场景被释放。这是切换场景时最常用的方法。</li>
+<li>popScene() 释放当前场景，再从代码执行场景中弹出栈顶的场景，并将其设置为当前运行场景。如果栈为空，直接结束应用。和PushScene结对使用</li>
+<li>end() 释放和终止执行场景，同时退出应用</li>
+<li>pause() 暂停当前运行场景中的所有计时器和动作，场景仍然会显示在屏幕上</li>
+<li>resume () 恢复当前运行场景的所有计时器和动作，场景仍然会显示在屏幕上</li>
+</ul>
+<p>同时场景是层的容器，包含了所有需要显示的游戏元素。通常，当我们需要完成一个场景时候，会创建一个Scene的子类，并在子类中实现我们需要的功能。比如，我们可以在子类的初始化中载入游戏资源，为场景添加层，启动音乐播放等等。</p>
+<h3 id="Layer(层)">Layer(层)</h3>
+<p>Layer是处理玩家事件响应的Node子类。与场景不同，层通常包含的是直接在屏幕上呈现的内容，并且可以接受用户的输入事件，包括触摸，加速度计和键盘输入等。我们需要在层中加入精灵，文本标签或者其他游戏元素，并设置游戏元素的属性，比如位置，方向和大小；设置游戏元素的动作等。通常，层中的对象功能类似，耦合较紧，与层中游戏内容相关的逻辑代码也编写在层中，在组织好层后，只需要把层按照顺序添加到场景中就可以显示出来了。要向场景添加层，我们可以使用addChild方法。</p>
+<p>addChild( Node child ) addChild( Node child, int zOrder ) addChild( Node *child, int zOrder, int tag )</p>
+<p>其中，Child参数就是节点。对于场景而言，通常我们添加的节点就是层。先添加的层会被置于后添加的层之下。如果需要为它们指定先后次序，可以使用不同的zOrder值。tag是元素的标识号码，如果为子节点设置了tag值，就可以在它的父节点中利用tag值就可以找到它了。层可以包含任何Node作为子节点，包括Sprites(精灵), Labels(标签)，甚至其他的Layer对象。</p>
+<h3 id="Sprit(精灵)">Sprit(精灵)</h3>
+<p>Cocos2d中的精灵和其他游戏引擎中的精灵相似，它可以移动，旋转，缩放，执行动画，并接受其他转换。Cocos2dx的Sprite由Texure，frame和animation组成，由openes负责渲染。</p>
+<p>简单过程可描述为：<br>使用Texture2D加载图片，可以用Texture2D生成对应的SpriteFrame（精灵帧），将SpriteFrame添加到Animation生成动画数据，用Animation生成Animate（就是最终的动画动作），最后用Sprite执行这个动作。<br>创建精灵的几种方式：</p>
+<p>直接创建:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> sprite = Sprite::create(<span class="string">"HelloWorld.png"</span>);      </div><div class="line"><span class="keyword">this</span>-&gt;addChild(sprite,<span class="number">0</span>);</div></pre></td></tr></table></figure>
+
+<p>使用纹理来创建精灵:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> sprite1 = Sprite::createWithTexture(TextureCache::getInstance()-&gt;addImage(<span class="string">"HelloWorld.png"</span>));</div><div class="line"><span class="keyword">this</span>-&gt;addChild(sprite1, <span class="number">0</span>);</div></pre></td></tr></table></figure>
+
+<p>使用精灵帧来创建精灵:</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> sprite2=Sprite::createWithSpriteFrameName(<span class="string">"HelloWorld.png"</span>);　　</div><div class="line"><span class="keyword">this</span>-&gt;addChild(sprite2, <span class="number">0</span>);</div></pre></td></tr></table></figure>
+
+<p>在Cocos2dx中实现精灵显示的基本过程如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//创建Scene</span></div><div class="line"><span class="keyword">auto</span> scene = Scene::create();</div><div class="line"><span class="comment">//创建层</span></div><div class="line"><span class="keyword">auto</span> layer = HelloWorld::create();</div><div class="line"><span class="comment">//把层加入场景中</span></div><div class="line">scene-&gt;addChild(layer);</div><div class="line"><span class="comment">//创建一个精灵</span></div><div class="line"><span class="keyword">auto</span> sprite = Sprite::create(<span class="string">"HelloWorld.png"</span>);</div><div class="line"><span class="comment">//把精灵加到层里</span></div><div class="line">layer-&gt;addChild(sprite, <span class="number">0</span>);</div></pre></td></tr></table></figure>
+
+<p><em>以上内容基本来自<a href="http://cn.cocos2d-x.org/article/index?type=cocos2d-x" target="_blank" rel="external">官方文档</a></em></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>Cocos中有DirectorScene，Layer，Sprit等几个基本的概念，他们都是派生于Node的子类，可以通过执行Action来修改游戏节点的属性。在Cocos2d-x-3.x引擎中，采用树形结构来管理游戏对象，一个游戏可以划分为不同的Scene，一个Scene又可以分为不同的Layer，一个Layer又可以拥有任意个可见的Sprit。<br>]]>
+    
+    </summary>
+    
+      <category term="Cocos" scheme="http://www.ziank.cn/tags/Cocos/"/>
+    
+      <category term="Cocos" scheme="http://www.ziank.cn/categories/Cocos/"/>
+    
+      <category term="文档" scheme="http://www.ziank.cn/categories/Cocos/%E6%96%87%E6%A1%A3/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[UILabel的使用]]></title>
+    <link href="http://www.ziank.cn/2015/01/29/UILable_CoreText/"/>
+    <id>http://www.ziank.cn/2015/01/29/UILable_CoreText/</id>
+    <published>2015-01-29T06:19:18.000Z</published>
+    <updated>2015-03-02T06:39:30.000Z</updated>
+    <content type="html"><![CDATA[<p>[TOC]</p>
+<p>我们都知道UILabel是iOS开发中最常用和最简单的一个组件，可以用来显示文本内容。但是一般来说我们都只是用UILabel现实固定字体、颜色设置的文本，其实我们也可以用UILabel同时显示多种字体和颜色的问题，甚至可以在文字中添加图片进行显示。<br><a id="more"></a></p>
+<h2 id="UILabel使用的几种方式">UILabel使用的几种方式</h2>
+<p>下面简单说一下UILabel使用的三种方式，或者说是个人理解的UILabel使用的三种境界吧。</p>
+<ol>
+<li>设置UILabel的字体和颜色，现实特定文本内容。</li>
+<li>通过attributedText在UILabel中显示不同字体和颜色的文本内容，以及在文本之中插入图片。</li>
+<li>通过CoreText重写drawRect在UILabel中显示更为复杂的内容。</li>
+</ol>
+<h3 id="1-_UILabel的基本使用">1. UILabel的基本使用</h3>
+<p>对于UILabel，我们平时最常用也是最简单的使用方式就是创建一个label，然后设置其字体和颜色，进行显示就可以了。</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">UILabel</span> *textLabel = [[<span class="built_in">UILabel</span> alloc] initWithFrame:CGRectMake(<span class="number">50</span>, <span class="number">300</span>, <span class="number">200</span>, <span class="number">44</span>)];</div><div class="line">textLabel<span class="variable">.font</span> = [<span class="built_in">UIFont</span> systemFontOfSize:<span class="number">12</span>];</div><div class="line">textLabel<span class="variable">.textColor</span> = [<span class="built_in">UIColor</span> redColor];</div><div class="line">textLabel<span class="variable">.text</span> = <span class="string">@"Simple Text Label!"</span>;</div><div class="line">[<span class="keyword">self</span><span class="variable">.view</span> addSubview:textLabel];</div></pre></td></tr></table></figure>
+
+<p>上面的代码就是创建了一个UILabel，显示红色，12号字体的一段文字，实际结果如图：<br><img src="/img/simple_uilabel_demo.png" alt="UILabel的基本使用"></p>
+<h3 id="2-_UILabel的attributeText使用">2. UILabel的attributeText使用</h3>
+<p>UILabel除了基本使用以外，还可以通过attributeText在同一个Label中设置多种字体和颜色，甚至插入图片等内容。我们还是用一个例子来说明：</p>
+<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">UILabel</span> *textLabel = [[<span class="built_in">UILabel</span> alloc] initWithFrame:CGRectMake(<span class="number">50</span>, <span class="number">300</span>, <span class="number">300</span>, <span class="number">44</span>)];</div><div class="line">textLabel<span class="variable">.font</span> = [<span class="built_in">UIFont</span> systemFontOfSize:<span class="number">12</span>];</div><div class="line">textLabel<span class="variable">.textColor</span> = [<span class="built_in">UIColor</span> greenColor];</div><div class="line"></div><div class="line"></div><div class="line">NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:<span class="string">@"测试多种字体显示"</span>] ;</div><div class="line"><span class="comment">//为所有文本设置字体</span></div><div class="line">[attributedString addAttribute:NSFontAttributeName value:[<span class="built_in">UIFont</span> systemFontOfSize:<span class="number">24</span>] range:NSMakeRange(<span class="number">0</span>, [attributedString length])];</div><div class="line"></div><div class="line"><span class="comment">//将“测试”两字字体颜色设置为蓝色</span></div><div class="line">[attributedString addAttribute:NSForegroundColorAttributeName value:[<span class="built_in">UIColor</span> blueColor] range:NSMakeRange(<span class="number">0</span>, <span class="number">2</span>)];</div><div class="line"></div><div class="line"><span class="comment">//将“多种字体”四个字字体颜色设置为红色</span></div><div class="line">[attributedString addAttribute:NSForegroundColorAttributeName value:[<span class="built_in">UIColor</span> redColor] range:NSMakeRange(<span class="number">2</span>, <span class="number">4</span>)];</div><div class="line"></div><div class="line"><span class="comment">//在“测”和“试”两字之间插入一张图片</span></div><div class="line"><span class="built_in">NSString</span> *imageName = <span class="string">@"feiji.png"</span>;</div><div class="line">NSTextAttachment *imageAttachment = [[NSTextAttachment alloc] init];</div><div class="line">imageAttachment<span class="variable">.image</span> = [<span class="built_in">UIImage</span> imageNamed:imageName];</div><div class="line">NSAttributedString *imageAttributedString = [NSAttributedString attributedStringWithAttachment:imageAttachment];</div><div class="line">[attributedString insertAttributedString:imageAttributedString atIndex:<span class="number">1</span>];</div><div class="line"></div><div class="line"></div><div class="line">textLabel<span class="variable">.attributedText</span> = attributedString;</div><div class="line">[<span class="keyword">self</span><span class="variable">.view</span> addSubview:textLabel];</div></pre></td></tr></table></figure>
+
+<p>最后Label上显示的结果如下图，可以看到把图片<code>&quot;feiji.png&quot;</code>插入到了Label的文字之中。<br><img src="/img/attributeText_label.png" alt="使用attributeText在UILabel上显示多种字体"></p>
+<h3 id="3-_使用drawRect重绘Label">3. 使用drawRect重绘Label</h3>
+<p>关于第三点我们一般都用不到，下一节我们在具体分析。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>[TOC]</p>
+<p>我们都知道UILabel是iOS开发中最常用和最简单的一个组件，可以用来显示文本内容。但是一般来说我们都只是用UILabel现实固定字体、颜色设置的文本，其实我们也可以用UILabel同时显示多种字体和颜色的问题，甚至可以在文字中添加图片进行显示。<br>]]>
+    
+    </summary>
+    
+      <category term="iOS" scheme="http://www.ziank.cn/categories/iOS/"/>
+    
+  </entry>
+  
+</feed>

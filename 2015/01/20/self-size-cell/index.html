@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>能够自适应高度的TABLEVIEWCELL(SELF-SIZING CELL) | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="在iOS8中，Apple为UITableView引入了一种名为Self-Sizing-Cells的新特性。这是新的SDK中最让我兴奋的一种特性。iOS8以前，如果你想要在tableview中显示可变高度的动态内容，必须单独计算每一个cell的高度。现在到了iOS8，Self-Sizing-Cell 提供了显示动态内容的一种解决方案。简言之，使用自适应cell，你只需要做下面几点：">
+<meta property="og:type" content="article">
+<meta property="og:title" content="能够自适应高度的TABLEVIEWCELL(SELF-SIZING CELL)">
+<meta property="og:url" content="http://yoursite.com/2015/01/20/self-size-cell/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="在iOS8中，Apple为UITableView引入了一种名为Self-Sizing-Cells的新特性。这是新的SDK中最让我兴奋的一种特性。iOS8以前，如果你想要在tableview中显示可变高度的动态内容，必须单独计算每一个cell的高度。现在到了iOS8，Self-Sizing-Cell 提供了显示动态内容的一种解决方案。简言之，使用自适应cell，你只需要做下面几点：">
+<meta property="og:image" content="http://yoursite.com/img/table-view-truncated-text.png">
+<meta property="og:image" content="http://yoursite.com/img/self-sizing-cell-demo.png">
+<meta property="og:updated_time" content="2015-03-02T06:39:36.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="能够自适应高度的TABLEVIEWCELL(SELF-SIZING CELL)">
+<meta name="twitter:description" content="在iOS8中，Apple为UITableView引入了一种名为Self-Sizing-Cells的新特性。这是新的SDK中最让我兴奋的一种特性。iOS8以前，如果你想要在tableview中显示可变高度的动态内容，必须单独计算每一个cell的高度。现在到了iOS8，Self-Sizing-Cell 提供了显示动态内容的一种解决方案。简言之，使用自适应cell，你只需要做下面几点：">
+<meta name="twitter:image" content="http://yoursite.com/img/table-view-truncated-text.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-self-size-cell" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/20/self-size-cell/" class="article-date">
+  <time datetime="2015-01-20T10:30:50.000Z" itemprop="datePublished">2015-01-20</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      能够自适应高度的TABLEVIEWCELL(SELF-SIZING CELL)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在iOS8中，Apple为UITableView引入了一种名为Self-Sizing-Cells的新特性。这是新的SDK中最让我兴奋的一种特性。iOS8以前，如果你想要在tableview中显示可变高度的动态内容，必须单独计算每一个cell的高度。现在到了iOS8，Self-Sizing-Cell 提供了显示动态内容的一种解决方案。简言之，使用自适应cell，你只需要做下面几点：<br><a id="more"></a></p>
+<blockquote>
+<ul>
+<li>使用autolayout定义cell的约束条件</li>
+<li>设置tableview的row的估计高度</li>
+<li>设置tableview的rowHeight属性为UITableViewAutomaticDimension</li>
+</ul>
+</blockquote>
+<p>如果用代码来表示后两点的话，看起来大概是这个样子的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">tableView.estimatedRowHeight = 44.0</div><div class="line"></div><div class="line">tableView.rowHeight = UITableViewAutomaticDimension</div></pre></td></tr></table></figure></p>
+<p>只需要两行代码，你就可以让tableview根据内容计算cell的尺寸并自动渲染它。使用Self-Sizing-Cell特性能够节约你的时间和代码量，相信你会喜欢它的。</p>
+<p>##使用Self-Sizing-cell创建一个简单地示例<br>学习一个新特性最好的办法就是使用它。让我们用一个demo程序来示范Self-Sizing-cell的使用。 首先又一个模板工程，这是一个显示酒店列表的简单app。每一个cell包括两行文字，分别是酒店的名字和地址。如果你下载并执行该程序的话，效果应该如下：<br><img src="/img/table-view-truncated-text.png" alt="示例图片"><br>正如你所看到的，由于每个row的高度都是固定的，一些酒店的地址被截断了。你可能在开发基于tableview的应用时也会遇到同样地问题。在过去，你可能简单地缩小字体或者增加文本行数来修复这个问题。从iOS8以后，你需要做的就是使用Self-Sizing-Cell，这样cell就会根据内容进行合适适配，无论内容的长度如何变化，都能够正常的显示。</p>
+<p>##添加AutoLayout的约束<br>你可能讨厌AutoLayout并且在尽量的避免使用它。但是，不使用AutoLayout，Self-Sizing-Cell就不恩能够够正常的工作，因为它是根据autoLayout的约束来确定正确地rowHeight的。实际上，是tableview在每一个cell上调用了systemLayoutSizeFittingSize来返回基于layout约束计算出的cell尺寸。<br><br><br>请对name和address的两个label自行添加相应约束。</p>
+<p>##设置预估的cell高度<br>添加了AutoLayout的约束之后，剩下的就是在viewDidLoad方法中添加下面的代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">tableView.estimatedRowHeight = 68.0</div><div class="line">tableView.rowHeight = UITableViewAutomaticDimension</div></pre></td></tr></table></figure></p>
+<p>第一行代码设置预估的cell高度，第二行代码修改tableview的rowHeight属性为UITableViewAutomaticDimension。换句话说，就是你让tableview根据其他信息计算cell的尺寸。<br><br><br>如果你现在测试应用，会发现还是不正确的，因为name和address两个控件都设置了SingleLine的属性。所以设置LineNumber为0，使文本行数能够自动根据内容增长。<br><br><br>到这里，就全部完成，再次运行app，tableview的cell就会根据内容自动计算高度了。</p>
+<center><img src="/img/self-sizing-cell-demo.png" alt=""></center>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/01/20/self-size-cell/" data-id="ciu3h1q15001hhs9fdtrw7kfj" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/01/21/runtime-message-1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Object-C runtime之消息（1）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/01/20/viewDidLoad/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">VIEW加载和显示函数调用顺序</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Cocos/" style="font-size: 13.33px;">Cocos</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/extension/" style="font-size: 10px;">extension</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/swift/" style="font-size: 16.67px;">swift</a> <a href="/tags/today/" style="font-size: 10px;">today</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/10/wkwebview/">WKWebView的使用</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/08/OC-Swift/">OC&amp;Swift混编的注意点</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/25/chinese-string/">swift利用系统库汉字转换为拼音</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/08/oc-swift-define/">OC&amp;swift中的宏定义</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/06/webview-keyboard/">UIWebView键盘的accessoryBar隐藏</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

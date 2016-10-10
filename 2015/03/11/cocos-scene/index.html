@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>Cocos之场景转换（Transitions) | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="我们在基础概念一节讲过修改当前场景的常见方式有三种，pushScene，replaceScene和popScene；但是切换场景使用的效果则会有很多种，例如淡入淡出，放大缩小，跳动等等。Cocos提供了这种在两个场景之间直接进行转换的能力，在技术上讲，一个场景转换就是在展示并控制一个新场景之前执行的一个切换效果。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cocos之场景转换（Transitions)">
+<meta property="og:url" content="http://yoursite.com/2015/03/11/cocos-scene/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="我们在基础概念一节讲过修改当前场景的常见方式有三种，pushScene，replaceScene和popScene；但是切换场景使用的效果则会有很多种，例如淡入淡出，放大缩小，跳动等等。Cocos提供了这种在两个场景之间直接进行转换的能力，在技术上讲，一个场景转换就是在展示并控制一个新场景之前执行的一个切换效果。">
+<meta property="og:updated_time" content="2015-03-11T08:20:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cocos之场景转换（Transitions)">
+<meta name="twitter:description" content="我们在基础概念一节讲过修改当前场景的常见方式有三种，pushScene，replaceScene和popScene；但是切换场景使用的效果则会有很多种，例如淡入淡出，放大缩小，跳动等等。Cocos提供了这种在两个场景之间直接进行转换的能力，在技术上讲，一个场景转换就是在展示并控制一个新场景之前执行的一个切换效果。">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-cocos-scene" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/03/11/cocos-scene/" class="article-date">
+  <time datetime="2015-03-11T07:58:12.000Z" itemprop="datePublished">2015-03-11</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Cocos/">Cocos</a>►<a class="article-category-link" href="/categories/Cocos/文档/">文档</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Cocos之场景转换（Transitions)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们在基础概念一节讲过修改当前场景的常见方式有三种，pushScene，replaceScene和popScene；但是切换场景使用的效果则会有很多种，例如淡入淡出，放大缩小，跳动等等。<br>Cocos提供了这种在两个场景之间直接进行转换的能力，在技术上讲，一个场景转换就是在展示并控制一个新场景之前执行的一个切换效果。<br><a id="more"></a></p>
+<p>场景之间通过TransitionScene系列类来实现过渡跳转的效果。TransitionScene继承于Scene，该系列类主要是与场景切换特效相关的一些使用类。如TransitionFadeDown、TransitionPageTurn、TransitionJumpZoom等等。</p>
+<p>###切换特效<br>在Cocos中提供的场景切换特效主要由以下几种：</p>
+<ul>
+<li>TransitionRotoZoom    旋转进入</li>
+<li>TransitionJumpZoom    跳动进入</li>
+<li>TransitionPageTurn    翻页效果进入</li>
+<li>TransitionRadialCCW   钟摆效果</li>
+<li>TransitionMoveInL / TransitionMoveInR / TransitionMoveInT / TransitionMoveInB     左侧/右侧/顶部/底部进入</li>
+<li>TransitionSlideInL / TransitionSlideInR / TransitionSlideInT / TransitionSlideInB  分别从左侧/右侧/顶部/底部滑入</li>
+<li>TransitionShrinkGrow  交替进入</li>
+<li>TransitionFlipX/TransitionFlipY   X轴翻入（左右）/Y轴翻入</li>
+<li>TransitionFlipAngular 左上右下轴翻入</li>
+<li>TransitionFadeTR ／TransitionFadeBL／TransitionFadeUp／TransitionFadeDown    小方格右上角显示进入／ 小方格左下角显示进入／ 横条向上显示进入／ 横条向下显示进入</li>
+<li>TransitionSplitCols ／ TransitionSplitRows 竖条切换进入／ 横条切换进入</li>
+<li>TransitionZoomFlipAngular 左上右下轴翻入放大缩小效果</li>
+<li>TransitionFade 渐隐进入</li>
+<li>TransitionCrossFade 渐变进入</li>
+<li>TransitionTurnOffTiles 小方格消失进入</li>
+<li>TransitionRadialCCW／TransitionRadialCW 扇面展开收起</li>
+</ul>
+<p>场景转换的实现代码一般如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">auto</span> transitions = TransitionMoveInL::create(<span class="number">0.2f</span>, scene);</div><div class="line">Director::getInstance()-&gt;replaceScene(transitions);</div></pre></td></tr></table></figure></p>
+<p>场景的转换是由Director类来控制的，通过调用Director类的replaceScene(Scene scene）方法可直接使用传入scene替换当前场景来切换画面，当前场景会被释放，它是切换场景时最常用的方法。<br>前面说过，场景转换的一系列类都继承于Scene类，所以可以创建一个转换场景的对象代替scene，从而实现各种转换场景的效果。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/03/11/cocos-scene/" data-id="ciu3h1q0j000fhs9fbkou5czk" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cocos/">Cocos</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/03/18/swift-funciton/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          swift函数的一些注意点
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/03/06/edgeInsets/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">如何把UIButton中的图片和文字上下对齐</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Cocos/" style="font-size: 13.33px;">Cocos</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/extension/" style="font-size: 10px;">extension</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/swift/" style="font-size: 16.67px;">swift</a> <a href="/tags/today/" style="font-size: 10px;">today</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/10/wkwebview/">WKWebView的使用</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/08/OC-Swift/">OC&amp;Swift混编的注意点</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/25/chinese-string/">swift利用系统库汉字转换为拼音</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/08/oc-swift-define/">OC&amp;swift中的宏定义</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/06/webview-keyboard/">UIWebView键盘的accessoryBar隐藏</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

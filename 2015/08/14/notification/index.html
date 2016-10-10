@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>iOS应用Push证书的申请 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="我们都知道苹果的iOS应用只支持自己的APNS推送，所有的开发者如果要开发推送功能都必须申请APNS推送证书，才能够实现推送功能。基本上对iOS有点了解的开发者都明白APNS推送的基本原理，那就是客户端向APNS请求deviceToken，传递给Server，然后Server根据这个deviceToken和APNS推送证书，把要推送的消息发送给APNS服务器，APNS服务器就会把对应的消息发送给客">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS应用Push证书的申请">
+<meta property="og:url" content="http://yoursite.com/2015/08/14/notification/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="我们都知道苹果的iOS应用只支持自己的APNS推送，所有的开发者如果要开发推送功能都必须申请APNS推送证书，才能够实现推送功能。基本上对iOS有点了解的开发者都明白APNS推送的基本原理，那就是客户端向APNS请求deviceToken，传递给Server，然后Server根据这个deviceToken和APNS推送证书，把要推送的消息发送给APNS服务器，APNS服务器就会把对应的消息发送给客">
+<meta property="og:image" content="http://yoursite.com/img/apns_1.jpg">
+<meta property="og:image" content="http://yoursite.com/img/apns_2.png">
+<meta property="og:image" content="http://yoursite.com/img/apns_3.png">
+<meta property="og:updated_time" content="2015-08-14T07:13:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="iOS应用Push证书的申请">
+<meta name="twitter:description" content="我们都知道苹果的iOS应用只支持自己的APNS推送，所有的开发者如果要开发推送功能都必须申请APNS推送证书，才能够实现推送功能。基本上对iOS有点了解的开发者都明白APNS推送的基本原理，那就是客户端向APNS请求deviceToken，传递给Server，然后Server根据这个deviceToken和APNS推送证书，把要推送的消息发送给APNS服务器，APNS服务器就会把对应的消息发送给客">
+<meta name="twitter:image" content="http://yoursite.com/img/apns_1.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-notification" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/08/14/notification/" class="article-date">
+  <time datetime="2015-08-14T06:29:02.000Z" itemprop="datePublished">2015-08-14</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      iOS应用Push证书的申请
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>我们都知道苹果的iOS应用只支持自己的APNS推送，所有的开发者如果要开发推送功能都必须申请APNS推送证书，才能够实现推送功能。<br>基本上对iOS有点了解的开发者都明白APNS推送的基本原理，那就是客户端向APNS请求deviceToken，传递给Server，然后Server根据这个deviceToken和APNS推送证书，把要推送的消息发送给APNS服务器，APNS服务器就会把对应的消息发送给客户端设备，进而分发给应用。<br><a id="more"></a><br><img src="/img/apns_1.jpg" alt="APNS推送原理"></p>
+<p>##申请Push证书流程<br>那么我们使用服务器向APNS服务发送消息的时候，可以通过客户端获取到DeviceToken，那么推送证书，也就是上图中的payload从哪里获取呢？这个就要去苹果的开发者网站上生成对应的APNS推送证书并下载了。<br>生成APNS推送证书的主要步骤和生成开发者证书类似，都要先生成一个certSigningRequest文件，也就是在【钥匙串】【证书助理】中生成的请求文件，不会的童鞋可以百度一下开发者证书的生成过程。<br>之后在开发者网站上打开要推送应用的AppID，点击Edit，进入下图中的界面。<br><img src="/img/apns_2.png" alt="生成推送证书"><br>勾选Push Notifications，然后选择Create Certificate，分别对应开发环境的push证书，和上线AppStore后的push证书。创建证书的过程和创建开发者证书一样。</p>
+<p>下载push证书以后，可以在钥匙串中导出对应的p12证书文件，然后就可以使用该证书连接APNS服务器，发送PUSH消息了。需要注意的是发送的消息必须是指定格式的内容，否则会发送失败哦。<br><img src="/img/apns_3.png" alt="生成p12证书文件"></p>
+<p>##客户端获取DeviceToken的方法<br>客户端需要在didFinishLaunching方法中添加注册push通知的方法，以获取对应的deviceToken。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions</div><div class="line">&#123;</div><div class="line">[self.window makeKeyAndVisible];</div><div class="line">[[UIApplication sharedApplication] registerForRemoteNotificationTypes: UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert];</div><div class="line">return YES;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>然后添加接收注册结果的方法，就可以获取到对应的deviceToken。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)pToken &#123;</div><div class="line">NSLog(@&quot;regisger success:%@&quot;, pToken);</div><div class="line">//注册成功，返回deviceToken</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>同一个应用在同一台设备上的deviceToken基本上都是不会变化的，一般只有对设备恢复出厂设置才会导致deviceToken的变化。</p>
+<p>###但是要注意的是，一个应用的develop和distribution版本获取到的deviceToken是不同的。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/08/14/notification/" data-id="ciu3h1q0s000uhs9foygsk5pt" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Push/">Push</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/11/19/weixin/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          有关web微信的一些处理
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/07/09/todayviewReinstall/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">TodayExtension的覆盖安装</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Cocos/" style="font-size: 13.33px;">Cocos</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/extension/" style="font-size: 10px;">extension</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/swift/" style="font-size: 16.67px;">swift</a> <a href="/tags/today/" style="font-size: 10px;">today</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/10/wkwebview/">WKWebView的使用</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/08/OC-Swift/">OC&amp;Swift混编的注意点</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/25/chinese-string/">swift利用系统库汉字转换为拼音</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/08/oc-swift-define/">OC&amp;swift中的宏定义</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/06/webview-keyboard/">UIWebView键盘的accessoryBar隐藏</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

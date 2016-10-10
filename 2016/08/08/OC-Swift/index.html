@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>OC&amp;Swift混编的注意点 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="当前swift正在逐步开始流行，我们也需要与时俱进，但是在项目中又不可能已下载把所有代码进行替换，这就存在了混编的必然性。对于swift和OC的混编，我说一些自己认为需要注意的地方。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OC&Swift混编的注意点">
+<meta property="og:url" content="http://yoursite.com/2016/08/08/OC-Swift/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="当前swift正在逐步开始流行，我们也需要与时俱进，但是在项目中又不可能已下载把所有代码进行替换，这就存在了混编的必然性。对于swift和OC的混编，我说一些自己认为需要注意的地方。">
+<meta property="og:updated_time" content="2016-08-08T06:14:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OC&Swift混编的注意点">
+<meta name="twitter:description" content="当前swift正在逐步开始流行，我们也需要与时俱进，但是在项目中又不可能已下载把所有代码进行替换，这就存在了混编的必然性。对于swift和OC的混编，我说一些自己认为需要注意的地方。">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-OC-Swift" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/08/08/OC-Swift/" class="article-date">
+  <time datetime="2016-08-08T06:02:55.000Z" itemprop="datePublished">2016-08-08</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>►<a class="article-category-link" href="/categories/iOS/swift/">swift</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      OC&amp;Swift混编的注意点
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>当前swift正在逐步开始流行，我们也需要与时俱进，但是在项目中又不可能已下载把所有代码进行替换，这就存在了混编的必然性。对于swift和OC的混编，我说一些自己认为需要注意的地方。<br><a id="more"></a></p>
+<ol>
+<li><strong>可选类型</strong>：swift中最经典的用法，需要注意的就是如果使用了!，一定不能够为nil，否则将会crash；<strong>OC转换时一般会为了简单，把成员变量的类型定义为!，那么一定要注意使用该变量时不可以为空</strong>。</li>
+<li><strong>相互引用</strong>：OC引用swift的类，需要在swift的类定义时添加@objc，同时在.m文件中包含swift的对应头文件（<code>productName-swift.h</code>），这样才可以正常使用；而swift引用OC的类，需要在bridge文件中包含对应的头文件，然后就可以在swift中调用。</li>
+<li><strong>宏定义</strong>：OC中的宏定义，在swift中一部分可以正常使用，也有很大一部分无法再正常使用，具体的可以参见<a href="http://www.jianshu.com/p/e6ade2b24648" target="_blank" rel="external">OC&amp;swift中的宏定义</a>一文。</li>
+<li><strong>数据类型</strong>：OC中的所有对象都是一个指针，所以都可以进行强制转换，在swift中将不再允许这种使用；还有就是在swift中数字类型之间将不再进行隐式转换，都需要开发者手动进行显式的转换。<br>在swift中使用let定义常量时可以推断类型，如果要设置为特定类型的话，还是需要添加数据类型，这一点和OC中的宏不同。比如要定义长度为44，一定要使用<code>let height:CGFloat = 44</code>，而不能够使用<code>let height = 44</code>，因为后者将会把height推断为Int类型，导致后面使用的时候无法正常使用。 </li>
+<li><strong>成员（函数）可见性</strong>：在swift中，不存在头文件，所以在类中声明的成员和函数都默认是外部可见的，如果需要定义内部的变量和函数，需要使用<code>private</code>关键字。</li>
+<li><strong>delegate</strong>：单独说delegate是因为delegate一般会定义为weak类型，而在swift中由于不使用strong关键字，容易让我们忽略了使用weak，导致循环引用。注意在swift中同样存在weak的使用，在定义delegate时不要忘记添加。</li>
+<li><strong>struct</strong>：swift中的struct在OC中没有对应的数据类型，如果不是必须的话，不建议在接口的地方使用struct。</li>
+<li><strong>初始化方法</strong>：swift中对于<code>UIViewController</code>，<code>UIView</code>等类非继承的初始化方法，都是用<code>convenience</code>关键字，否则需要重新实现父类的初始化方法。</li>
+</ol>
+<p>目前想到就这几点吧。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/08/08/OC-Swift/" data-id="ciu3h1pzv0000hs9fg89okcgr" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/10/10/wkwebview/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          WKWebView的使用
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/07/25/chinese-string/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">swift利用系统库汉字转换为拼音</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Cocos/" style="font-size: 13.33px;">Cocos</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/extension/" style="font-size: 10px;">extension</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/swift/" style="font-size: 16.67px;">swift</a> <a href="/tags/today/" style="font-size: 10px;">today</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/10/wkwebview/">WKWebView的使用</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/08/OC-Swift/">OC&amp;Swift混编的注意点</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/25/chinese-string/">swift利用系统库汉字转换为拼音</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/08/oc-swift-define/">OC&amp;swift中的宏定义</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/06/webview-keyboard/">UIWebView键盘的accessoryBar隐藏</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

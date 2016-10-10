@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>UIWebView键盘的accessoryBar隐藏 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="当前越来越多的iOS应用开始使用html进行交互显示，却会发现在UIWebView弹出的键盘比UITextView的键盘多出了左右移动以及完成按钮，那么如何去掉这些我们并不需要的按钮呢？苹果官方并没有给出方法，所以我们只能够自己来解决。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UIWebView键盘的accessoryBar隐藏">
+<meta property="og:url" content="http://yoursite.com/2016/07/06/webview-keyboard/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="当前越来越多的iOS应用开始使用html进行交互显示，却会发现在UIWebView弹出的键盘比UITextView的键盘多出了左右移动以及完成按钮，那么如何去掉这些我们并不需要的按钮呢？苹果官方并没有给出方法，所以我们只能够自己来解决。">
+<meta property="og:image" content="http://yoursite.com/img/webview_keyboard.png">
+<meta property="og:image" content="http://yoursite.com/img/webview_keyboard_hideaccessory.png">
+<meta property="og:updated_time" content="2016-07-06T06:40:46.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UIWebView键盘的accessoryBar隐藏">
+<meta name="twitter:description" content="当前越来越多的iOS应用开始使用html进行交互显示，却会发现在UIWebView弹出的键盘比UITextView的键盘多出了左右移动以及完成按钮，那么如何去掉这些我们并不需要的按钮呢？苹果官方并没有给出方法，所以我们只能够自己来解决。">
+<meta name="twitter:image" content="http://yoursite.com/img/webview_keyboard.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-webview-keyboard" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/07/06/webview-keyboard/" class="article-date">
+  <time datetime="2016-07-06T06:31:49.000Z" itemprop="datePublished">2016-07-06</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>►<a class="article-category-link" href="/categories/iOS/swift/">swift</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      UIWebView键盘的accessoryBar隐藏
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>当前越来越多的iOS应用开始使用html进行交互显示，却会发现在<code>UIWebView</code>弹出的键盘比<code>UITextView</code>的键盘多出了左右移动以及完成按钮，那么如何去掉这些我们并不需要的按钮呢？苹果官方并没有给出方法，所以我们只能够自己来解决。<br><a id="more"></a><br><img src="/img/webview_keyboard.png" alt="webview键盘图片"></p>
+<p>对于不同的iOS版本，我们的处理方法也会不同，因为官方没有提供方法，所有的方法都是需要自己去发现和修改。这里只写出iOS7以上版本的方法：</p>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">hideKeyBoard</span><span class="params">()</span></span> -&gt; <span class="type">Void</span> &#123;</div><div class="line"><span class="keyword">for</span> window <span class="keyword">in</span> <span class="type">UIApplication</span>.sharedApplication().windows &#123;</div><div class="line"><span class="keyword">if</span> !window.isMemberOfClass(<span class="type">UIWindow</span>.<span class="keyword">self</span>) &#123;</div><div class="line"><span class="keyword">let</span> keyboardWindow = window</div><div class="line"><span class="keyword">if</span> #available(iOS <span class="number">9.0</span>, *) &#123;</div><div class="line"><span class="keyword">self</span>.removeAccessoryBarForiOS9(keyboardWindow <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> #available(iOS <span class="number">8.0</span>, *) &#123;</div><div class="line"><span class="keyword">self</span>.removeAccessoryBarForiOS8(keyboardWindow <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line"><span class="keyword">self</span>.removeAccessoryBarForiOS7(keyboardWindow <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">if</span> #available(iOS <span class="number">9.0</span>, *) &#123;</div><div class="line"><span class="keyword">self</span>.removeAccessoryBarForiOS9(<span class="type">UIApplication</span>.sharedApplication().windows.last! <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">removeAccessoryBarForiOS9</span><span class="params">(keyboardWindow:UIView)</span></span> -&gt; <span class="type">Void</span> &#123;</div><div class="line"><span class="keyword">for</span> possibleFormView:<span class="type">UIView</span> <span class="keyword">in</span> keyboardWindow.subviews &#123;</div><div class="line"><span class="keyword">if</span> possibleFormView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetContainerView"</span>)!) &#123;</div><div class="line"><span class="keyword">for</span> subviewOfInputSetContainerView <span class="keyword">in</span> possibleFormView.subviews &#123;</div><div class="line"><span class="keyword">if</span> subviewOfInputSetContainerView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetHostView"</span>)!) &#123;</div><div class="line"><span class="keyword">for</span> subviewOfInputSetHostView <span class="keyword">in</span> subviewOfInputSetContainerView.subviews &#123;</div><div class="line"><span class="comment">// 隐藏工具条NSClassFromString</span></div><div class="line"><span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) &#123;</div><div class="line">subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfInputSetHostView.frame = <span class="type">CGRectZero</span></div><div class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"_UIRemoteKeyboardPlaceholderView"</span>)!)) &#123;</div><div class="line">subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfInputSetHostView.frame = <span class="type">CGRectZero</span></div><div class="line"></div><div class="line"><span class="comment">// 这里使用了私有方法获取对应的accessorBar，然后进行隐藏</span></div><div class="line"><span class="keyword">var</span> accessory = subviewOfInputSetHostView.performSelector(<span class="type">Selector</span>(<span class="string">"placeheldView"</span>)).takeRetainedValue()</div><div class="line"><span class="keyword">if</span> accessory.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) &#123;</div><div class="line"><span class="keyword">let</span> accessory = accessory <span class="keyword">as</span>! <span class="type">UIView</span></div><div class="line">accessory.layer.opacity = <span class="number">0</span></div><div class="line">accessory.frame = <span class="type">CGRectZero</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"><span class="comment">// 键盘背景, UIKBInputBackdropView有两个只隐藏上面的</span></div><div class="line"><span class="keyword">else</span> <span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIKBInputBackdropView"</span>)!) &amp;&amp; subviewOfInputSetHostView.frame.size.height &lt; <span class="number">100</span> &#123;</div><div class="line">subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfInputSetHostView.userInteractionEnabled = <span class="literal">false</span></div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">removeAccessoryBarForiOS8</span><span class="params">(keyboardWindow:UIView)</span></span> -&gt; <span class="type">Void</span> &#123;</div><div class="line"><span class="keyword">for</span> possibleFormView:<span class="type">UIView</span> <span class="keyword">in</span> keyboardWindow.subviews &#123;</div><div class="line"><span class="keyword">if</span> possibleFormView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetContainerView"</span>)!) &#123;</div><div class="line"><span class="keyword">for</span> subviewOfInputSetContainerView <span class="keyword">in</span> possibleFormView.subviews &#123;</div><div class="line"><span class="keyword">if</span> subviewOfInputSetContainerView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetHostView"</span>)!) &#123;</div><div class="line"><span class="keyword">for</span> subviewOfInputSetHostView <span class="keyword">in</span> subviewOfInputSetContainerView.subviews &#123;</div><div class="line"><span class="comment">// 隐藏工具条</span></div><div class="line"><span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) &#123;</div><div class="line">subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfInputSetHostView.frame = <span class="type">CGRectZero</span></div><div class="line">&#125;</div><div class="line"><span class="comment">// 键盘背景, UIKBInputBackdropView有两个只隐藏上面的</span></div><div class="line"><span class="keyword">else</span> <span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIKBInputBackdropView"</span>)!) &amp;&amp; subviewOfInputSetHostView.frame.size.height &lt; <span class="number">100</span> &#123;</div><div class="line">subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfInputSetHostView.userInteractionEnabled = <span class="literal">false</span></div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">removeAccessoryBarForiOS7</span><span class="params">(keyboardWindow:UIView)</span></span> -&gt; <span class="type">Void</span> &#123;</div><div class="line"><span class="keyword">for</span> possibleFormView:<span class="type">UIView</span> <span class="keyword">in</span> keyboardWindow.subviews &#123;</div><div class="line"><span class="keyword">if</span> possibleFormView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIPeripheralHostView"</span>)!) &#123;</div><div class="line"><span class="keyword">for</span> subviewOfPeripheralHostView <span class="keyword">in</span> possibleFormView.subviews &#123;</div><div class="line"><span class="comment">// 隐藏工具条</span></div><div class="line"><span class="keyword">if</span> subviewOfPeripheralHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) &#123;</div><div class="line">subviewOfPeripheralHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfPeripheralHostView.frame = <span class="type">CGRectZero</span></div><div class="line">&#125;</div><div class="line"><span class="comment">// 键盘背景, UIKBInputBackdropView有两个只隐藏上面的</span></div><div class="line"><span class="keyword">else</span> <span class="keyword">if</span> subviewOfPeripheralHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIKBInputBackdropView"</span>)!) &amp;&amp; subviewOfPeripheralHostView.frame.size.height &lt; <span class="number">100</span> &#123;</div><div class="line">subviewOfPeripheralHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfPeripheralHostView.userInteractionEnabled = <span class="literal">false</span></div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>实际中，隐藏键盘<code>accessory</code>后的样子如下图：</p>
+<p><img src="/img/webview_keyboard_hideaccessory.png" alt="隐藏accessory的界面"></p>
+<p><strong>需要注意的是，在示例代码使用设置layer透明，frame为空来进行隐藏，而不使用<code>removeFromSuperView</code>，是因为使用了<code>removeFromSuperView</code>，在键盘重新布局时会导致crash。当然如果有朋友解决了crash，使用<code>removeFromSuperView</code>会更好。</strong></p>
+<p>下面贴上crash的崩溃栈：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">2016-07-06 14:10:32.018 WebViewKeyBoard[10846:930540] The view hierarchy is not prepared for the constraint: &lt;NSLayoutConstraint:0x7f82a172d880 V:[_UIRemoteKeyboardPlaceholderView:0x7f82a14e7e30]-(0)-[_UIKBCompatInputView:0x7f82a16f9950]&gt;</div><div class="line">When added to a view, the constraint&apos;s items must be descendants of that view (or the view itself). This will crash if the constraint needs to be resolved before the view hierarchy is assembled. Break on -[UIView(UIConstraintBasedLayout) _viewHierarchyUnpreparedForConstraint:] to debug.</div><div class="line">2016-07-06 14:10:32.018 WebViewKeyBoard[10846:930540] *** Assertion failure in -[UIInputSetHostView _layoutEngine_didAddLayoutConstraint:roundingAdjustment:mutuallyExclusiveConstraints:], /BuildRoot/Library/Caches/com.apple.xbs/Sources/UIKit_Sim/UIKit-3512.60.7/NSLayoutConstraint_UIKitAdditions.m:590</div><div class="line">2016-07-06 14:10:32.025 WebViewKeyBoard[10846:930540] *** Terminating app due to uncaught exception &apos;NSInternalInconsistencyException&apos;, reason: &apos;Impossible to set up layout with view hierarchy unprepared for constraint.&apos;</div><div class="line">*** First throw call stack:</div><div class="line">(</div><div class="line">0   CoreFoundation                      0x0000000105517d85 __exceptionPreprocess + 165</div><div class="line">1   libobjc.A.dylib                     0x00000001072bbdeb objc_exception_throw + 48</div><div class="line">2   CoreFoundation                      0x0000000105517bea +[NSException raise:format:arguments:] + 106</div><div class="line">3   Foundation                          0x0000000105968d5a -[NSAssertionHandler handleFailureInMethod:object:file:lineNumber:description:] + 198</div><div class="line">4   UIKit                               0x0000000106626b99 __120-[UIView(UIConstraintBasedLayout) _layoutEngine_didAddLayoutConstraint:roundingAdjustment:mutuallyExclusiveConstraints:]_block_invoke_2 + 254</div><div class="line">5   UIKit                               0x000000010662698b -[UIView(UIConstraintBasedLayout) _layoutEngine_didAddLayoutConstraint:roundingAdjustment:mutuallyExclusiveConstraints:] + 385</div><div class="line">6   UIKit                               0x0000000106626e04 -[UIView(UIConstraintBasedLayout) _tryToAddConstraintWithoutUpdatingConstraintsArray:roundingAdjustment:mutuallyExclusiveConstraints:] + 65</div><div class="line">7   UIKit                               0x0000000106626f7d -[UIView(UIConstraintBasedLayout) _tryToAddConstraint:roundingAdjustment:mutuallyExclusiveConstraints:] + 288</div><div class="line">8   UIKit                               0x000000010662719f -[UIView(UIConstraintBasedLayout) _addConstraint:] + 274</div><div class="line">9   UIKit                               0x0000000106627438 __50-[UIView(UIConstraintBasedLayout) addConstraints:]_block_invoke + 197</div><div class="line">10  Foundation                          0x00000001058f23d3 -[NSISEngine withBehaviors:performModifications:] + 155</div><div class="line">11  UIKit                               0x0000000106626577 -[UIView(UIConstraintBasedLayout) _withAutomaticEngineOptimizationDisabled:] + 58</div><div class="line">12  UIKit                               0x0000000106627348 -[UIView(UIConstraintBasedLayout) addConstraints:] + 379</div><div class="line">13  UIKit                               0x00000001066b5531 -[UIInputWindowController updateViewConstraints] + 3558</div><div class="line">14  UIKit                               0x00000001066b1fde -[UIInputSetHostView _didChangeKeyplaneWithContext:] + 224</div><div class="line">15  UIKit                               0x000000010650f1cc -[_UIKBCompatInputView _didChangeKeyplaneWithContext:] + 87</div><div class="line">16  UIKit                               0x0000000106004397 -[UIKeyboard _didChangeKeyplaneWithContext:] + 324</div><div class="line">17  UIKit                               0x0000000105fe7b04 -[UIKeyboardImpl _didChangeKeyplaneWithContext:] + 1100</div><div class="line">18  UIKit                               0x000000010620d5a3 -[UIKeyboardLayoutStar(UIKeyboardLayoutJapanese50OnFlick) _didChangeKeyplaneWithContext:] + 183</div><div class="line">19  UIKit                               0x00000001061f121e -[UIKeyboardLayoutStar setKeyplaneName:] + 4512</div><div class="line">20  UIKit                               0x0000000106209c37 -[UIKeyboardLayoutStar setShift:] + 158</div><div class="line">21  UIKit                               0x0000000105fec46a -[UIKeyboardImpl notifyShiftState] + 73</div><div class="line">22  CoreFoundation                      0x000000010543cc37 __CFRUNLOOP_IS_CALLING_OUT_TO_AN_OBSERVER_CALLBACK_FUNCTION__ + 23</div><div class="line">23  CoreFoundation                      0x000000010543cba7 __CFRunLoopDoObservers + 391</div><div class="line">24  CoreFoundation                      0x00000001054326c4 __CFRunLoopRun + 836</div><div class="line">25  CoreFoundation                      0x00000001054320f8 CFRunLoopRunSpecific + 488</div><div class="line">26  GraphicsServices                    0x0000000109badad2 GSEventRunModal + 161</div><div class="line">27  UIKit                               0x0000000105d3ff09 UIApplicationMain + 171</div><div class="line">28  WebViewKeyBoard                     0x000000010532a242 main + 114</div><div class="line">29  libdyld.dylib                       0x0000000107d7f92d start + 1</div><div class="line">30  ???                                 0x0000000000000001 0x0 + 1</div><div class="line">)</div><div class="line">libc++abi.dylib: terminating with uncaught exception of type NSException</div></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2016/07/06/webview-keyboard/" data-id="ciu3h1q1t002ehs9fbbux6e5a" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/07/08/oc-swift-define/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          OC&amp;swift中的宏定义
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/06/17/keyboard/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">键盘处理</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Cocos/" style="font-size: 13.33px;">Cocos</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/extension/" style="font-size: 10px;">extension</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/swift/" style="font-size: 16.67px;">swift</a> <a href="/tags/today/" style="font-size: 10px;">today</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/10/wkwebview/">WKWebView的使用</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/08/OC-Swift/">OC&amp;Swift混编的注意点</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/25/chinese-string/">swift利用系统库汉字转换为拼音</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/08/oc-swift-define/">OC&amp;swift中的宏定义</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/06/webview-keyboard/">UIWebView键盘的accessoryBar隐藏</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>UILabel的使用 | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="[TOC]
+我们都知道UILabel是iOS开发中最常用和最简单的一个组件，可以用来显示文本内容。但是一般来说我们都只是用UILabel现实固定字体、颜色设置的文本，其实我们也可以用UILabel同时显示多种字体和颜色的问题，甚至可以在文字中添加图片进行显示。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="UILabel的使用">
+<meta property="og:url" content="http://yoursite.com/2015/01/29/UILable_CoreText/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="[TOC]
+我们都知道UILabel是iOS开发中最常用和最简单的一个组件，可以用来显示文本内容。但是一般来说我们都只是用UILabel现实固定字体、颜色设置的文本，其实我们也可以用UILabel同时显示多种字体和颜色的问题，甚至可以在文字中添加图片进行显示。">
+<meta property="og:image" content="http://yoursite.com/img/simple_uilabel_demo.png">
+<meta property="og:image" content="http://yoursite.com/img/attributeText_label.png">
+<meta property="og:updated_time" content="2015-03-02T06:39:30.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="UILabel的使用">
+<meta name="twitter:description" content="[TOC]
+我们都知道UILabel是iOS开发中最常用和最简单的一个组件，可以用来显示文本内容。但是一般来说我们都只是用UILabel现实固定字体、颜色设置的文本，其实我们也可以用UILabel同时显示多种字体和颜色的问题，甚至可以在文字中添加图片进行显示。">
+<meta name="twitter:image" content="http://yoursite.com/img/simple_uilabel_demo.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-UILable_CoreText" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2015/01/29/UILable_CoreText/" class="article-date">
+  <time datetime="2015-01-29T06:19:18.000Z" itemprop="datePublished">2015-01-29</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/iOS/">iOS</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      UILabel的使用
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>[TOC]</p>
+<p>我们都知道UILabel是iOS开发中最常用和最简单的一个组件，可以用来显示文本内容。但是一般来说我们都只是用UILabel现实固定字体、颜色设置的文本，其实我们也可以用UILabel同时显示多种字体和颜色的问题，甚至可以在文字中添加图片进行显示。<br><a id="more"></a></p>
+<p>##UILabel使用的几种方式<br>下面简单说一下UILabel使用的三种方式，或者说是个人理解的UILabel使用的三种境界吧。</p>
+<ol>
+<li>设置UILabel的字体和颜色，现实特定文本内容。</li>
+<li>通过attributedText在UILabel中显示不同字体和颜色的文本内容，以及在文本之中插入图片。</li>
+<li>通过CoreText重写drawRect在UILabel中显示更为复杂的内容。</li>
+</ol>
+<p>###1. UILabel的基本使用<br>对于UILabel，我们平时最常用也是最简单的使用方式就是创建一个label，然后设置其字体和颜色，进行显示就可以了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 300, 200, 44)];</div><div class="line">textLabel.font = [UIFont systemFontOfSize:12];</div><div class="line">textLabel.textColor = [UIColor redColor];</div><div class="line">textLabel.text = @&quot;Simple Text Label!&quot;;</div><div class="line">[self.view addSubview:textLabel];</div></pre></td></tr></table></figure></p>
+<p>上面的代码就是创建了一个UILabel，显示红色，12号字体的一段文字，实际结果如图：<br><img src="/img/simple_uilabel_demo.png" alt="UILabel的基本使用"></p>
+<p>###2. UILabel的attributeText使用<br>UILabel除了基本使用以外，还可以通过attributeText在同一个Label中设置多种字体和颜色，甚至插入图片等内容。我们还是用一个例子来说明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 300, 300, 44)];</div><div class="line">textLabel.font = [UIFont systemFontOfSize:12];</div><div class="line">textLabel.textColor = [UIColor greenColor];</div><div class="line"></div><div class="line"></div><div class="line">NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@&quot;测试多种字体显示&quot;] ;</div><div class="line">//为所有文本设置字体</div><div class="line">[attributedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:24] range:NSMakeRange(0, [attributedString length])];</div><div class="line"></div><div class="line">//将“测试”两字字体颜色设置为蓝色</div><div class="line">[attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, 2)];</div><div class="line"></div><div class="line">//将“多种字体”四个字字体颜色设置为红色</div><div class="line">[attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(2, 4)];</div><div class="line"></div><div class="line">//在“测”和“试”两字之间插入一张图片</div><div class="line">NSString *imageName = @&quot;feiji.png&quot;;</div><div class="line">NSTextAttachment *imageAttachment = [[NSTextAttachment alloc] init];</div><div class="line">imageAttachment.image = [UIImage imageNamed:imageName];</div><div class="line">NSAttributedString *imageAttributedString = [NSAttributedString attributedStringWithAttachment:imageAttachment];</div><div class="line">[attributedString insertAttributedString:imageAttributedString atIndex:1];</div><div class="line"></div><div class="line"></div><div class="line">textLabel.attributedText = attributedString;</div><div class="line">[self.view addSubview:textLabel];</div></pre></td></tr></table></figure></p>
+<p>最后Label上显示的结果如下图，可以看到把图片<code>&quot;feiji.png&quot;</code>插入到了Label的文字之中。<br><img src="/img/attributeText_label.png" alt="使用attributeText在UILabel上显示多种字体"></p>
+<p>###3. 使用drawRect重绘Label<br>关于第三点我们一般都用不到，下一节我们在具体分析。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2015/01/29/UILable_CoreText/" data-id="ciu3h1q000002hs9fiz8ob8r3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2015/03/02/cocos-basic/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Cocos之基本概念
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2015/01/26/runtime-message-2/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Object-C runtime之消息（2）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Cocos/" style="font-size: 13.33px;">Cocos</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/extension/" style="font-size: 10px;">extension</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/swift/" style="font-size: 16.67px;">swift</a> <a href="/tags/today/" style="font-size: 10px;">today</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2016/10/10/wkwebview/">WKWebView的使用</a>
+          </li>
+        
+          <li>
+            <a href="/2016/08/08/OC-Swift/">OC&amp;Swift混编的注意点</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/25/chinese-string/">swift利用系统库汉字转换为拼音</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/08/oc-swift-define/">OC&amp;swift中的宏定义</a>
+          </li>
+        
+          <li>
+            <a href="/2016/07/06/webview-keyboard/">UIWebView键盘的accessoryBar隐藏</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2016 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
