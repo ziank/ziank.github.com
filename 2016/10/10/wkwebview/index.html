@@ -12,7 +12,7 @@
 <meta property="og:url" content="/2016/10/10/wkwebview/index.html">
 <meta property="og:site_name" content="Ziank的技术博客">
 <meta property="og:description" content="随着iOS10的出现，大部分应用都已经抛弃了iOS7的支持，那么将UIWebView替换为WKWebView的工作也就提上了日程。毕竟UIWebView的占用内存大，而且存在泄漏问题，包括对js的支持也是不如WKWebView的，所以大部分的UIWebView都应该替换为WKWebView。">
-<meta property="og:updated_time" content="2016-10-10T03:24:11.000Z">
+<meta property="og:updated_time" content="2016-10-10T04:59:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="WKWebView的使用">
 <meta name="twitter:description" content="随着iOS10的出现，大部分应用都已经抛弃了iOS7的支持，那么将UIWebView替换为WKWebView的工作也就提上了日程。毕竟UIWebView的占用内存大，而且存在泄漏问题，包括对js的支持也是不如WKWebView的，所以大部分的UIWebView都应该替换为WKWebView。">
@@ -50,9 +50,7 @@
 			
 				<li><a href="/">主页</a></li>
 	        
-				<li><a href="/categories">分类</a></li>
-	        
-				<li><a href="/tags">标签</a></li>
+				<li><a href="/about">关于我</a></li>
 	        
 			</ul>
 		</nav>
@@ -65,7 +63,12 @@
     			
             
     			
-    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">关于我</a>
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">分类</a>
     			
     			
             
@@ -103,9 +106,7 @@
 				
 					<li><a href="/">主页</a></li>
 		        
-					<li><a href="/categories">分类</a></li>
-		        
-					<li><a href="/tags">标签</a></li>
+					<li><a href="/about">关于我</a></li>
 		        
 				</ul>
 			</nav>
@@ -142,24 +143,29 @@
         <p>随着iOS10的出现，大部分应用都已经抛弃了iOS7的支持，那么将<code>UIWebView</code>替换为<code>WKWebView</code>的工作也就提上了日程。毕竟<code>UIWebView</code>的占用内存大，而且存在泄漏问题，包括对js的支持也是不如<code>WKWebView</code>的，所以大部分的<code>UIWebView</code>都应该替换为<code>WKWebView</code>。<br><a id="more"></a></p>
 <p>由于我们的工程对js只进行了简单的支持和调用，并没有太多复杂的交互，这里就不对<code>WKUIDelegate</code>进行说明了，毕竟我也不是很清楚。这里简单说一下我在替换过程中遇到的一些问题吧： </p>
 <ol>
-<li><p>弹出的链接替换</p>
+<li>弹出的链接替换<blockquote>
 <p>在UIWebViewDelegate中，<code>shouldStartLoadWithRequest</code>方法里可以获取到对应的NSURLRequest，进行处理，然后返回<code>YES</code>/<code>NO</code>；而在<code>WKNavigationDelegate</code>中，对应的方法应该是<code>decidePolicyForNavigationAction</code>，可以在navigationAction中获取到对应的request，然后进行处理，不过没有返回值，而是使用回调方法进行处理。</p>
-<p>​</p>
+</blockquote>
 </li>
-<li><p>初始键盘弹出</p>
-<p>在<code>UIWebView</code>中，有一个属性<code>keyboardDisplayRequiresUserAction</code>，设置为<code>NO</code>时就可以在页面刚加载时直接弹出键盘；</p>
-<p>在<code>WKWebView</code>中，是没有这个属性的，如果要实现类似的功能，就必须替换<code>WKWebView</code>中相应的方法，代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">static void (*originalIMP)(id self, SEL _cmd, void* arg0, BOOL arg1, BOOL arg2, id arg3) = NULL;</div><div class="line">void interceptIMP (id self, SEL _cmd, void* arg0, BOOL arg1, BOOL arg2, id arg3) &#123;</div><div class="line">    originalIMP(self, _cmd, arg0, TRUE, arg2, arg3);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void setWkWebViewShowKeybord() &#123;</div><div class="line">    </div><div class="line">    Class cls = NSClassFromString(@&quot;WKContentView&quot;);</div><div class="line">    SEL originalSelector = NSSelectorFromString(@&quot;_startAssistingNode:userIsInteracting:blurPreviousNode:userObject:&quot;);</div><div class="line">    </div><div class="line">    Method originalMethod = class_getInstanceMethod(cls, originalSelector);</div><div class="line">    </div><div class="line">    IMP impOvverride = (IMP) interceptIMP;</div><div class="line">    </div><div class="line">    originalIMP = (void *)method_getImplementation(originalMethod);</div><div class="line">    </div><div class="line">    method_setImplementation(originalMethod, impOvverride);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>需要调用函数<code>setWkWebViewShowKeybord</code>，才可以实现该功能；需要特别注意的是，该函数只能调用一次，否则会导致循环调用，程序崩溃。上述代码引用自<a href="http://stackoverflow.com/questions/32407185/wkwebview-cant-open-keyboard-for-input-field" target="_blank" rel="external">stackoverflow的答案</a></p>
-</li>
-<li><p><code>JavaScript</code>的调用</p>
-<p>看起来和<code>UIWebView</code>的调用差不多，一个方法是<code>stringByEvaluatingJavaScriptFromString</code>，另一个是<code>evaluateJavaScript</code>，但其实是完全不同的，主要就在于一个是同步调用，另一个是异步调用。</p>
-<p>如果原来的代码已经使用了<code>UIWebView</code>，那么在修改<code>WKWebView</code>时一定要注意，因为异步调用是不可以同时调用多个<code>js</code>方法的，否则执行顺序将无法保证。</p>
-<p>下面写出我把异步调用修改为同步调用的方法，是实现在了<code>WKWebView</code>的<code>category</code>里面:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">- (id)syncEvalJavascriptString:(NSString *)jsCode &#123;</div><div class="line">    __block id returnValue = nil;</div><div class="line">    __block BOOL finished = NO;</div><div class="line">    [self evaluateJavaScript:jsCode completionHandler:^(id _Nullable result, NSError * _Nullable error) &#123;</div><div class="line">        returnValue = result;</div><div class="line">        finished = YES;</div><div class="line">    &#125;];</div><div class="line">    while (!finished) &#123;</div><div class="line">        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];</div><div class="line">    &#125;</div><div class="line">    return returnValue;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>需要注意的就是<code>NSRunLoop</code>那里不可以使用<code>dispatch_semaphore_t</code>信号量代替，会导致永久等待的，已经实测过了。</p>
+<li>初始键盘弹出<blockquote>
+<p>  在<code>UIWebView</code>中，有一个属性<code>keyboardDisplayRequiresUserAction</code>，设置为<code>NO</code>时就可以在页面刚加载时直接弹出键盘；<br>在<code>WKWebView</code>中，是没有这个属性的，如果要实现类似的功能，就必须替换<code>WKWebView</code>中相应的方法，代码如下：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">static void (*originalIMP)(id self, SEL _cmd, void* arg0, BOOL arg1, BOOL arg2, id arg3) = NULL;</div><div class="line">void interceptIMP (id self, SEL _cmd, void* arg0, BOOL arg1, BOOL arg2, id arg3) &#123;</div><div class="line">    originalIMP(self, _cmd, arg0, TRUE, arg2, arg3);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void setWkWebViewShowKeybord() &#123;</div><div class="line">    </div><div class="line">    Class cls = NSClassFromString(@&quot;WKContentView&quot;);</div><div class="line">    SEL originalSelector = NSSelectorFromString(@&quot;_startAssistingNode:userIsInteracting:blurPreviousNode:userObject:&quot;);</div><div class="line">    </div><div class="line">    Method originalMethod = class_getInstanceMethod(cls, originalSelector);</div><div class="line">    </div><div class="line">    IMP impOvverride = (IMP) interceptIMP;</div><div class="line">    </div><div class="line">    originalIMP = (void *)method_getImplementation(originalMethod);</div><div class="line">    </div><div class="line">    method_setImplementation(originalMethod, impOvverride);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</blockquote>
 </li>
 </ol>
+<blockquote>
+<p>  需要调用函数<code>setWkWebViewShowKeybord</code>，才可以实现该功能；需要特别注意的是，该函数只能调用一次，否则会导致循环调用，程序崩溃。上述代码引用自<a href="http://stackoverflow.com/questions/32407185/wkwebview-cant-open-keyboard-for-input-field" target="_blank" rel="external">stackoverflow的答案</a></p>
+</blockquote>
+<ol>
+<li><code>JavaScript</code>的调用<blockquote>
+<p>看起来和<code>UIWebView</code>的调用差不多，一个方法是<code>stringByEvaluatingJavaScriptFromString</code>，另一个是<code>evaluateJavaScript</code>，但其实是完全不同的，主要就在于一个是同步调用，另一个是异步调用。<br>如果原来的代码已经使用了<code>UIWebView</code>，那么在修改<code>WKWebView</code>时一定要注意，因为异步调用是不可以同时调用多个<code>js</code>方法的，否则执行顺序将无法保证。<br>下面写出我把异步调用修改为同步调用的方法，是实现在了<code>WKWebView</code>的<code>category</code>里面:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">- (id)syncEvalJavascriptString:(NSString *)jsCode &#123;</div><div class="line">    __block id returnValue = nil;</div><div class="line">    __block BOOL finished = NO;</div><div class="line">    [self evaluateJavaScript:jsCode completionHandler:^(id _Nullable result, NSError * _Nullable error) &#123;</div><div class="line">        returnValue = result;</div><div class="line">        finished = YES;</div><div class="line">    &#125;];</div><div class="line">    while (!finished) &#123;</div><div class="line">        [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];</div><div class="line">    &#125;</div><div class="line">    return returnValue;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</blockquote>
+</li>
+</ol>
+<blockquote>
+<p> 需要注意的就是<code>NSRunLoop</code>那里不可以使用<code>dispatch_semaphore_t</code>信号量代替，会导致永久等待的，已经实测过了。</p>
+</blockquote>
 <p>目前我使用到的也就这些了，后续如果有对于<code>WKWebView</code>的更多了解的话，在增加吧。不过替换成了<code>WKWebView</code>之后，性能上确实提高了，比以前流畅多了。</p>
 
       
@@ -219,26 +225,6 @@
 
 
 
-<div class="duoshuo">
-	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="wkwebview" data-title="WKWebView的使用" data-url="/2016/10/10/wkwebview/"></div>
-	<!-- 多说评论框 end -->
-	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-	<script type="text/javascript">
-	var duoshuoQuery = {short_name:"true"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-	<!-- 多说公共JS代码 end -->
-</div>
-
-
 
 
 
@@ -282,9 +268,12 @@
       <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
     
     
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
     
     
-      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+      <li data-hook="tools-section-tag"><span class="text">分类</span><i class="icon-price-tags"></i></li>
+    
+    
     
   </ul>
   <div class="tools-wrap">
@@ -294,15 +283,23 @@
     
 
     
-
-    
-
-    
-    	<section class="tools-section tools-section-me">
-  	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</div>
-  	  	
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Cocos/" style="font-size: 13.33px;">Cocos</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/extension/" style="font-size: 10px;">extension</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/swift/" style="font-size: 16.67px;">swift</a> <a href="/tags/today/" style="font-size: 10px;">today</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    			</div>
     	</section>
+    
+
+    
+      <section class="tools-section tools-section-tag">
+        <div class="widget tagcloud" id="js-tagcloud">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a><span class="category-list-count">8</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">1</span></li></ul>
+        </div>
+      </section>
+    
+
+    
+
     
   </div>
   

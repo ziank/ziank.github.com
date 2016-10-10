@@ -6,21 +6,18 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <title>UILabel的使用 | Ziank的技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="[TOC]
-我们都知道UILabel是iOS开发中最常用和最简单的一个组件，可以用来显示文本内容。但是一般来说我们都只是用UILabel现实固定字体、颜色设置的文本，其实我们也可以用UILabel同时显示多种字体和颜色的问题，甚至可以在文字中添加图片进行显示。">
+  <meta name="description" content="我们都知道UILabel是iOS开发中最常用和最简单的一个组件，可以用来显示文本内容。但是一般来说我们都只是用UILabel现实固定字体、颜色设置的文本，其实我们也可以用UILabel同时显示多种字体和颜色的问题，甚至可以在文字中添加图片进行显示。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="UILabel的使用">
 <meta property="og:url" content="/2015/01/29/UILable_CoreText/index.html">
 <meta property="og:site_name" content="Ziank的技术博客">
-<meta property="og:description" content="[TOC]
-我们都知道UILabel是iOS开发中最常用和最简单的一个组件，可以用来显示文本内容。但是一般来说我们都只是用UILabel现实固定字体、颜色设置的文本，其实我们也可以用UILabel同时显示多种字体和颜色的问题，甚至可以在文字中添加图片进行显示。">
+<meta property="og:description" content="我们都知道UILabel是iOS开发中最常用和最简单的一个组件，可以用来显示文本内容。但是一般来说我们都只是用UILabel现实固定字体、颜色设置的文本，其实我们也可以用UILabel同时显示多种字体和颜色的问题，甚至可以在文字中添加图片进行显示。">
 <meta property="og:image" content="/img/simple_uilabel_demo.png">
 <meta property="og:image" content="/img/attributeText_label.png">
-<meta property="og:updated_time" content="2015-03-02T06:39:30.000Z">
+<meta property="og:updated_time" content="2016-10-10T04:55:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="UILabel的使用">
-<meta name="twitter:description" content="[TOC]
-我们都知道UILabel是iOS开发中最常用和最简单的一个组件，可以用来显示文本内容。但是一般来说我们都只是用UILabel现实固定字体、颜色设置的文本，其实我们也可以用UILabel同时显示多种字体和颜色的问题，甚至可以在文字中添加图片进行显示。">
+<meta name="twitter:description" content="我们都知道UILabel是iOS开发中最常用和最简单的一个组件，可以用来显示文本内容。但是一般来说我们都只是用UILabel现实固定字体、颜色设置的文本，其实我们也可以用UILabel同时显示多种字体和颜色的问题，甚至可以在文字中添加图片进行显示。">
 <meta name="twitter:image" content="/img/simple_uilabel_demo.png">
   
     <link rel="alternative" href="/atom.xml" title="Ziank的技术博客" type="application/atom+xml">
@@ -56,9 +53,7 @@
 			
 				<li><a href="/">主页</a></li>
 	        
-				<li><a href="/categories">分类</a></li>
-	        
-				<li><a href="/tags">标签</a></li>
+				<li><a href="/about">关于我</a></li>
 	        
 			</ul>
 		</nav>
@@ -71,7 +66,12 @@
     			
             
     			
-    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">关于我</a>
+    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
+    			
+    			
+            
+    			
+    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">分类</a>
     			
     			
             
@@ -109,9 +109,7 @@
 				
 					<li><a href="/">主页</a></li>
 		        
-					<li><a href="/categories">分类</a></li>
-		        
-					<li><a href="/tags">标签</a></li>
+					<li><a href="/about">关于我</a></li>
 		        
 				</ul>
 			</nav>
@@ -145,19 +143,18 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>[TOC]</p>
-<p>我们都知道UILabel是iOS开发中最常用和最简单的一个组件，可以用来显示文本内容。但是一般来说我们都只是用UILabel现实固定字体、颜色设置的文本，其实我们也可以用UILabel同时显示多种字体和颜色的问题，甚至可以在文字中添加图片进行显示。<br><a id="more"></a></p>
-<p>##UILabel使用的几种方式<br>下面简单说一下UILabel使用的三种方式，或者说是个人理解的UILabel使用的三种境界吧。</p>
+        <p>我们都知道UILabel是iOS开发中最常用和最简单的一个组件，可以用来显示文本内容。但是一般来说我们都只是用UILabel现实固定字体、颜色设置的文本，其实我们也可以用UILabel同时显示多种字体和颜色的问题，甚至可以在文字中添加图片进行显示。<br><a id="more"></a></p>
+<h2 id="UILabel使用的几种方式"><a href="#UILabel使用的几种方式" class="headerlink" title="UILabel使用的几种方式"></a>UILabel使用的几种方式</h2><p>下面简单说一下UILabel使用的三种方式，或者说是个人理解的UILabel使用的三种境界吧。</p>
 <ol>
 <li>设置UILabel的字体和颜色，现实特定文本内容。</li>
 <li>通过attributedText在UILabel中显示不同字体和颜色的文本内容，以及在文本之中插入图片。</li>
 <li>通过CoreText重写drawRect在UILabel中显示更为复杂的内容。</li>
 </ol>
-<p>###1. UILabel的基本使用<br>对于UILabel，我们平时最常用也是最简单的使用方式就是创建一个label，然后设置其字体和颜色，进行显示就可以了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 300, 200, 44)];</div><div class="line">textLabel.font = [UIFont systemFontOfSize:12];</div><div class="line">textLabel.textColor = [UIColor redColor];</div><div class="line">textLabel.text = @&quot;Simple Text Label!&quot;;</div><div class="line">[self.view addSubview:textLabel];</div></pre></td></tr></table></figure></p>
+<h3 id="1-UILabel的基本使用"><a href="#1-UILabel的基本使用" class="headerlink" title="1. UILabel的基本使用"></a>1. UILabel的基本使用</h3><p>对于UILabel，我们平时最常用也是最简单的使用方式就是创建一个label，然后设置其字体和颜色，进行显示就可以了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 300, 200, 44)];</div><div class="line">textLabel.font = [UIFont systemFontOfSize:12];</div><div class="line">textLabel.textColor = [UIColor redColor];</div><div class="line">textLabel.text = @&quot;Simple Text Label!&quot;;</div><div class="line">[self.view addSubview:textLabel];</div></pre></td></tr></table></figure></p>
 <p>上面的代码就是创建了一个UILabel，显示红色，12号字体的一段文字，实际结果如图：<br><img src="/img/simple_uilabel_demo.png" alt="UILabel的基本使用"></p>
-<p>###2. UILabel的attributeText使用<br>UILabel除了基本使用以外，还可以通过attributeText在同一个Label中设置多种字体和颜色，甚至插入图片等内容。我们还是用一个例子来说明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 300, 300, 44)];</div><div class="line">textLabel.font = [UIFont systemFontOfSize:12];</div><div class="line">textLabel.textColor = [UIColor greenColor];</div><div class="line"></div><div class="line"></div><div class="line">NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@&quot;测试多种字体显示&quot;] ;</div><div class="line">//为所有文本设置字体</div><div class="line">[attributedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:24] range:NSMakeRange(0, [attributedString length])];</div><div class="line"></div><div class="line">//将“测试”两字字体颜色设置为蓝色</div><div class="line">[attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, 2)];</div><div class="line"></div><div class="line">//将“多种字体”四个字字体颜色设置为红色</div><div class="line">[attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(2, 4)];</div><div class="line"></div><div class="line">//在“测”和“试”两字之间插入一张图片</div><div class="line">NSString *imageName = @&quot;feiji.png&quot;;</div><div class="line">NSTextAttachment *imageAttachment = [[NSTextAttachment alloc] init];</div><div class="line">imageAttachment.image = [UIImage imageNamed:imageName];</div><div class="line">NSAttributedString *imageAttributedString = [NSAttributedString attributedStringWithAttachment:imageAttachment];</div><div class="line">[attributedString insertAttributedString:imageAttributedString atIndex:1];</div><div class="line"></div><div class="line"></div><div class="line">textLabel.attributedText = attributedString;</div><div class="line">[self.view addSubview:textLabel];</div></pre></td></tr></table></figure></p>
+<h3 id="2-UILabel的attributeText使用"><a href="#2-UILabel的attributeText使用" class="headerlink" title="2. UILabel的attributeText使用"></a>2. UILabel的attributeText使用</h3><p>UILabel除了基本使用以外，还可以通过attributeText在同一个Label中设置多种字体和颜色，甚至插入图片等内容。我们还是用一个例子来说明：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">UILabel *textLabel = [[UILabel alloc] initWithFrame:CGRectMake(50, 300, 300, 44)];</div><div class="line">textLabel.font = [UIFont systemFontOfSize:12];</div><div class="line">textLabel.textColor = [UIColor greenColor];</div><div class="line"></div><div class="line"></div><div class="line">NSMutableAttributedString *attributedString = [[NSMutableAttributedString alloc] initWithString:@&quot;测试多种字体显示&quot;] ;</div><div class="line">//为所有文本设置字体</div><div class="line">[attributedString addAttribute:NSFontAttributeName value:[UIFont systemFontOfSize:24] range:NSMakeRange(0, [attributedString length])];</div><div class="line"></div><div class="line">//将“测试”两字字体颜色设置为蓝色</div><div class="line">[attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:NSMakeRange(0, 2)];</div><div class="line"></div><div class="line">//将“多种字体”四个字字体颜色设置为红色</div><div class="line">[attributedString addAttribute:NSForegroundColorAttributeName value:[UIColor redColor] range:NSMakeRange(2, 4)];</div><div class="line"></div><div class="line">//在“测”和“试”两字之间插入一张图片</div><div class="line">NSString *imageName = @&quot;feiji.png&quot;;</div><div class="line">NSTextAttachment *imageAttachment = [[NSTextAttachment alloc] init];</div><div class="line">imageAttachment.image = [UIImage imageNamed:imageName];</div><div class="line">NSAttributedString *imageAttributedString = [NSAttributedString attributedStringWithAttachment:imageAttachment];</div><div class="line">[attributedString insertAttributedString:imageAttributedString atIndex:1];</div><div class="line"></div><div class="line"></div><div class="line">textLabel.attributedText = attributedString;</div><div class="line">[self.view addSubview:textLabel];</div></pre></td></tr></table></figure></p>
 <p>最后Label上显示的结果如下图，可以看到把图片<code>&quot;feiji.png&quot;</code>插入到了Label的文字之中。<br><img src="/img/attributeText_label.png" alt="使用attributeText在UILabel上显示多种字体"></p>
-<p>###3. 使用drawRect重绘Label<br>关于第三点我们一般都用不到，下一节我们在具体分析。</p>
+<h3 id="3-使用drawRect重绘Label"><a href="#3-使用drawRect重绘Label" class="headerlink" title="3. 使用drawRect重绘Label"></a>3. 使用drawRect重绘Label</h3><p>关于第三点我们一般都用不到，下一节我们在具体分析。</p>
 
       
     </div>
@@ -225,26 +222,6 @@
 
 
 
-<div class="duoshuo">
-	<!-- 多说评论框 start -->
-	<div class="ds-thread" data-thread-key="UILable_CoreText" data-title="UILabel的使用" data-url="/2015/01/29/UILable_CoreText/"></div>
-	<!-- 多说评论框 end -->
-	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-	<script type="text/javascript">
-	var duoshuoQuery = {short_name:"true"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		 || document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-	<!-- 多说公共JS代码 end -->
-</div>
-
-
 
 
 
@@ -288,9 +265,12 @@
       <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
     
     
+      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
     
     
-      <li data-hook="tools-section-me"><span class="text">我</span><i class="icon-smile"></i></li>
+      <li data-hook="tools-section-tag"><span class="text">分类</span><i class="icon-price-tags"></i></li>
+    
+    
     
   </ul>
   <div class="tools-wrap">
@@ -300,15 +280,23 @@
     
 
     
-
-    
-
-    
-    	<section class="tools-section tools-section-me">
-  	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">很惭愧&lt;br&gt;&lt;br&gt;只做了一点微小的工作&lt;br&gt;谢谢大家</div>
-  	  	
+    	<section class="tools-section tools-section-tag">
+    			<div class="widget tagcloud" id="js-tagcloud">
+    				<a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Cocos/" style="font-size: 13.33px;">Cocos</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/extension/" style="font-size: 10px;">extension</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/swift/" style="font-size: 16.67px;">swift</a> <a href="/tags/today/" style="font-size: 10px;">today</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
+    			</div>
     	</section>
+    
+
+    
+      <section class="tools-section tools-section-tag">
+        <div class="widget tagcloud" id="js-tagcloud">
+            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">23</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a><span class="category-list-count">8</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">1</span></li></ul>
+        </div>
+      </section>
+    
+
+    
+
     
   </div>
   
