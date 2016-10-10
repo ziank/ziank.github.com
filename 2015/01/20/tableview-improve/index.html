@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,117 +6,20 @@
   <title>UITABLEVIEW的性能提升 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：
-=======
-<!doctype html>
-
-
-
-  
-
-
-<html class="theme-next mist use-motion">
-<head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-  
-  
-  
-  
-
-  
-    
-    
-  
-
-  
-
-  
-
-  
-
-  
-
-  
-    
-    
-    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
-  
-
-
-
-
-
-
-<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
-
-
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
-
-
-
-
-  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
-
-
-
-
-
-
-<meta name="description" content="所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：
->>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
 
 
 UITableViewCell的重用机制；
 修改滑动过程中的加载机制。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="UITABLEVIEW的性能提升">
-<<<<<<< HEAD
 <meta property="og:url" content="http://yoursite.com/2015/01/20/tableview-improve/index.html">
 <meta property="og:site_name" content="Hexo">
-=======
-<meta property="og:url" content="http://www.ziank.cn/2015/01/20/tableview-improve/">
-<meta property="og:site_name" content="Ziank的技术分享">
->>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
 <meta property="og:description" content="所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：
 
 
 UITableViewCell的重用机制；
 修改滑动过程中的加载机制。">
-<<<<<<< HEAD
 <meta property="og:updated_time" content="2015-03-02T06:39:32.000Z">
-=======
->>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="UITABLEVIEW的性能提升">
 <meta name="twitter:description" content="所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：
@@ -125,7 +27,6 @@ UITableViewCell的重用机制；
 
 UITableViewCell的重用机制；
 修改滑动过程中的加载机制。">
-<<<<<<< HEAD
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -165,7 +66,7 @@ UITableViewCell的重用机制；
         
           <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
         
-        <a id="nav-search-btn" class="nav-icon" title="Søk"></a>
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
       </nav>
       <div id="search-form-wrap">
         <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" results="0" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
@@ -199,243 +100,12 @@ UITableViewCell的重用机制；
       </header>
     
     <div class="article-entry" itemprop="articleBody">
-=======
-
-
-
-
-<script type="text/javascript" id="hexo.configuration">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    scheme: 'Mist',
-    sidebar: {"position":"left","display":"hide"},
-    fancybox: true,
-    motion: true,
-    duoshuo: {
-      userId: 0,
-      author: '博主'
-    }
-  };
-</script>
-
-
-
-
-  <link rel="canonical" href="http://www.ziank.cn/"/>
-
-  <title> UITABLEVIEW的性能提升 | Ziank的技术分享 </title>
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
-
-  
-
-
-
-
-
-
-
-
-
-
-  
-  
-    
-  
-
-  <div class="container one-collumn sidebar-position-left page-post-detail ">
-    <div class="headband"></div>
-
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-meta ">
-  
-
-  <div class="custom-logo-site-title">
-    <a href="/"  class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <span class="site-title">Ziank的技术分享</span>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-  </div>
-  <p class="site-subtitle">一些个人学习的文档</p>
-</div>
-
-<div class="site-nav-toggle">
-  <button>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-    <span class="btn-bar"></span>
-  </button>
-</div>
-
-<nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
-        <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-archives">
-          <a href="/archives" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-categories">
-          <a href="/th" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-tags">
-          <a href="/tags" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
-        <li class="menu-item menu-item-about">
-          <a href="/about" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
-            
-            关于
-          </a>
-        </li>
-      
-
-      
-    </ul>
-  
-
-  
-</nav>
-
- </div>
-    </header>
-
-    <main id="main" class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          <div id="content" class="content">
-            
-
-  <div id="posts" class="posts-expand">
-    
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                UITABLEVIEW的性能提升
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2015-01-20T18:17:24+08:00" content="Jan 20 2015">
-              Jan 20 2015
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/iOS/" itemprop="url" rel="index">
-                    <span itemprop="name">iOS</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                &nbsp; | &nbsp;
-                <a href="/2015/01/20/tableview-improve/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/01/20/tableview-improve/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
->>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
       
         <p>所谓UITableView的性能，主要指的就是在滑动列表时的流畅度，这个主要是由cell得加载性能决定最终UITableView的滑动效果是否流畅。本文主要介绍两种简单地提升性能的方法：</p>
 <blockquote>
 <ul>
 <li>UITableViewCell的重用机制；</li>
 <li>修改滑动过程中的加载机制。<a id="more"></a>
-<<<<<<< HEAD
 </li>
 </ul>
 </blockquote>
@@ -446,32 +116,12 @@ UITableViewCell的重用机制；
 <p>实现了init和perpareForReuse之后，就可以在 UITableViewDataSource的方法 tableView:cellForRowAtIndexPath: 中实现重用cell了。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GroupMessageCell *cell = [tableViewdequeueReusableCellWithIdentifier:@&quot;test”];</div></pre></td></tr></table></figure></p>
 <p>使用这个方法可以获取到能够重用的cell，如果没有能够重用的cell，则返回值为nil，这时可以再去进行Cell的内存申请。</p>
 <p>###修改滑动过程中的加载机制</p>
-=======
-
-</li>
-</ul>
-</blockquote>
-<h3 id="UITableViewCell的重用机制">UITableViewCell的重用机制</h3>
-<p>使用cell的重用机制，需要在申请cell时进行指定，就是说需要使用  initWithStyle:reuseIdentifier:来替代init函数，否则就无法重用申请到的cell内存。</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">UITableViewCell <span class="keyword">*</span>cell = [[UITableViewCellalloc]initWithStyle:UITableViewCellStyleDefaultreuseIdentifier:<span class="comment">@"test”];</span></div></pre></td></tr></table></figure>
-
-<p>这样就申请到了一个可重用的cell，重用标记为test，之所以有一个重用标记是为了能够将类似的cell进行重用，这样很多view都不需要重新绘制，才能够真正的提高性能。</p>
-<p>申请到了cell以后，记得在cell的子类中实现方法prepareForReuse，这个方法会在cell滚出屏幕的时候调用，一定要注意该方法必须调用 super的prepareForReuse。</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">-<span class="ruby"> (void)prepareForReuse</span></div><div class="line">{</div><div class="line">[superprepareForReuse];</div><div class="line">}</div></pre></td></tr></table></figure>
-
-<p>实现了init和perpareForReuse之后，就可以在 UITableViewDataSource的方法 tableView:cellForRowAtIndexPath: 中实现重用cell了。</p>
-<figure class="highlight Object-C"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">GroupMessageCell <span class="keyword">*</span>cell = [tableViewdequeueReusableCellWithIdentifier:<span class="comment">@"test”];</span></div></pre></td></tr></table></figure>
-
-<p>使用这个方法可以获取到能够重用的cell，如果没有能够重用的cell，则返回值为nil，这时可以再去进行Cell的内存申请。</p>
-<h3 id="修改滑动过程中的加载机制">修改滑动过程中的加载机制</h3>
->>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
 <p>关于这块，我也没有过多可以详细叙述的，建议大家好好阅读一下Allen的<a href="http://tech.glowing.com/cn/practice-in-uiscrollview/" target="_blank" rel="external">《UIScrollView实践经验》</a>这篇博客，里面详细描述了具体应该怎么利用scrollView的decelerate这个属性来进行性能的提升。</p>
 
       
     </div>
-<<<<<<< HEAD
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2015/01/20/tableview-improve/" data-id="ciu3hdvfe001us69fey392qmh" class="article-share-link">Share</a>
+      <a data-url="http://yoursite.com/2015/01/20/tableview-improve/" data-id="ciu3hou15001r1q9fmwpuiy7s" class="article-share-link">Share</a>
       
       
     </footer>
@@ -506,7 +156,7 @@ UITableViewCell的重用机制；
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Kategorier</h3>
+    <h3 class="widget-title">Categories</h3>
     <div class="widget">
       <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a></li></ul>
     </div>
@@ -519,60 +169,10 @@ UITableViewCell的重用机制；
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
       <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cocos/">Cocos</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Push/">Push</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/extension/">extension</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iOS/">iOS</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/swift/">swift</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/today/">today</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/微信/">微信</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/网络/">网络</a></li></ul>
-=======
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <div>
-      
-        
-
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2015/01/20/retain/" rel="next" title="成员对象之RETAIN/ASSIGN/COPY/WEAK/STRONG的区分">
-                <i class="fa fa-chevron-left"></i> 成员对象之RETAIN/ASSIGN/COPY/WEAK/STRONG的区分
-              </a>
-            
-          </div>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/01/20/viewDidLoad/" rel="prev" title="VIEW加载和显示函数调用顺序">
-                VIEW加载和显示函数调用顺序 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </article>
-
-
-
-    <div class="post-spread">
-      
->>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
     </div>
   </div>
 
 
-<<<<<<< HEAD
   
     
   <div class="widget-wrap">
@@ -585,7 +185,7 @@ UITableViewCell的重用机制；
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Arkiv</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
       <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/08/">August 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/07/">July 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/06/">June 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/01/">January 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/12/">December 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/11/">November 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/08/">August 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/07/">July 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/05/">May 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/03/">March 2015</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2015/01/">January 2015</a></li></ul>
     </div>
@@ -595,7 +195,7 @@ UITableViewCell的重用机制；
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">Siste innlegg</h3>
+    <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
         
@@ -658,268 +258,3 @@ UITableViewCell的重用机制；
   </div>
 </body>
 </html>
-=======
-          </div>
-          
-
-
-          
-  <div class="comments" id="comments">
-    
-      <div class="ds-thread" data-thread-key="2015/01/20/tableview-improve/"
-           data-title="UITABLEVIEW的性能提升" data-url="http://www.ziank.cn/2015/01/20/tableview-improve/">
-      </div>
-    
-  </div>
-
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    <div class="sidebar-inner">
-
-      
-
-      
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
-
-      <section class="site-overview sidebar-panel ">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-          <img class="site-author-image" itemprop="image"
-               src="/img/my.png"
-               alt="ziank" />
-          <p class="site-author-name" itemprop="name">ziank</p>
-          <p class="site-description motion-element" itemprop="description"></p>
-        </div>
-        <nav class="site-state motion-element">
-          <div class="site-state-item site-state-posts">
-            <a href="/archives">
-              <span class="site-state-item-count">28</span>
-              <span class="site-state-item-name">日志</span>
-            </a>
-          </div>
-
-          
-            <div class="site-state-item site-state-categories">
-              <a href="/th">
-                <span class="site-state-item-count">6</span>
-                <span class="site-state-item-name">分类</span>
-              </a>
-            </div>
-          
-
-          
-            <div class="site-state-item site-state-tags">
-              <a href="/tags">
-                <span class="site-state-item-count">9</span>
-                <span class="site-state-item-name">标签</span>
-              </a>
-            </div>
-          
-
-        </nav>
-
-        
-
-        <div class="links-of-author motion-element">
-          
-            
-              <span class="links-of-author-item">
-                <a href="http://github.com/ziank" target="_blank" title="github">
-                  
-                    <i class="fa fa-fw fa-globe"></i>
-                  
-                  github
-                </a>
-              </span>
-            
-          
-        </div>
-
-        
-        
-
-        
-        
-
-      </section>
-
-      
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-            
-              
-            
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#UITableViewCell的重用机制"><span class="nav-number">1.</span> <span class="nav-text">UITableViewCell的重用机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#修改滑动过程中的加载机制"><span class="nav-number">2.</span> <span class="nav-text">修改滑动过程中的加载机制</span></a></li></ol></div>
-            
-          </div>
-        </section>
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright" >
-  
-  &copy; 
-  <span itemprop="copyrightYear">2016</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">ziank</span>
-</div>
-
-<div class="powered-by">
-  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
-</div>
-
-<div class="theme-info">
-  主题 -
-  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
-    NexT.Mist
-  </a>
-</div>
-
-        
-
-        
-      </div>
-    </footer>
-
-    <div class="back-to-top">
-      <i class="fa fa-arrow-up"></i>
-    </div>
-  </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
-  }
-</script>
-
-
-
-
-
-
-
-
-
-  
-
-
-
-  
-  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-
-  
-  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
-
-  
-  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
-
-
-
-  
-  
-
-  
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
-
-
-
-  
-
-
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
-
-
-
-  
-
-  
-    
-  
-
-  <script type="text/javascript">
-    var duoshuoQuery = {short_name:"ziank"};
-    (function() {
-      var ds = document.createElement('script');
-      ds.type = 'text/javascript';ds.async = true;
-      ds.id = 'duoshuo-script';
-      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
-      ds.charset = 'UTF-8';
-      (document.getElementsByTagName('head')[0]
-      || document.getElementsByTagName('body')[0]).appendChild(ds);
-    })();
-  </script>
-
-  
-    
-    <script src="/vendors/ua-parser-js/dist/ua-parser.min.js?v=0.7.9"></script>
-    <script src="/js/src/hook-duoshuo.js"></script>
-  
-
-
-
-
-
-
-  
-  
-
-  
-
-  
-
-  
-
-</body>
-</html>
->>>>>>> 9ec3659a01d1657b13a75070bcfb3215d6b64ecb
