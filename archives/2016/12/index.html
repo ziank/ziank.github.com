@@ -4,21 +4,14 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>todayView组件的高度处理问题 | Ziank的技术博客</title>
+  <title>Archives: 2016/12 | Ziank的技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="todayView组件的高度处理问题">
-<meta property="og:url" content="/2015/05/11/todayViewExtensionHeight/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Ziank的技术博客">
+<meta property="og:url" content="/archives/2016/12/index.html">
 <meta property="og:site_name" content="Ziank的技术博客">
-<meta property="og:description" content="最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。">
-<meta property="og:image" content="/img/todayViewExtensionHeight_1.png">
-<meta property="og:image" content="/img/todayViewExtensionHeight_2.png">
-<meta property="og:updated_time" content="2015-05-11T08:51:29.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="todayView组件的高度处理问题">
-<meta name="twitter:description" content="最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。">
-<meta name="twitter:image" content="/img/todayViewExtensionHeight_1.png">
+<meta name="twitter:title" content="Ziank的技术博客">
   
     <link rel="alternative" href="/atom.xml" title="Ziank的技术博客" type="application/atom+xml">
   
@@ -125,101 +118,59 @@
 </nav>
 
       <div class="body-wrap">
-        <article id="post-todayViewExtensionHeight" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
         
   
-    <h1 class="article-title" itemprop="name">
-      todayView组件的高度处理问题
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2016" class="archive-year">2016</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2016/12/16/appToast/" class="archive-article-date">
+  	<time datetime="2016-12-16T09:28:07.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-12-16</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2016/12/16/appToast/">应用提示弹窗</a>
     </h1>
   
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。<br><a id="more"></a><br><img src="/img/todayViewExtensionHeight_1.png" alt="位置不正确的图片"></p>
-<p>为此我们查了不少资料，最后发现只是一个很简单地设置问题，是由于系统默认的todayView的偏移量为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">defaultMarginInsets = (top = 0, left = 47, bottom = 39, right = 0);</div></pre></td></tr></table></figure></p>
-<p>所以只需要简单地修改这个偏移量，就能够解决该问题。对偏移量的修改应该在方法<code>widgetMarginInsetsForProposedMarginInsets</code>中进行修改:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (UIEdgeInsets)widgetMarginInsetsForProposedMarginInsets:(UIEdgeInsets)defaultMarginInsets</div><div class="line">&#123;</div><div class="line">    defaultMarginInsets.bottom = 0;</div><div class="line">    return defaultMarginInsets;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>修改之后，todayView的界面就正常了。<br><img src="/img/todayViewExtensionHeight_2.png" alt="修改后的todayViewExtension截图"></p>
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      <a href="/2015/05/11/todayViewExtensionHeight/" class="archive-article-date">
-  	<time datetime="2015-05-11T07:17:59.000Z" itemprop="datePublished"><i class="icon-clock"></i>2015-05-11</time>
-</a>
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
 	</div>
 
-      
+          
 	<div class="article-category tagcloud">
 	<i class="icon-price-tags"></i>
 	<a class="article-category-link" href="/categories/iOS/">iOS</a>
 	</div>
 
 
-      <div class="clearfix"></div>
-    </div>
+        </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2015/05/14/char-const/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          浅析const char *, char * const, char const *, const char * const 的区别
-        
-      </div>
-    </a>
   
   
-    <a href="/2015/03/27/swift-operator/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">swift的操作符重载</div>
-      <i class="icon-circle-right"></i>
-    </a>
+    </div></section>
   
-</nav>
 
-
-
-
-<div class="share_jia">
-	<!-- JiaThis Button BEGIN -->
-	<div class="jiathis_style">
-		<span class="jiathis_txt">Share to: &nbsp; </span>
-		<a class="jiathis_button_facebook"></a> 
-	    <a class="jiathis_button_twitter"></a>
-	    <a class="jiathis_button_plus"></a> 
-	    <a class="jiathis_button_tsina"></a>
-		<a class="jiathis_button_cqq"></a>
-		<a class="jiathis_button_douban"></a>
-		<a class="jiathis_button_weixin"></a>
-		<a class="jiathis_button_tumblr"></a>
-    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-	</div>
-	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
-	<!-- JiaThis Button END -->
-</div>
-
-
-
-
-
-
-
+    
 
 
       </div>
@@ -242,8 +193,8 @@
 		mathjax: false,
 		animate: true,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,

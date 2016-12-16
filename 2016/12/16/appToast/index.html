@@ -4,21 +4,20 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>todayView组件的高度处理问题 | Ziank的技术博客</title>
+  <title>应用提示弹窗 | Ziank的技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。">
+  <meta name="description" content="在iOS中要弹出和Android中Toast差不多的提示，并不困难，也有着诸多的第三方库可以使用，但是有些时候我们还是需要自己看一下如何进行实现，比如我们最近的需求，需要在应用进入前台时弹出一个提示，提示中包含有可点击的按钮，那么大部分的第三方库就不支持了。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="todayView组件的高度处理问题">
-<meta property="og:url" content="/2015/05/11/todayViewExtensionHeight/index.html">
+<meta property="og:title" content="应用提示弹窗">
+<meta property="og:url" content="/2016/12/16/appToast/index.html">
 <meta property="og:site_name" content="Ziank的技术博客">
-<meta property="og:description" content="最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。">
-<meta property="og:image" content="/img/todayViewExtensionHeight_1.png">
-<meta property="og:image" content="/img/todayViewExtensionHeight_2.png">
-<meta property="og:updated_time" content="2015-05-11T08:51:29.000Z">
+<meta property="og:description" content="在iOS中要弹出和Android中Toast差不多的提示，并不困难，也有着诸多的第三方库可以使用，但是有些时候我们还是需要自己看一下如何进行实现，比如我们最近的需求，需要在应用进入前台时弹出一个提示，提示中包含有可点击的按钮，那么大部分的第三方库就不支持了。">
+<meta property="og:image" content="/img/app_toast.png">
+<meta property="og:updated_time" content="2016-12-16T09:31:05.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="todayView组件的高度处理问题">
-<meta name="twitter:description" content="最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。">
-<meta name="twitter:image" content="/img/todayViewExtensionHeight_1.png">
+<meta name="twitter:title" content="应用提示弹窗">
+<meta name="twitter:description" content="在iOS中要弹出和Android中Toast差不多的提示，并不困难，也有着诸多的第三方库可以使用，但是有些时候我们还是需要自己看一下如何进行实现，比如我们最近的需求，需要在应用进入前台时弹出一个提示，提示中包含有可点击的按钮，那么大部分的第三方库就不支持了。">
+<meta name="twitter:image" content="/img/app_toast.png">
   
     <link rel="alternative" href="/atom.xml" title="Ziank的技术博客" type="application/atom+xml">
   
@@ -125,7 +124,7 @@
 </nav>
 
       <div class="body-wrap">
-        <article id="post-todayViewExtensionHeight" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-appToast" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <input type="hidden" class="isFancy" />
@@ -135,7 +134,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      todayView组件的高度处理问题
+      应用提示弹窗
     </h1>
   
 
@@ -143,17 +142,23 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>最近在我们的应用里添加了一个TodayView的组件，结果却发现高度总是设置不正确，或者说是设置好了以后在第一次安装时会出现界面拉伸的问题，后来发现是由于在安装时，底部会自动增加大约40个点的高度，导致界面拉伸或者是位置不正确。<br><a id="more"></a><br><img src="/img/todayViewExtensionHeight_1.png" alt="位置不正确的图片"></p>
-<p>为此我们查了不少资料，最后发现只是一个很简单地设置问题，是由于系统默认的todayView的偏移量为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">defaultMarginInsets = (top = 0, left = 47, bottom = 39, right = 0);</div></pre></td></tr></table></figure></p>
-<p>所以只需要简单地修改这个偏移量，就能够解决该问题。对偏移量的修改应该在方法<code>widgetMarginInsetsForProposedMarginInsets</code>中进行修改:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">- (UIEdgeInsets)widgetMarginInsetsForProposedMarginInsets:(UIEdgeInsets)defaultMarginInsets</div><div class="line">&#123;</div><div class="line">    defaultMarginInsets.bottom = 0;</div><div class="line">    return defaultMarginInsets;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>修改之后，todayView的界面就正常了。<br><img src="/img/todayViewExtensionHeight_2.png" alt="修改后的todayViewExtension截图"></p>
+        <p>在<code>iOS</code>中要弹出和<code>Android</code>中<code>Toast</code>差不多的提示，并不困难，也有着诸多的第三方库可以使用，但是有些时候我们还是需要自己看一下如何进行实现，比如我们最近的需求，需要在应用进入前台时弹出一个提示，提示中包含有可点击的按钮，那么大部分的第三方库就不支持了。</p>
+<a id="more"></a>
+<p>其实这个问题并不复杂，反而非常简单，因为只需要找到最顶层的<code>window</code>，把我们要进行弹窗的<code>UIView</code>加上去就可以了。而获取顶层<code>window</code>的代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">- (UIWindow *)getTopWindow &#123;</div><div class="line">UIWindow *keyWindow = [UIApplication sharedApplication].keyWindow;</div><div class="line">if (!keyWindow) &#123;</div><div class="line">// 有可能keyWindow不存在</div><div class="line">keyWindow = [UIApplication sharedApplication].windows.firstObject;</div><div class="line">&#125;</div><div class="line">return keyWindow;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>调用这个方法，就可以获取到顶层<code>window</code>，获取到之后，就可以使用<code>addSubview:</code>添加自定义的View了，不要忘记在添加之后，使用<code>bringSubviewToFront:</code>把自定义View放在最上层。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">UIWindow *topWindow = [self getTopWindow];</div><div class="line">[topWindow addSubview:customView];</div><div class="line">[topWindow bringSubviewToFront:customView];</div></pre></td></tr></table></figure>
+<p>如此就可以实现我们弹出含有<code>Button</code>的<code>UIView</code>的需求了。</p>
+<p><img src="/img/app_toast.png" alt="弹窗测试页面"></p>
+<p><strong>注意：不要在<code>viewDidLoad</code>中进行弹窗，有可能会无法弹出，因为这个View还没有出现，当它出现时可能会盖住弹出的View。</strong></p>
+<p>至于弹出之后如何进行消失，只需要一个<code>dispatch_after</code>就可以了，这里也就不再多说。</p>
 
       
     </div>
     <div class="article-info article-info-index">
       
-      <a href="/2015/05/11/todayViewExtensionHeight/" class="archive-article-date">
-  	<time datetime="2015-05-11T07:17:59.000Z" itemprop="datePublished"><i class="icon-clock"></i>2015-05-11</time>
+      <a href="/2016/12/16/appToast/" class="archive-article-date">
+  	<time datetime="2016-12-16T09:28:07.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-12-16</time>
 </a>
       
 	<div class="article-tag tagcloud">
@@ -176,18 +181,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2015/05/14/char-const/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          浅析const char *, char * const, char const *, const char * const 的区别
-        
-      </div>
-    </a>
   
-  
-    <a href="/2015/03/27/swift-operator/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">swift的操作符重载</div>
+    <a href="/2016/10/10/wkwebview/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">WKWebView的使用</div>
       <i class="icon-circle-right"></i>
     </a>
   
