@@ -4,21 +4,21 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>OC&amp;swift中的宏定义 | Ziank的技术博客</title>
+  <title>UIAlertController中的UITextField晃动效果和边框颜色 | Ziank的技术博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在使用OC和swift进行混编时，我们经常会需要在swift中使用OC中的宏定义，但是这些宏定义经常会提示无法找到或者类型错误，那么我们到底应该怎么做才正确呢？">
+  <meta name="description" content="在iOS8中，我们引入了UIAlertController，通过UIAlertController可以方便的添加文本框进行编辑，但是，在输入错误的内容时，如何对用户进行提醒就成了问题，因为UIAlertController中的所有UIAlertAction都会导致UIAlertController的消失。这里，我就描述两种提示的方法，分别是晃动文本框和修改边框的颜色。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="OC&swift中的宏定义">
-<meta property="og:url" content="/2016/07/08/oc-swift-define/index.html">
+<meta property="og:title" content="UIAlertController中的UITextField晃动效果和边框颜色">
+<meta property="og:url" content="/2016/12/28/textAlert/index.html">
 <meta property="og:site_name" content="Ziank的技术博客">
-<meta property="og:description" content="在使用OC和swift进行混编时，我们经常会需要在swift中使用OC中的宏定义，但是这些宏定义经常会提示无法找到或者类型错误，那么我们到底应该怎么做才正确呢？">
-<meta property="og:image" content="/img/OC_define.png">
-<meta property="og:image" content="/img/swift_define.png">
-<meta property="og:updated_time" content="2016-07-08T06:29:30.000Z">
+<meta property="og:description" content="在iOS8中，我们引入了UIAlertController，通过UIAlertController可以方便的添加文本框进行编辑，但是，在输入错误的内容时，如何对用户进行提醒就成了问题，因为UIAlertController中的所有UIAlertAction都会导致UIAlertController的消失。这里，我就描述两种提示的方法，分别是晃动文本框和修改边框的颜色。">
+<meta property="og:image" content="/img/alert_textfield_1.png">
+<meta property="og:image" content="/img/alert_textfield_2.png">
+<meta property="og:updated_time" content="2016-12-28T01:31:31.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="OC&swift中的宏定义">
-<meta name="twitter:description" content="在使用OC和swift进行混编时，我们经常会需要在swift中使用OC中的宏定义，但是这些宏定义经常会提示无法找到或者类型错误，那么我们到底应该怎么做才正确呢？">
-<meta name="twitter:image" content="/img/OC_define.png">
+<meta name="twitter:title" content="UIAlertController中的UITextField晃动效果和边框颜色">
+<meta name="twitter:description" content="在iOS8中，我们引入了UIAlertController，通过UIAlertController可以方便的添加文本框进行编辑，但是，在输入错误的内容时，如何对用户进行提醒就成了问题，因为UIAlertController中的所有UIAlertAction都会导致UIAlertController的消失。这里，我就描述两种提示的方法，分别是晃动文本框和修改边框的颜色。">
+<meta name="twitter:image" content="/img/alert_textfield_1.png">
   
     <link rel="alternative" href="/atom.xml" title="Ziank的技术博客" type="application/atom+xml">
   
@@ -125,7 +125,7 @@
 </nav>
 
       <div class="body-wrap">
-        <article id="post-oc-swift-define" class="article article-type-post" itemscope itemprop="blogPost">
+        <article id="post-textAlert" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <input type="hidden" class="isFancy" />
@@ -135,7 +135,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      OC&amp;swift中的宏定义
+      UIAlertController中的UITextField晃动效果和边框颜色
     </h1>
   
 
@@ -143,43 +143,35 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>在使用OC和swift进行混编时，我们经常会需要在swift中使用OC中的宏定义，但是这些宏定义经常会提示无法找到或者类型错误，那么我们到底应该怎么做才正确呢？</p>
-<a id="more"></a>
-<p><img src="/img/OC_define.png" alt="OC宏定义"></p>
-<p>OC中的宏定义和C一样，主要有以下几种情况：</p>
-<ol>
-<li>定义一个常量值，后面可以方便使用；如 <code>#define TOOLBAR_HEIGHT           44</code>；</li>
-<li>定义一个不会变化的常用变量值，或者一个较长的对象属性；如<code>#define SCREEN_WIDTH             ([[UIScreen mainScreen] bounds].size.width)</code>；</li>
-<li>定义一个会变化的常用变量值，或者一个较长的对象属性；如：<code>#define STATUS_BAR_HEIGHT        ([UIApplication sharedApplication].statusBarFrame.size.height)</code>；</li>
-<li>定义一个带参数的宏，类似于一个函数；如<code>#define RGB_COLOR(r,g,b) [UIColor colorWithRed:r/255.f green:g/255.f blue:b/255.f alpha:1.0]</code></li>
-</ol>
-<p>对于这四种情况，在swift中只能处理第一种情况，而且是直接转换为了<code>let TOOLBAR_HEIGHT = 44;</code>那么由于使用<code>TOOLBAR_HEIGTH</code>的地方基本上都是使用<code>CGFloat</code>，而<code>TOOLBAR_HEIGTH</code>的类型却是Int，就会导致类型不匹配。</p>
-<p><img src="/img/swift_define.png" alt="swift宏定义替换"></p>
-<p>所以我们在混编时对于这些宏定义都需要单独处理：</p>
-<ul>
-<li>第一种的话就比较简单，可以直接使用<code>let TOOLBAR_HEIGTH:CGFloat = 44</code>来替换就可以了；</li>
-<li>第二种因为后面的值永远不会改变，也可以使用<code>let</code>来替换；可以用<code>let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width</code>；</li>
-<li>第三种情况，也就是后面的值会发生改变，如状态栏高度，就不能够使用<code>let</code>来替换了，因为<code>let</code>是定义的常量，如果使用<code>let</code>，如果将会导致不能够获取正确的值；这里可以使用函数来获取：<code>func STATUSBAR_HEIGHT() -&gt; CGFloat { return UIApplication.sharedApplication().statusBarFrame.size.height }</code>；使用时通过函数<code>STATUSBAR_HEIGTH()</code>获取状态栏高度；</li>
-<li>第四种，因为有输入参数，所以也只能使用函数来替换；如：<code>func RGB_COLOR(r:CGFloat, g:CGFloat, b:CGFloat) -&gt; UIColor {return UIColor(red: r, green: g, blue: b, alpha: 1.0)}</code>;</li>
-</ul>
+        <p>在iOS8中，我们引入了<code>UIAlertController</code>，通过<code>UIAlertController</code>可以方便的添加文本框进行编辑，但是，在输入错误的内容时，如何对用户进行提醒就成了问题，因为<code>UIAlertController</code>中的所有<code>UIAlertAction</code>都会导致<code>UIAlertController</code>的消失。这里，我就描述两种提示的方法，分别是晃动文本框和修改边框的颜色。<br><a id="more"></a></p>
+<h3 id="晃动UITextField"><a href="#晃动UITextField" class="headerlink" title="晃动UITextField"></a>晃动<code>UITextField</code></h3><p>晃动<code>UITextField</code>其实就是对它添加一个动画效果，参考了<a href="http://stackoverflow.com/questions/27987048/shake-animation-for-uitextfield-uiview-in-swift" target="_blank" rel="external">Stack Overflow</a>上的做法，通过添加<code>position</code>的动画，可以实现<code>UIAlertController</code>中的<code>UITextField</code>的晃动效果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (void)shakeField:(UITextField *)textField &#123;</div><div class="line">CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@&quot;position&quot;];</div><div class="line">animation.duration = 0.07;</div><div class="line">animation.repeatCount = 4;</div><div class="line">animation.autoreverses = YES;</div><div class="line">animation.fromValue = [NSValue valueWithCGPoint:CGPointMake(textField.centerX - 10, textField.centerY)];</div><div class="line">animation.toValue = [NSValue valueWithCGPoint:CGPointMake(textField.centerX + 10, textField.centerY)];</div><div class="line">[textField.layer addAnimation:animation forKey:@&quot;position&quot;];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="修改UITextField的边框颜色"><a href="#修改UITextField的边框颜色" class="headerlink" title="修改UITextField的边框颜色"></a>修改<code>UITextField</code>的边框颜色</h3><p><code>UIAlertController</code>中文本框的默认边框颜色都是黑色，通常在输入异常时会改为红色进行提醒，这个时候，如果直接修改<code>UITextField</code>的<code>border</code>将会变成下图样式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">- (void)testAlert &#123;</div><div class="line">UIAlertController *alert = [UIAlertController alertControllerWithTitle:@&quot;测试&quot; message:@&quot;测试输入框边框颜色&quot; preferredStyle:UIAlertControllerStyleAlert];</div><div class="line">[alert addAction:[UIAlertAction actionWithTitle:@&quot;取消&quot; style:UIAlertActionStyleCancel handler:nil]];</div><div class="line">[alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) &#123;</div><div class="line">textField.layer.borderColor = [UIColor redColor].CGColor;</div><div class="line">textField.layer.borderWidth = 1;</div><div class="line">&#125;];</div><div class="line">[self presentViewController:alert animated:YES completion:nil];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="/img/alert_textfield_1.png" alt="错误显示"></p>
+<p>而在实际中我们应该这样修改：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">- (void)testAlert &#123;</div><div class="line">UIAlertController *alert = [UIAlertController alertControllerWithTitle:@&quot;测试&quot; message:@&quot;测试输入框边框颜色&quot; preferredStyle:UIAlertControllerStyleAlert];</div><div class="line">[alert addAction:[UIAlertAction actionWithTitle:@&quot;取消&quot; style:UIAlertActionStyleCancel handler:nil]];</div><div class="line">[alert addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) &#123;</div><div class="line">self.currentField = textField;</div><div class="line">&#125;];</div><div class="line">[self presentViewController:alert animated:YES completion:^&#123;</div><div class="line">[[self.currentField superview] superview].backgroundColor = [UIColor redColor];</div><div class="line">&#125;];</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><img src="/img/alert_textfield_2.png" alt="正确显示"></p>
+<p>这样的产生效果才是我们想要的。</p>
+<p>需要注意的是：<strong>一定要在<code>present</code>以后进行设置，否则会发现设置是无效的，因为没有<code>present</code>之前，<code>textField</code>的<code>superview</code>是<code>nil</code>，设置是无效的。</strong></p>
 
       
     </div>
     <div class="article-info article-info-index">
       
-      <a href="/2016/07/08/oc-swift-define/" class="archive-article-date">
-  	<time datetime="2016-07-08T06:22:51.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-07-08</time>
+      <a href="/2016/12/28/textAlert/" class="archive-article-date">
+  	<time datetime="2016-12-28T01:28:35.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-12-28</time>
 </a>
       
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
 	<i class="icon-price-tags"></i>
-	<a class="article-category-link" href="/categories/iOS/">iOS</a><a class="article-category-link" href="/categories/iOS/swift/">swift</a>
+	<a class="article-category-link" href="/categories/iOS/">iOS</a>
 	</div>
 
 
@@ -191,18 +183,9 @@
   
 <nav id="article-nav">
   
-    <a href="/2016/07/25/chinese-string/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          swift利用系统库汉字转换为拼音
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/07/06/webview-keyboard/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">UIWebView键盘的accessoryBar隐藏</div>
+    <a href="/2016/12/16/appToast/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">应用提示弹窗</div>
       <i class="icon-circle-right"></i>
     </a>
   
