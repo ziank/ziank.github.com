@@ -1,12 +1,90 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
+<!doctype html>
+
+
+
   
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>UIWebView键盘的accessoryBar隐藏 | Ziank的技术博客</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="当前越来越多的iOS应用开始使用html进行交互显示，却会发现在UIWebView弹出的键盘比UITextView的键盘多出了左右移动以及完成按钮，那么如何去掉这些我们并不需要的按钮呢？苹果官方并没有给出方法，所以我们只能够自己来解决。">
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="iOS,swift," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="当前越来越多的iOS应用开始使用html进行交互显示，却会发现在UIWebView弹出的键盘比UITextView的键盘多出了左右移动以及完成按钮，那么如何去掉这些我们并不需要的按钮呢？苹果官方并没有给出方法，所以我们只能够自己来解决。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="UIWebView键盘的accessoryBar隐藏">
 <meta property="og:url" content="/2016/07/06/webview-keyboard/index.html">
@@ -14,138 +92,288 @@
 <meta property="og:description" content="当前越来越多的iOS应用开始使用html进行交互显示，却会发现在UIWebView弹出的键盘比UITextView的键盘多出了左右移动以及完成按钮，那么如何去掉这些我们并不需要的按钮呢？苹果官方并没有给出方法，所以我们只能够自己来解决。">
 <meta property="og:image" content="/img/webview_keyboard.png">
 <meta property="og:image" content="/img/webview_keyboard_hideaccessory.png">
-<meta property="og:updated_time" content="2016-07-06T06:40:46.000Z">
+<meta property="og:updated_time" content="2016-12-29T01:45:59.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="UIWebView键盘的accessoryBar隐藏">
 <meta name="twitter:description" content="当前越来越多的iOS应用开始使用html进行交互显示，却会发现在UIWebView弹出的键盘比UITextView的键盘多出了左右移动以及完成按钮，那么如何去掉这些我们并不需要的按钮呢？苹果官方并没有给出方法，所以我们只能够自己来解决。">
 <meta name="twitter:image" content="/img/webview_keyboard.png">
-  
-    <link rel="alternative" href="/atom.xml" title="Ziank的技术博客" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="//favicon.png">
-  
-  <script src="/style.js"></script>
-  
 
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"hide"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="/2016/07/06/webview-keyboard/"/>
+
+
+
+
+
+  <title> UIWebView键盘的accessoryBar隐藏 | Ziank的技术博客 </title>
 </head>
 
-<body>
-  <div id="container">
-    <div class="left-col">
-      <div class="overlay"></div>
-<div class="intrude-less">
-	<header id="header" class="inner">
-		<a href="/" class="profilepic">
-			
-			<img src="/img/my.png" class="js-avatar">
-			
-		</a>
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
-		<hgroup>
-		  <h1 class="header-author"><a href="/">Ziank</a></h1>
-		</hgroup>
+  
 
-		
 
-		<nav class="header-menu">
-			<ul>
-			
-				<li><a href="/">主页</a></li>
-	        
-				<li><a href="/about">简介</a></li>
-	        
-			</ul>
-		</nav>
-		<nav class="header-smart-menu">
-	        
-    		
-    			
-    			<a class="js-smart-menu" data-idx="0" href="javascript:void(0)">所有文章</a>
-    			
-    			
-            
-    			
-    			<a class="js-smart-menu" data-idx="1" href="javascript:void(0)">标签</a>
-    			
-    			
-            
-    			
-    			<a class="js-smart-menu" data-idx="2" href="javascript:void(0)">分类</a>
-    			
-    			
-            
-		</nav>
-		<nav class="header-nav">
-			<div class="social">
-				
-					<a class="github" target="_blank" href="https://github.com/ziank" title="github">github</a>
-		        
-			</div>
-		</nav>
-	</header>		
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Ziank的技术博客</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <h1 class="site-subtitle" itemprop="description"></h1>
+    
 </div>
 
-    </div>
-    <div class="mid-col">
-      <nav id="mobile-nav">
-  	<div class="overlay">
-  		<div class="slider-trigger"><i class="icon-list"></i></div>
-  		<h1 class="header-author js-mobile-header hide">Ziank</h1>
-  	</div>
-	<div class="intrude-less">
-		<header id="header" class="inner">
-			<div class="profilepic">
-				
-					<img src="/img/my.png" class="js-avatar">
-				
-			</div>
-			<hgroup>
-			  <h1 class="header-author">Ziank</h1>
-			</hgroup>
-			
-			<nav class="header-menu">
-				<ul>
-				
-					<li><a href="/">主页</a></li>
-		        
-					<li><a href="/about">简介</a></li>
-		        
-				</ul>
-			</nav>
-			<nav class="header-nav">
-				<div class="social">
-					
-						<a class="github" target="_blank" href="https://github.com/ziank" title="github">github</a>
-			        
-				</div>
-			</nav>
-		</header>				
-	</div>
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
 </nav>
 
-      <div class="body-wrap">
-        <article id="post-webview-keyboard" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-inner">
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
     
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      UIWebView键盘的accessoryBar隐藏
-    </h1>
+
   
 
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="/2016/07/06/webview-keyboard/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Ziank">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/img/my.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Ziank的技术博客">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Ziank的技术博客" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                UIWebView键盘的accessoryBar隐藏
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-07-06T14:31:49+08:00">
+                2016-07-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/" itemprop="url" rel="index">
+                    <span itemprop="name">iOS</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/iOS/swift/" itemprop="url" rel="index">
+                    <span itemprop="name">swift</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
       </header>
     
-    <div class="article-entry" itemprop="articleBody">
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
       
         <p>当前越来越多的iOS应用开始使用html进行交互显示，却会发现在<code>UIWebView</code>弹出的键盘比<code>UITextView</code>的键盘多出了左右移动以及完成按钮，那么如何去掉这些我们并不需要的按钮呢？苹果官方并没有给出方法，所以我们只能够自己来解决。<br><a id="more"></a><br><img src="/img/webview_keyboard.png" alt="webview键盘图片"></p>
 <p>对于不同的iOS版本，我们的处理方法也会不同，因为官方没有提供方法，所有的方法都是需要自己去发现和修改。这里只写出iOS7以上版本的方法：</p>
-<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">hideKeyBoard</span><span class="params">()</span></span> -&gt; <span class="type">Void</span> &#123;</div><div class="line"><span class="keyword">for</span> window <span class="keyword">in</span> <span class="type">UIApplication</span>.sharedApplication().windows &#123;</div><div class="line"><span class="keyword">if</span> !window.isMemberOfClass(<span class="type">UIWindow</span>.<span class="keyword">self</span>) &#123;</div><div class="line"><span class="keyword">let</span> keyboardWindow = window</div><div class="line"><span class="keyword">if</span> #available(iOS <span class="number">9.0</span>, *) &#123;</div><div class="line"><span class="keyword">self</span>.removeAccessoryBarForiOS9(keyboardWindow <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> #available(iOS <span class="number">8.0</span>, *) &#123;</div><div class="line"><span class="keyword">self</span>.removeAccessoryBarForiOS8(keyboardWindow <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">&#125; <span class="keyword">else</span> &#123;</div><div class="line"><span class="keyword">self</span>.removeAccessoryBarForiOS7(keyboardWindow <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"><span class="keyword">if</span> #available(iOS <span class="number">9.0</span>, *) &#123;</div><div class="line"><span class="keyword">self</span>.removeAccessoryBarForiOS9(<span class="type">UIApplication</span>.sharedApplication().windows.last! <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">removeAccessoryBarForiOS9</span><span class="params">(keyboardWindow:UIView)</span></span> -&gt; <span class="type">Void</span> &#123;</div><div class="line"><span class="keyword">for</span> possibleFormView:<span class="type">UIView</span> <span class="keyword">in</span> keyboardWindow.subviews &#123;</div><div class="line"><span class="keyword">if</span> possibleFormView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetContainerView"</span>)!) &#123;</div><div class="line"><span class="keyword">for</span> subviewOfInputSetContainerView <span class="keyword">in</span> possibleFormView.subviews &#123;</div><div class="line"><span class="keyword">if</span> subviewOfInputSetContainerView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetHostView"</span>)!) &#123;</div><div class="line"><span class="keyword">for</span> subviewOfInputSetHostView <span class="keyword">in</span> subviewOfInputSetContainerView.subviews &#123;</div><div class="line"><span class="comment">// 隐藏工具条NSClassFromString</span></div><div class="line"><span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) &#123;</div><div class="line">subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfInputSetHostView.frame = <span class="type">CGRectZero</span></div><div class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"_UIRemoteKeyboardPlaceholderView"</span>)!)) &#123;</div><div class="line">subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfInputSetHostView.frame = <span class="type">CGRectZero</span></div><div class="line"></div><div class="line"><span class="comment">// 这里使用了私有方法获取对应的accessorBar，然后进行隐藏</span></div><div class="line"><span class="keyword">var</span> accessory = subviewOfInputSetHostView.performSelector(<span class="type">Selector</span>(<span class="string">"placeheldView"</span>)).takeRetainedValue()</div><div class="line"><span class="keyword">if</span> accessory.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) &#123;</div><div class="line"><span class="keyword">let</span> accessory = accessory <span class="keyword">as</span>! <span class="type">UIView</span></div><div class="line">accessory.layer.opacity = <span class="number">0</span></div><div class="line">accessory.frame = <span class="type">CGRectZero</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">&#125;</div><div class="line"><span class="comment">// 键盘背景, UIKBInputBackdropView有两个只隐藏上面的</span></div><div class="line"><span class="keyword">else</span> <span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIKBInputBackdropView"</span>)!) &amp;&amp; subviewOfInputSetHostView.frame.size.height &lt; <span class="number">100</span> &#123;</div><div class="line">subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfInputSetHostView.userInteractionEnabled = <span class="literal">false</span></div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">removeAccessoryBarForiOS8</span><span class="params">(keyboardWindow:UIView)</span></span> -&gt; <span class="type">Void</span> &#123;</div><div class="line"><span class="keyword">for</span> possibleFormView:<span class="type">UIView</span> <span class="keyword">in</span> keyboardWindow.subviews &#123;</div><div class="line"><span class="keyword">if</span> possibleFormView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetContainerView"</span>)!) &#123;</div><div class="line"><span class="keyword">for</span> subviewOfInputSetContainerView <span class="keyword">in</span> possibleFormView.subviews &#123;</div><div class="line"><span class="keyword">if</span> subviewOfInputSetContainerView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetHostView"</span>)!) &#123;</div><div class="line"><span class="keyword">for</span> subviewOfInputSetHostView <span class="keyword">in</span> subviewOfInputSetContainerView.subviews &#123;</div><div class="line"><span class="comment">// 隐藏工具条</span></div><div class="line"><span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) &#123;</div><div class="line">subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfInputSetHostView.frame = <span class="type">CGRectZero</span></div><div class="line">&#125;</div><div class="line"><span class="comment">// 键盘背景, UIKBInputBackdropView有两个只隐藏上面的</span></div><div class="line"><span class="keyword">else</span> <span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIKBInputBackdropView"</span>)!) &amp;&amp; subviewOfInputSetHostView.frame.size.height &lt; <span class="number">100</span> &#123;</div><div class="line">subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfInputSetHostView.userInteractionEnabled = <span class="literal">false</span></div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">removeAccessoryBarForiOS7</span><span class="params">(keyboardWindow:UIView)</span></span> -&gt; <span class="type">Void</span> &#123;</div><div class="line"><span class="keyword">for</span> possibleFormView:<span class="type">UIView</span> <span class="keyword">in</span> keyboardWindow.subviews &#123;</div><div class="line"><span class="keyword">if</span> possibleFormView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIPeripheralHostView"</span>)!) &#123;</div><div class="line"><span class="keyword">for</span> subviewOfPeripheralHostView <span class="keyword">in</span> possibleFormView.subviews &#123;</div><div class="line"><span class="comment">// 隐藏工具条</span></div><div class="line"><span class="keyword">if</span> subviewOfPeripheralHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) &#123;</div><div class="line">subviewOfPeripheralHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfPeripheralHostView.frame = <span class="type">CGRectZero</span></div><div class="line">&#125;</div><div class="line"><span class="comment">// 键盘背景, UIKBInputBackdropView有两个只隐藏上面的</span></div><div class="line"><span class="keyword">else</span> <span class="keyword">if</span> subviewOfPeripheralHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIKBInputBackdropView"</span>)!) &amp;&amp; subviewOfPeripheralHostView.frame.size.height &lt; <span class="number">100</span> &#123;</div><div class="line">subviewOfPeripheralHostView.layer.opacity = <span class="number">0</span></div><div class="line">subviewOfPeripheralHostView.userInteractionEnabled = <span class="literal">false</span></div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight swift"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">hideKeyBoard</span><span class="params">()</span></span> -&gt; <span class="type">Void</span> &#123;</div><div class="line">    <span class="keyword">for</span> window <span class="keyword">in</span> <span class="type">UIApplication</span>.sharedApplication().windows &#123;</div><div class="line">        <span class="keyword">if</span> !window.isMemberOfClass(<span class="type">UIWindow</span>.<span class="keyword">self</span>) &#123;</div><div class="line">            <span class="keyword">let</span> keyboardWindow = window</div><div class="line">            <span class="keyword">if</span> #available(iOS <span class="number">9.0</span>, *) &#123;</div><div class="line">                <span class="keyword">self</span>.removeAccessoryBarForiOS9(keyboardWindow <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> #available(iOS <span class="number">8.0</span>, *) &#123;</div><div class="line">                <span class="keyword">self</span>.removeAccessoryBarForiOS8(keyboardWindow <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">            &#125; <span class="keyword">else</span> &#123;</div><div class="line">            <span class="keyword">self</span>.removeAccessoryBarForiOS7(keyboardWindow <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">if</span> #available(iOS <span class="number">9.0</span>, *) &#123;</div><div class="line">    <span class="keyword">self</span>.removeAccessoryBarForiOS9(<span class="type">UIApplication</span>.sharedApplication().windows.last! <span class="keyword">as</span> <span class="type">UIView</span>)</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">removeAccessoryBarForiOS9</span><span class="params">(keyboardWindow:UIView)</span></span> -&gt; <span class="type">Void</span> &#123;</div><div class="line">    <span class="keyword">for</span> possibleFormView:<span class="type">UIView</span> <span class="keyword">in</span> keyboardWindow.subviews &#123;</div><div class="line">        <span class="keyword">if</span> possibleFormView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetContainerView"</span>)!) &#123;</div><div class="line">            <span class="keyword">for</span> subviewOfInputSetContainerView <span class="keyword">in</span> possibleFormView.subviews &#123;</div><div class="line">                <span class="keyword">if</span> subviewOfInputSetContainerView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetHostView"</span>)!) &#123;</div><div class="line">                    <span class="keyword">for</span> subviewOfInputSetHostView <span class="keyword">in</span> subviewOfInputSetContainerView.subviews &#123;</div><div class="line">                        <span class="comment">// 隐藏工具条NSClassFromString</span></div><div class="line">                        <span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) &#123;</div><div class="line">                            subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">                            subviewOfInputSetHostView.frame = <span class="type">CGRectZero</span></div><div class="line">                        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"_UIRemoteKeyboardPlaceholderView"</span>)!)) &#123;</div><div class="line">                            subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">                            subviewOfInputSetHostView.frame = <span class="type">CGRectZero</span></div><div class="line"></div><div class="line">                            <span class="comment">// 这里使用了私有方法获取对应的accessorBar，然后进行隐藏</span></div><div class="line">                            <span class="keyword">var</span> accessory = subviewOfInputSetHostView.performSelector(<span class="type">Selector</span>(<span class="string">"placeheldView"</span>)).takeRetainedValue()</div><div class="line">                            <span class="keyword">if</span> accessory.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) &#123;</div><div class="line">                                <span class="keyword">let</span> accessory = accessory <span class="keyword">as</span>! <span class="type">UIView</span></div><div class="line">                                accessory.layer.opacity = <span class="number">0</span></div><div class="line">                                accessory.frame = <span class="type">CGRectZero</span></div><div class="line">                            &#125;</div><div class="line"></div><div class="line">                        &#125;</div><div class="line">                        <span class="comment">// 键盘背景, UIKBInputBackdropView有两个只隐藏上面的</span></div><div class="line">                        <span class="keyword">else</span> <span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIKBInputBackdropView"</span>)!) &amp;&amp; subviewOfInputSetHostView.frame.size.height &lt; <span class="number">100</span> &#123;</div><div class="line">                            subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">                            subviewOfInputSetHostView.userInteractionEnabled = <span class="literal">false</span></div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">removeAccessoryBarForiOS8</span><span class="params">(keyboardWindow:UIView)</span></span> -&gt; <span class="type">Void</span> &#123;</div><div class="line">    <span class="keyword">for</span> possibleFormView:<span class="type">UIView</span> <span class="keyword">in</span> keyboardWindow.subviews &#123;</div><div class="line">        <span class="keyword">if</span> possibleFormView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetContainerView"</span>)!) &#123;</div><div class="line">            <span class="keyword">for</span> subviewOfInputSetContainerView <span class="keyword">in</span> possibleFormView.subviews &#123;</div><div class="line">                <span class="keyword">if</span> subviewOfInputSetContainerView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIInputSetHostView"</span>)!) &#123;</div><div class="line">                    <span class="keyword">for</span> subviewOfInputSetHostView <span class="keyword">in</span> subviewOfInputSetContainerView.subviews &#123;</div><div class="line">                        <span class="comment">// 隐藏工具条</span></div><div class="line">                        <span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) &#123;</div><div class="line">                            subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">                            subviewOfInputSetHostView.frame = <span class="type">CGRectZero</span></div><div class="line">                        &#125;</div><div class="line">                        <span class="comment">// 键盘背景, UIKBInputBackdropView有两个只隐藏上面的</span></div><div class="line">                        <span class="keyword">else</span> <span class="keyword">if</span> subviewOfInputSetHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIKBInputBackdropView"</span>)!) &amp;&amp; subviewOfInputSetHostView.frame.size.height &lt; <span class="number">100</span> &#123;</div><div class="line">                            subviewOfInputSetHostView.layer.opacity = <span class="number">0</span></div><div class="line">                            subviewOfInputSetHostView.userInteractionEnabled = <span class="literal">false</span></div><div class="line">                        &#125;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">removeAccessoryBarForiOS7</span><span class="params">(keyboardWindow:UIView)</span></span> -&gt; <span class="type">Void</span> &#123;</div><div class="line">    <span class="keyword">for</span> possibleFormView:<span class="type">UIView</span> <span class="keyword">in</span> keyboardWindow.subviews &#123;</div><div class="line">        <span class="keyword">if</span> possibleFormView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIPeripheralHostView"</span>)!) &#123;</div><div class="line">            <span class="keyword">for</span> subviewOfPeripheralHostView <span class="keyword">in</span> possibleFormView.subviews &#123;</div><div class="line">                <span class="comment">// 隐藏工具条</span></div><div class="line">                <span class="keyword">if</span> subviewOfPeripheralHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIWebFormAccessory"</span>)!) &#123;</div><div class="line">                    subviewOfPeripheralHostView.layer.opacity = <span class="number">0</span></div><div class="line">                    subviewOfPeripheralHostView.frame = <span class="type">CGRectZero</span></div><div class="line">                &#125;</div><div class="line">                <span class="comment">// 键盘背景, UIKBInputBackdropView有两个只隐藏上面的</span></div><div class="line">                <span class="keyword">else</span> <span class="keyword">if</span> subviewOfPeripheralHostView.isMemberOfClass(<span class="type">NSClassFromString</span>(<span class="string">"UIKBInputBackdropView"</span>)!) &amp;&amp; subviewOfPeripheralHostView.frame.size.height &lt; <span class="number">100</span> &#123;</div><div class="line">                    subviewOfPeripheralHostView.layer.opacity = <span class="number">0</span></div><div class="line">                    subviewOfPeripheralHostView.userInteractionEnabled = <span class="literal">false</span></div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>实际中，隐藏键盘<code>accessory</code>后的样子如下图：</p>
 <p><img src="/img/webview_keyboard_hideaccessory.png" alt="隐藏accessory的界面"></p>
 <p><strong>需要注意的是，在示例代码使用设置layer透明，frame为空来进行隐藏，而不使用<code>removeFromSuperView</code>，是因为使用了<code>removeFromSuperView</code>，在键盘重新布局时会导致crash。当然如果有朋友解决了crash，使用<code>removeFromSuperView</code>会更好。</strong></p>
@@ -154,220 +382,314 @@
 
       
     </div>
-    <div class="article-info article-info-index">
+
+    <div>
       
-      <a href="/2016/07/06/webview-keyboard/" class="archive-article-date">
-  	<time datetime="2016-07-06T06:31:49.000Z" itemprop="datePublished"><i class="icon-clock"></i>2016-07-06</time>
-</a>
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags"></i>
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/iOS/">iOS</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/swift/">swift</a></li></ul>
-	</div>
+        
 
       
-	<div class="article-category tagcloud">
-	<i class="icon-price-tags"></i>
-	<a class="article-category-link" href="/categories/iOS/">iOS</a><a class="article-category-link" href="/categories/iOS/swift/">swift</a>
-	</div>
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
 
 
-      <div class="clearfix"></div>
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/iOS/" rel="tag"># iOS</a>
+          
+            <a href="/tags/swift/" rel="tag"># swift</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/06/17/keyboard/" rel="next" title="键盘处理">
+                <i class="fa fa-chevron-left"></i> 键盘处理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/07/08/oc-swift-define/" rel="prev" title="OC&swift中的宏定义">
+                OC&swift中的宏定义 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
     </div>
   </div>
-</article>
 
-  
-<nav id="article-nav">
-  
-    <a href="/2016/07/08/oc-swift-define/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
         
-          OC&amp;swift中的宏定义
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview sidebar-panel sidebar-panel-active">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/img/my.png"
+               alt="Ziank" />
+          <p class="site-author-name" itemprop="name">Ziank</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/ziank" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.jianshu.com/users/1a8f3d2919ef/" target="_blank" title="简书">
+                  
+                    <i class="fa fa-fw fa-globe"></i>
+                  
+                  简书
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+
+    </div>
+  </aside>
+
+
         
       </div>
-    </a>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
   
-  
-    <a href="/2016/06/17/keyboard/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">键盘处理</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-
-
-
-<div class="share_jia">
-	<!-- JiaThis Button BEGIN -->
-	<div class="jiathis_style">
-		<span class="jiathis_txt">Share to: &nbsp; </span>
-		<a class="jiathis_button_facebook"></a> 
-	    <a class="jiathis_button_twitter"></a>
-	    <a class="jiathis_button_plus"></a> 
-	    <a class="jiathis_button_tsina"></a>
-		<a class="jiathis_button_cqq"></a>
-		<a class="jiathis_button_douban"></a>
-		<a class="jiathis_button_weixin"></a>
-		<a class="jiathis_button_tumblr"></a>
-    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
-	</div>
-	<script type="text/javascript" src="//v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
-	<!-- JiaThis Button END -->
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Ziank</span>
 </div>
 
 
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
 
 
+        
 
-
-
-
-
+        
       </div>
-      <footer id="footer">
-  <div class="outer">
-    <div id="footer-info">
-    	<div class="footer-left">
-    		&copy; 2016 Ziank
-    	</div>
-      	<div class="footer-right">
-      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
-      	</div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
     </div>
   </div>
-</footer>
-    </div>
-    <script>
-	var yiliaConfig = {
-		fancybox: true,
-		mathjax: false,
-		animate: true,
-		isHome: false,
-		isPost: true,
-		isArchive: false,
-		isTag: false,
-		isCategory: false,
-		open_in_new: false,
-		root: "/",
-		innerArchive: true
-	}
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
 </script>
 
-<script src="/./main.js"></script>
 
 
-    
-<div class="tools-col">
-  <ul class="btn-wrap">
-    
-      <li class="chose" data-hook="tools-section-all"><span class="text">全部</span><i class="icon-book"></i></li>
-    
-    
-      <li data-hook="tools-section-tag"><span class="text">标签</span><i class="icon-price-tags"></i></li>
-    
-    
-      <li data-hook="tools-section-tag"><span class="text">分类</span><i class="icon-price-tags"></i></li>
-    
-    
-    
-  </ul>
-  <div class="tools-wrap">
-    
-    	<section class="tools-section tools-section-all chose">
-    	</section>
-    
 
-    
-    	<section class="tools-section tools-section-tag">
-    			<div class="widget tagcloud" id="js-tagcloud">
-    				<a href="/tags/C/" style="font-size: 10px;">C</a> <a href="/tags/Cocos/" style="font-size: 13.33px;">Cocos</a> <a href="/tags/Push/" style="font-size: 10px;">Push</a> <a href="/tags/extension/" style="font-size: 10px;">extension</a> <a href="/tags/iOS/" style="font-size: 20px;">iOS</a> <a href="/tags/swift/" style="font-size: 16.67px;">swift</a> <a href="/tags/today/" style="font-size: 10px;">today</a> <a href="/tags/微信/" style="font-size: 10px;">微信</a> <a href="/tags/网络/" style="font-size: 10px;">网络</a>
-    			</div>
-    	</section>
-    
 
-    
-      <section class="tools-section tools-section-tag">
-        <div class="widget tagcloud" id="js-tagcloud">
-            <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/C-C/">C/C++</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/">Cocos</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/Cocos/文档/">文档</a><span class="category-list-count">3</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/">iOS</a><span class="category-list-count">26</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/iOS/swift/">swift</a><span class="category-list-count">8</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/网络/">网络</a><span class="category-list-count">1</span></li></ul>
-        </div>
-      </section>
-    
 
-    
 
-    
-  </div>
+
+
   
-</div>
-    <!-- Root element of PhotoSwipe. Must have class pswp. -->
-<div class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
 
-    <!-- Background of PhotoSwipe. 
-         It's a separate element as animating opacity is faster than rgba(). -->
-    <div class="pswp__bg"></div>
 
-    <!-- Slides wrapper with overflow:hidden. -->
-    <div class="pswp__scroll-wrap">
 
-        <!-- Container that holds slides. 
-            PhotoSwipe keeps only 3 of them in the DOM to save memory.
-            Don't modify these 3 pswp__item elements, data is added later on. -->
-        <div class="pswp__container">
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-            <div class="pswp__item"></div>
-        </div>
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
 
-        <!-- Default (PhotoSwipeUI_Default) interface on top of sliding area. Can be changed. -->
-        <div class="pswp__ui pswp__ui--hidden">
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
 
-            <div class="pswp__top-bar">
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
 
-                <!--  Controls are self-explanatory. Order can be changed. -->
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
 
-                <div class="pswp__counter"></div>
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
 
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
 
-                <button class="pswp__button pswp__button--share" style="display:none" title="Share"></button>
 
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+  
 
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
 
-                <!-- Preloader demo http://codepen.io/dimsemenov/pen/yyBWoR -->
-                <!-- element will get class pswp__preloader--active when preloader is running -->
-                <div class="pswp__preloader">
-                    <div class="pswp__preloader__icn">
-                      <div class="pswp__preloader__cut">
-                        <div class="pswp__preloader__donut"></div>
-                      </div>
-                    </div>
-                </div>
-            </div>
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
 
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">
-                <div class="pswp__share-tooltip"></div> 
-            </div>
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
 
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
-            </button>
 
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)">
-            </button>
 
-            <div class="pswp__caption">
-                <div class="pswp__caption__center"></div>
-            </div>
+  
+  
 
-        </div>
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
 
-    </div>
 
-</div>
-  </div>
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
 </body>
 </html>
