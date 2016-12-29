@@ -357,15 +357,15 @@
       
 
       
-        <p>不知道别人是什么样，反正我每次看到<code>const char *</code> 和<code>char * const</code> 就想把写这个代码的人给拉出来枪毙十分钟，教科书上说过它们的区别，但是每次都会忘记，所以只能够每次都去网上查找。<br><a id="more"></a><br>这次我也只是相当于做一个记录，让自己和看到这篇博客的人知道可以在这里找到答案。</p>
+        <p>&#x4E0D;&#x77E5;&#x9053;&#x522B;&#x4EBA;&#x662F;&#x4EC0;&#x4E48;&#x6837;&#xFF0C;&#x53CD;&#x6B63;&#x6211;&#x6BCF;&#x6B21;&#x770B;&#x5230;<code>const char *</code> &#x548C;<code>char * const</code> &#x5C31;&#x60F3;&#x628A;&#x5199;&#x8FD9;&#x4E2A;&#x4EE3;&#x7801;&#x7684;&#x4EBA;&#x7ED9;&#x62C9;&#x51FA;&#x6765;&#x67AA;&#x6BD9;&#x5341;&#x5206;&#x949F;&#xFF0C;&#x6559;&#x79D1;&#x4E66;&#x4E0A;&#x8BF4;&#x8FC7;&#x5B83;&#x4EEC;&#x7684;&#x533A;&#x522B;&#xFF0C;&#x4F46;&#x662F;&#x6BCF;&#x6B21;&#x90FD;&#x4F1A;&#x5FD8;&#x8BB0;&#xFF0C;&#x6240;&#x4EE5;&#x53EA;&#x80FD;&#x591F;&#x6BCF;&#x6B21;&#x90FD;&#x53BB;&#x7F51;&#x4E0A;&#x67E5;&#x627E;&#x3002;<br><a id="more"></a><br>&#x8FD9;&#x6B21;&#x6211;&#x4E5F;&#x53EA;&#x662F;&#x76F8;&#x5F53;&#x4E8E;&#x505A;&#x4E00;&#x4E2A;&#x8BB0;&#x5F55;&#xFF0C;&#x8BA9;&#x81EA;&#x5DF1;&#x548C;&#x770B;&#x5230;&#x8FD9;&#x7BC7;&#x535A;&#x5BA2;&#x7684;&#x4EBA;&#x77E5;&#x9053;&#x53EF;&#x4EE5;&#x5728;&#x8FD9;&#x91CC;&#x627E;&#x5230;&#x7B54;&#x6848;&#x3002;</p>
 <ul>
-<li><code>const char *p</code> 是一个指向常量的指针，就是说不能能够修改<code>*p</code>的值，但是可以修改<code>p</code>的值</li>
-<li><code>char *const p</code> 是一个常量指针，指向的内容是变量，所以<code>p</code>可以修改<code>*p</code>的值，但是不可以修改<code>p</code>的值</li>
-<li><code>char const *p</code> 和<code>const char* p</code>是一样的</li>
-<li><code>const *char p</code> 会引起编译错误，是一种错误的写法</li>
-<li><code>const char * const p</code> 是一个指向常量的常量指针，就是说p和*p都不可以修改</li>
+<li><code>const char *p</code> &#x662F;&#x4E00;&#x4E2A;&#x6307;&#x5411;&#x5E38;&#x91CF;&#x7684;&#x6307;&#x9488;&#xFF0C;&#x5C31;&#x662F;&#x8BF4;&#x4E0D;&#x80FD;&#x80FD;&#x591F;&#x4FEE;&#x6539;<code>*p</code>&#x7684;&#x503C;&#xFF0C;&#x4F46;&#x662F;&#x53EF;&#x4EE5;&#x4FEE;&#x6539;<code>p</code>&#x7684;&#x503C;</li>
+<li><code>char *const p</code> &#x662F;&#x4E00;&#x4E2A;&#x5E38;&#x91CF;&#x6307;&#x9488;&#xFF0C;&#x6307;&#x5411;&#x7684;&#x5185;&#x5BB9;&#x662F;&#x53D8;&#x91CF;&#xFF0C;&#x6240;&#x4EE5;<code>p</code>&#x53EF;&#x4EE5;&#x4FEE;&#x6539;<code>*p</code>&#x7684;&#x503C;&#xFF0C;&#x4F46;&#x662F;&#x4E0D;&#x53EF;&#x4EE5;&#x4FEE;&#x6539;<code>p</code>&#x7684;&#x503C;</li>
+<li><code>char const *p</code> &#x548C;<code>const char* p</code>&#x662F;&#x4E00;&#x6837;&#x7684;</li>
+<li><code>const *char p</code> &#x4F1A;&#x5F15;&#x8D77;&#x7F16;&#x8BD1;&#x9519;&#x8BEF;&#xFF0C;&#x662F;&#x4E00;&#x79CD;&#x9519;&#x8BEF;&#x7684;&#x5199;&#x6CD5;</li>
+<li><code>const char * const p</code> &#x662F;&#x4E00;&#x4E2A;&#x6307;&#x5411;&#x5E38;&#x91CF;&#x7684;&#x5E38;&#x91CF;&#x6307;&#x9488;&#xFF0C;&#x5C31;&#x662F;&#x8BF4;p&#x548C;*p&#x90FD;&#x4E0D;&#x53EF;&#x4EE5;&#x4FEE;&#x6539;</li>
 </ul>
-<p>或者简单地说，1，2的情况就是<code>const</code>修饰更近的参数，与<code>char</code>相近时修饰<code>char</code>，也就是指针值不可修改；与<code>*</code>相近时修饰地址，也就是指针不可修改。</p>
+<p>&#x6216;&#x8005;&#x7B80;&#x5355;&#x5730;&#x8BF4;&#xFF0C;1&#xFF0C;2&#x7684;&#x60C5;&#x51B5;&#x5C31;&#x662F;<code>const</code>&#x4FEE;&#x9970;&#x66F4;&#x8FD1;&#x7684;&#x53C2;&#x6570;&#xFF0C;&#x4E0E;<code>char</code>&#x76F8;&#x8FD1;&#x65F6;&#x4FEE;&#x9970;<code>char</code>&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x6307;&#x9488;&#x503C;&#x4E0D;&#x53EF;&#x4FEE;&#x6539;&#xFF1B;&#x4E0E;<code>*</code>&#x76F8;&#x8FD1;&#x65F6;&#x4FEE;&#x9970;&#x5730;&#x5740;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x6307;&#x9488;&#x4E0D;&#x53EF;&#x4FEE;&#x6539;&#x3002;</p>
 
       
     </div>

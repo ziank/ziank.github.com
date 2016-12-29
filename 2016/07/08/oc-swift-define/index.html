@@ -371,24 +371,24 @@
       
 
       
-        <p>在使用OC和swift进行混编时，我们经常会需要在swift中使用OC中的宏定义，但是这些宏定义经常会提示无法找到或者类型错误，那么我们到底应该怎么做才正确呢？</p>
+        <p>&#x5728;&#x4F7F;&#x7528;OC&#x548C;swift&#x8FDB;&#x884C;&#x6DF7;&#x7F16;&#x65F6;&#xFF0C;&#x6211;&#x4EEC;&#x7ECF;&#x5E38;&#x4F1A;&#x9700;&#x8981;&#x5728;swift&#x4E2D;&#x4F7F;&#x7528;OC&#x4E2D;&#x7684;&#x5B8F;&#x5B9A;&#x4E49;&#xFF0C;&#x4F46;&#x662F;&#x8FD9;&#x4E9B;&#x5B8F;&#x5B9A;&#x4E49;&#x7ECF;&#x5E38;&#x4F1A;&#x63D0;&#x793A;&#x65E0;&#x6CD5;&#x627E;&#x5230;&#x6216;&#x8005;&#x7C7B;&#x578B;&#x9519;&#x8BEF;&#xFF0C;&#x90A3;&#x4E48;&#x6211;&#x4EEC;&#x5230;&#x5E95;&#x5E94;&#x8BE5;&#x600E;&#x4E48;&#x505A;&#x624D;&#x6B63;&#x786E;&#x5462;&#xFF1F;</p>
 <a id="more"></a>
-<p><img src="/img/OC_define.png" alt="OC宏定义"></p>
-<p>OC中的宏定义和C一样，主要有以下几种情况：</p>
+<p><img src="/img/OC_define.png" alt="OC&#x5B8F;&#x5B9A;&#x4E49;"></p>
+<p>OC&#x4E2D;&#x7684;&#x5B8F;&#x5B9A;&#x4E49;&#x548C;C&#x4E00;&#x6837;&#xFF0C;&#x4E3B;&#x8981;&#x6709;&#x4EE5;&#x4E0B;&#x51E0;&#x79CD;&#x60C5;&#x51B5;&#xFF1A;</p>
 <ol>
-<li>定义一个常量值，后面可以方便使用；如 <code>#define TOOLBAR_HEIGHT           44</code>；</li>
-<li>定义一个不会变化的常用变量值，或者一个较长的对象属性；如<code>#define SCREEN_WIDTH             ([[UIScreen mainScreen] bounds].size.width)</code>；</li>
-<li>定义一个会变化的常用变量值，或者一个较长的对象属性；如：<code>#define STATUS_BAR_HEIGHT        ([UIApplication sharedApplication].statusBarFrame.size.height)</code>；</li>
-<li>定义一个带参数的宏，类似于一个函数；如<code>#define RGB_COLOR(r,g,b) [UIColor colorWithRed:r/255.f green:g/255.f blue:b/255.f alpha:1.0]</code></li>
+<li>&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#x5E38;&#x91CF;&#x503C;&#xFF0C;&#x540E;&#x9762;&#x53EF;&#x4EE5;&#x65B9;&#x4FBF;&#x4F7F;&#x7528;&#xFF1B;&#x5982; <code>#define TOOLBAR_HEIGHT           44</code>&#xFF1B;</li>
+<li>&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#x4E0D;&#x4F1A;&#x53D8;&#x5316;&#x7684;&#x5E38;&#x7528;&#x53D8;&#x91CF;&#x503C;&#xFF0C;&#x6216;&#x8005;&#x4E00;&#x4E2A;&#x8F83;&#x957F;&#x7684;&#x5BF9;&#x8C61;&#x5C5E;&#x6027;&#xFF1B;&#x5982;<code>#define SCREEN_WIDTH             ([[UIScreen mainScreen] bounds].size.width)</code>&#xFF1B;</li>
+<li>&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#x4F1A;&#x53D8;&#x5316;&#x7684;&#x5E38;&#x7528;&#x53D8;&#x91CF;&#x503C;&#xFF0C;&#x6216;&#x8005;&#x4E00;&#x4E2A;&#x8F83;&#x957F;&#x7684;&#x5BF9;&#x8C61;&#x5C5E;&#x6027;&#xFF1B;&#x5982;&#xFF1A;<code>#define STATUS_BAR_HEIGHT        ([UIApplication sharedApplication].statusBarFrame.size.height)</code>&#xFF1B;</li>
+<li>&#x5B9A;&#x4E49;&#x4E00;&#x4E2A;&#x5E26;&#x53C2;&#x6570;&#x7684;&#x5B8F;&#xFF0C;&#x7C7B;&#x4F3C;&#x4E8E;&#x4E00;&#x4E2A;&#x51FD;&#x6570;&#xFF1B;&#x5982;<code>#define RGB_COLOR(r,g,b) [UIColor colorWithRed:r/255.f green:g/255.f blue:b/255.f alpha:1.0]</code></li>
 </ol>
-<p>对于这四种情况，在swift中只能处理第一种情况，而且是直接转换为了<code>let TOOLBAR_HEIGHT = 44;</code>那么由于使用<code>TOOLBAR_HEIGTH</code>的地方基本上都是使用<code>CGFloat</code>，而<code>TOOLBAR_HEIGTH</code>的类型却是Int，就会导致类型不匹配。</p>
-<p><img src="/img/swift_define.png" alt="swift宏定义替换"></p>
-<p>所以我们在混编时对于这些宏定义都需要单独处理：</p>
+<p>&#x5BF9;&#x4E8E;&#x8FD9;&#x56DB;&#x79CD;&#x60C5;&#x51B5;&#xFF0C;&#x5728;swift&#x4E2D;&#x53EA;&#x80FD;&#x5904;&#x7406;&#x7B2C;&#x4E00;&#x79CD;&#x60C5;&#x51B5;&#xFF0C;&#x800C;&#x4E14;&#x662F;&#x76F4;&#x63A5;&#x8F6C;&#x6362;&#x4E3A;&#x4E86;<code>let TOOLBAR_HEIGHT = 44;</code>&#x90A3;&#x4E48;&#x7531;&#x4E8E;&#x4F7F;&#x7528;<code>TOOLBAR_HEIGTH</code>&#x7684;&#x5730;&#x65B9;&#x57FA;&#x672C;&#x4E0A;&#x90FD;&#x662F;&#x4F7F;&#x7528;<code>CGFloat</code>&#xFF0C;&#x800C;<code>TOOLBAR_HEIGTH</code>&#x7684;&#x7C7B;&#x578B;&#x5374;&#x662F;Int&#xFF0C;&#x5C31;&#x4F1A;&#x5BFC;&#x81F4;&#x7C7B;&#x578B;&#x4E0D;&#x5339;&#x914D;&#x3002;</p>
+<p><img src="/img/swift_define.png" alt="swift&#x5B8F;&#x5B9A;&#x4E49;&#x66FF;&#x6362;"></p>
+<p>&#x6240;&#x4EE5;&#x6211;&#x4EEC;&#x5728;&#x6DF7;&#x7F16;&#x65F6;&#x5BF9;&#x4E8E;&#x8FD9;&#x4E9B;&#x5B8F;&#x5B9A;&#x4E49;&#x90FD;&#x9700;&#x8981;&#x5355;&#x72EC;&#x5904;&#x7406;&#xFF1A;</p>
 <ul>
-<li>第一种的话就比较简单，可以直接使用<code>let TOOLBAR_HEIGTH:CGFloat = 44</code>来替换就可以了；</li>
-<li>第二种因为后面的值永远不会改变，也可以使用<code>let</code>来替换；可以用<code>let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width</code>；</li>
-<li>第三种情况，也就是后面的值会发生改变，如状态栏高度，就不能够使用<code>let</code>来替换了，因为<code>let</code>是定义的常量，如果使用<code>let</code>，如果将会导致不能够获取正确的值；这里可以使用函数来获取：<code>func STATUSBAR_HEIGHT() -&gt; CGFloat { return UIApplication.sharedApplication().statusBarFrame.size.height }</code>；使用时通过函数<code>STATUSBAR_HEIGTH()</code>获取状态栏高度；</li>
-<li>第四种，因为有输入参数，所以也只能使用函数来替换；如：<code>func RGB_COLOR(r:CGFloat, g:CGFloat, b:CGFloat) -&gt; UIColor {return UIColor(red: r, green: g, blue: b, alpha: 1.0)}</code>;</li>
+<li>&#x7B2C;&#x4E00;&#x79CD;&#x7684;&#x8BDD;&#x5C31;&#x6BD4;&#x8F83;&#x7B80;&#x5355;&#xFF0C;&#x53EF;&#x4EE5;&#x76F4;&#x63A5;&#x4F7F;&#x7528;<code>let TOOLBAR_HEIGTH:CGFloat = 44</code>&#x6765;&#x66FF;&#x6362;&#x5C31;&#x53EF;&#x4EE5;&#x4E86;&#xFF1B;</li>
+<li>&#x7B2C;&#x4E8C;&#x79CD;&#x56E0;&#x4E3A;&#x540E;&#x9762;&#x7684;&#x503C;&#x6C38;&#x8FDC;&#x4E0D;&#x4F1A;&#x6539;&#x53D8;&#xFF0C;&#x4E5F;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;<code>let</code>&#x6765;&#x66FF;&#x6362;&#xFF1B;&#x53EF;&#x4EE5;&#x7528;<code>let SCREEN_WIDTH = UIScreen.mainScreen().bounds.size.width</code>&#xFF1B;</li>
+<li>&#x7B2C;&#x4E09;&#x79CD;&#x60C5;&#x51B5;&#xFF0C;&#x4E5F;&#x5C31;&#x662F;&#x540E;&#x9762;&#x7684;&#x503C;&#x4F1A;&#x53D1;&#x751F;&#x6539;&#x53D8;&#xFF0C;&#x5982;&#x72B6;&#x6001;&#x680F;&#x9AD8;&#x5EA6;&#xFF0C;&#x5C31;&#x4E0D;&#x80FD;&#x591F;&#x4F7F;&#x7528;<code>let</code>&#x6765;&#x66FF;&#x6362;&#x4E86;&#xFF0C;&#x56E0;&#x4E3A;<code>let</code>&#x662F;&#x5B9A;&#x4E49;&#x7684;&#x5E38;&#x91CF;&#xFF0C;&#x5982;&#x679C;&#x4F7F;&#x7528;<code>let</code>&#xFF0C;&#x5982;&#x679C;&#x5C06;&#x4F1A;&#x5BFC;&#x81F4;&#x4E0D;&#x80FD;&#x591F;&#x83B7;&#x53D6;&#x6B63;&#x786E;&#x7684;&#x503C;&#xFF1B;&#x8FD9;&#x91CC;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x51FD;&#x6570;&#x6765;&#x83B7;&#x53D6;&#xFF1A;<code>func STATUSBAR_HEIGHT() -&gt; CGFloat { return UIApplication.sharedApplication().statusBarFrame.size.height }</code>&#xFF1B;&#x4F7F;&#x7528;&#x65F6;&#x901A;&#x8FC7;&#x51FD;&#x6570;<code>STATUSBAR_HEIGTH()</code>&#x83B7;&#x53D6;&#x72B6;&#x6001;&#x680F;&#x9AD8;&#x5EA6;&#xFF1B;</li>
+<li>&#x7B2C;&#x56DB;&#x79CD;&#xFF0C;&#x56E0;&#x4E3A;&#x6709;&#x8F93;&#x5165;&#x53C2;&#x6570;&#xFF0C;&#x6240;&#x4EE5;&#x4E5F;&#x53EA;&#x80FD;&#x4F7F;&#x7528;&#x51FD;&#x6570;&#x6765;&#x66FF;&#x6362;&#xFF1B;&#x5982;&#xFF1A;<code>func RGB_COLOR(r:CGFloat, g:CGFloat, b:CGFloat) -&gt; UIColor {return UIColor(red: r, green: g, blue: b, alpha: 1.0)}</code>;</li>
 </ul>
 
       
